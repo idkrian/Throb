@@ -1,4 +1,7 @@
-import type { Muscle, MuscleGroup } from "../../../generated/prisma/index.js";
+import type {
+  Muscle,
+  MuscleGroup,
+} from "../../../database/prisma/generated/prisma/index.js";
 
 export interface Exercise {
   id: number;
