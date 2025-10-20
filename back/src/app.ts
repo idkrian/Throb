@@ -1,11 +1,11 @@
 import express from "express";
+import exerciseRouter from "./modules/exercises/exercise.routes.js";
+import { requestErrorHandlerMiddleware } from "./shared/middlewares/request-error.js";
+
 const app = express();
-const port = 3000;
 
-app.get("/", (req, res) => {
-  res.send("Oii");
-});
+app.use(express.json());
+app.use(requestErrorHandlerMiddleware);
+app.use("/exercise", exerciseRouter);
 
-app.listen(port, () => {
-  console.log("Funcionando");
-});
+export default app;
