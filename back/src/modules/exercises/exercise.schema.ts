@@ -11,3 +11,5 @@ export const createExerciseSchema = z.object({
 });
 
 export type CreateWorkoutRequestDto = z.infer<typeof createExerciseSchema>;
+
+export type UpdateWorkoutRequestDto = z.infer<typeof createExerciseSchema>;

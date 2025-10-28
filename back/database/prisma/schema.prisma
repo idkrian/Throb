@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated"
+  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -15,6 +15,8 @@ model Exercise {
   title     String   @db.VarChar(255)
   muscle_group MuscleGroup
   muscle Muscle
+
+   @@unique([muscle_group, muscle])
 }
 
 enum MuscleGroup {

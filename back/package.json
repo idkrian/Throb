@@ -4,6 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "type": "module",
+  "prisma": {
+    "schema": "database/prisma/schema.prisma"
+  },
   "scripts": {
     "dev": "tsx watch database/server.ts",
     "build": "tsc",

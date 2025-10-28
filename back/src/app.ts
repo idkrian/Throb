@@ -5,7 +5,7 @@ import { requestErrorHandlerMiddleware } from "./shared/middlewares/request-erro
 const app = express();
 
 app.use(express.json());
-app.use(requestErrorHandlerMiddleware);
 app.use("/exercise", exerciseRouter);
+app.use(requestErrorHandlerMiddleware);
 
 export default app;

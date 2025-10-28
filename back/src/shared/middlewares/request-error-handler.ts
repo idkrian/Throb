@@ -23,6 +23,30 @@ export const requestErrorHandlerMiddleware = (
     return;
   }
 
+  const prismaError = error as any;
+
+  if (prismaError.code) {
+    switch (prismaError.code) {
+      case "P2025":
+        requestErrorHandler(res, "Record not found", HttpStatus.NOT_FOUND);
+        return;
+      case "P2002":
+        requestErrorHandler(
+          res,
+          "This record already exists and you can't duplicate",
+          HttpStatus.CONFLICT
+        );
+        return;
+      case "P2003":
+        requestErrorHandler(
+          res,
+          "Related record not found",
+          HttpStatus.BAD_REQUEST
+        );
+        return;
+    }
+  }
+
   console.error("Unexpected error:", error);
   requestErrorHandler(
     res,

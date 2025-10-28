@@ -11,4 +11,14 @@ exerciseRouter.post(
   exerciseController.createExercise
 );
 
+exerciseRouter.get("/", exerciseController.getAllExercises);
+
+exerciseRouter.put(
+  "/:id",
+  validateRequest(createExerciseSchema),
+  exerciseController.updateExercise
+);
+
+exerciseRouter.delete("/:id", exerciseController.deleteExercise);
+
 export default exerciseRouter;
