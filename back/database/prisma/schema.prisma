@@ -8,15 +8,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Exercise {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  muscle_group MuscleGroup
-  muscle Muscle
+model exercises {
+  id             Int                        @id @default(autoincrement())
+  createdAt      DateTime                   @default(now())
+  updatedAt      DateTime                   @updatedAt
+  title          String                     @db.VarChar(255)
+  muscleGroup    MuscleGroup
+  muscle         Muscle
+  trainingSplits training_split_exercises[]
 
-   @@unique([muscle_group, muscle])
+  @@unique([muscleGroup, muscle, title])
+}
+
+model training_splits {
+  id        Int                        @id @default(autoincrement())
+  createdAt DateTime                   @default(now())
+  updatedAt DateTime                   @updatedAt
+  title     String                     @db.VarChar(255)
+  exercises training_split_exercises[]
+}
+
+model training_split_exercises {
+  id              Int             @id @default(autoincrement())
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  trainingSplit   training_splits @relation(fields: [trainingSplitId], references: [id])
+  trainingSplitId Int
+  exercise        exercises       @relation(fields: [exerciseId], references: [id])
+  exerciseId      Int
+  order           Int?
+  sets            Int?
+  reps            String?
+
+  @@unique([trainingSplitId, exerciseId])
 }
 
 enum MuscleGroup {

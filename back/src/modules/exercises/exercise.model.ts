@@ -8,6 +8,6 @@ export interface Exercise {
   createdAt: Date;
   updatedAt: Date;
   title: string;
-  muscle_group: MuscleGroup;
+  muscleGroup: MuscleGroup;
   muscle: Muscle;
 }
