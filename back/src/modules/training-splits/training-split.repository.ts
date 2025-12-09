@@ -26,7 +26,7 @@ export const trainingSplitRepository = {
 
   async getAllTrainingSplits() {
     return await prisma.training_splits.findMany({
-      include: { exercises: true },
+      include: { exercises: { include: { exercise: true } } },
     });
   },
 

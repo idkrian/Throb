@@ -7,4 +7,31 @@
   --color-lightGrey: #e5e5f0;
   --color-indigo: #7c3aed;
   --color-lightIndigo: #a78bfa;
+  --color-darkIndigo: #3a0c87;
+}
+
+* {
+  --sb-track-color: #14141f;
+  --sb-thumb-color: #3a0c87;
+  --sb-size: 5px;
+}
+
+*::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 3px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
 }

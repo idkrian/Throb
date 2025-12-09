@@ -12,21 +12,22 @@ function App() {
       <div className="flex flex-col w-full h-full shadow-xl rounded-xl p-8 bg-darkGrey">
         <div className="flex flex-col w-full h-full gap-4">
           <h1 className="text-3xl font-bold mx-auto text-indigo">CHEST DAY!</h1>
-
           <div className="flex gap-4 justify-center items-center w-full">
-            <div className="bg-mediumGrey p-2 rounded-xl group cursor-pointer shadow-lg hover:shadow-indigo-500/50">
-              <Link to="/">
+            <Link to="/">
+              <div className="bg-mediumGrey p-2 rounded-xl group cursor-pointer shadow-lg hover:shadow-indigo-500/50">
                 <LuLayoutDashboard size={32} className="text-indigo" />
-              </Link>
-            </div>
-            <div className="bg-mediumGrey p-2 rounded-xl group cursor-pointer shadow-lg hover:shadow-indigo-500/50">
-              <Link to="/muscles">
+              </div>
+            </Link>
+            <Link to="/muscles">
+              <div className="bg-mediumGrey p-2 rounded-xl group cursor-pointer shadow-lg hover:shadow-indigo-500/50">
                 <LuBicepsFlexed size={32} className="text-indigo" />
-              </Link>
-            </div>
-            <div className="bg-mediumGrey p-2 rounded-xl group cursor-pointer shadow-lg hover:shadow-indigo-500/50">
-              <LuClipboardList size={32} className="text-indigo" />
-            </div>
+              </div>
+            </Link>
+            <Link to="/training-splits">
+              <div className="bg-mediumGrey p-2 rounded-xl group cursor-pointer shadow-lg hover:shadow-indigo-500/50">
+                <LuClipboardList size={32} className="text-indigo" />
+              </div>
+            </Link>
           </div>
           <AppRoutes />
         </div>

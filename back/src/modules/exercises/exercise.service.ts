@@ -15,6 +15,10 @@ export const exerciseService = {
     return await exerciseRepository.getAllExercises();
   },
 
+  async getAllExercisesByMuscleGroup() {
+    return await exerciseRepository.getAllExercisesByMuscleGroup();
+  },
+
   async updateExercise(exerciseId: number, data: UpdateWorkoutRequestDto) {
     return await exerciseRepository.updateExercise(exerciseId, data);
   },

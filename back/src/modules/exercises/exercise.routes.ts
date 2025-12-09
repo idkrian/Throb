@@ -8,15 +8,20 @@ const exerciseRouter = Router();
 exerciseRouter.post(
   "/",
   validateRequest(createExerciseSchema),
-  exerciseController.createExercise
+  exerciseController.createExercise,
 );
 
 exerciseRouter.get("/", exerciseController.getAllExercises);
 
+exerciseRouter.get(
+  "/muscle-groups",
+  exerciseController.getAllExercisesByMuscleGroup,
+);
+
 exerciseRouter.put(
   "/:id",
   validateRequest(createExerciseSchema),
-  exerciseController.updateExercise
+  exerciseController.updateExercise,
 );
 
 exerciseRouter.delete("/:id", exerciseController.deleteExercise);

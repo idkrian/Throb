@@ -22,7 +22,25 @@ export const exerciseController = {
       requestSuccessHandler(
         res,
         exercises,
-        "Exercises retrieved successfully!"
+        "Exercises retrieved successfully!",
+      );
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async getAllExercisesByMuscleGroup(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const exercises = await exerciseService.getAllExercisesByMuscleGroup();
+
+      requestSuccessHandler(
+        res,
+        exercises,
+        "Exercises retrieved successfully!",
       );
     } catch (error) {
       next(error);
@@ -35,7 +53,7 @@ export const exerciseController = {
 
       const exercise = await exerciseService.updateExercise(
         exerciseId,
-        req.body
+        req.body,
       );
 
       requestSuccessHandler(res, exercise, "Exercise updated successfully!");
