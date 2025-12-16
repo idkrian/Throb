@@ -1,8 +1,8 @@
 import { LuBicepsFlexed } from "react-icons/lu";
-import type { MuscleGroupItems, MuscleGroupType } from "../dtos/muscle.dto";
+import type { MuscleGroupItemsDto, MuscleGroupType } from "../dtos/muscle.dto";
 
 interface MuscleGroupCardProps {
-  muscleGroupExercises: MuscleGroupItems[];
+  muscleGroupExercises: MuscleGroupItemsDto[];
   muscleGroup: MuscleGroupType;
 }
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import type { TrainingSplitDto } from "../dtos/training-splits.dto";
+import type { TrainingSplitDto } from "../../dtos/training-splits.dto";
+import { LuTrash2, LuPencil } from "react-icons/lu";
 
 const TrainingSplits = () => {
   const [trainingSplits, setTrainingSplits] = useState<TrainingSplitDto[]>([]);
@@ -38,6 +39,14 @@ const TrainingSplits = () => {
                     </p>
                   </div>
                 ))}
+                <div className="h-10 bg-indigo justify-center items-center w-full divide-x-3 divide-black divide hidden group-hover:flex rounded-lg">
+                  <div className="flex w-full justify-center items-center cursor-pointer">
+                    <LuTrash2 size={20} color="red" />
+                  </div>
+                  <div className="flex w-full justify-center items-center cursor-pointer">
+                    <LuPencil size={20} color="orange" />
+                  </div>
+                </div>
               </div>
             </div>
           ))}

@@ -2,6 +2,7 @@ import {
   LuLayoutDashboard,
   LuBicepsFlexed,
   LuClipboardList,
+  LuCalendar,
 } from "react-icons/lu";
 import AppRoutes from "./routes";
 import { Link } from "react-router";
@@ -26,6 +27,11 @@ function App() {
             <Link to="/training-splits">
               <div className="bg-mediumGrey p-2 rounded-xl group cursor-pointer shadow-lg hover:shadow-indigo-500/50">
                 <LuClipboardList size={32} className="text-indigo" />
+              </div>
+            </Link>
+            <Link to="/calendar">
+              <div className="bg-mediumGrey p-2 rounded-xl group cursor-pointer shadow-lg hover:shadow-indigo-500/50">
+                <LuCalendar size={32} className="text-indigo" />
               </div>
             </Link>
           </div>

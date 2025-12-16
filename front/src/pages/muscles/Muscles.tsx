@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { MuscleGroup } from "../dtos/muscle.dto";
-import type { MuscleGroupItemsDto } from "../dtos/muscle.dto";
-import MuscleGroupCard from "../components/MuscleGroupCard";
+import MuscleGroupCard from "../../components/MuscleGroupCard";
+import { type MuscleGroupItemsDto, MuscleGroup } from "../../dtos/muscle.dto";
 
 const Muscles = () => {
   const [muscleGroupExercises, setMuscleGroupExercises] = useState<
