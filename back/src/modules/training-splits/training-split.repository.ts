@@ -1,3 +1,4 @@
+import { id } from "zod/locales";
 import { PrismaClient } from "../../../database/prisma/generated/prisma/index.js";
 import type {
   CreateTrainingSplitRequestDto,
@@ -26,6 +27,13 @@ export const trainingSplitRepository = {
 
   async getAllTrainingSplits() {
     return await prisma.training_splits.findMany({
+      include: { exercises: { include: { exercise: true } } },
+    });
+  },
+
+  async getTrainingSplitById(trainingSplitId: number) {
+    return await prisma.training_splits.findUnique({
+      where: { id: trainingSplitId },
       include: { exercises: { include: { exercise: true } } },
     });
   },

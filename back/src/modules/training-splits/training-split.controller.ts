@@ -34,6 +34,23 @@ export const trainingSplitController = {
     }
   },
 
+  async getTrainingSplitById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const trainingSplitId = Number(req.params.id);
+      const trainingSplit = await trainingSplitService.getTrainingSplitById(
+        trainingSplitId
+      );
+
+      requestSuccessHandler(
+        res,
+        trainingSplit,
+        "Training Splits retrieved successfully!"
+      );
+    } catch (error) {
+      next(error);
+    }
+  },
+
   async updateTrainingSplit(req: Request, res: Response, next: NextFunction) {
     try {
       const trainingSplitId = Number(req.params.id);

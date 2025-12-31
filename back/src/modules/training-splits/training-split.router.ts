@@ -13,4 +13,6 @@ trainingSplitRouter.post(
 
 trainingSplitRouter.get("/", trainingSplitController.getAllTrainingSplits);
 
+trainingSplitRouter.get("/:id", trainingSplitController.getTrainingSplitById);
+
 export default trainingSplitRouter;

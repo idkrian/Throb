@@ -15,6 +15,10 @@ export const trainingSplitService = {
     return await trainingSplitRepository.getAllTrainingSplits();
   },
 
+  async getTrainingSplitById(trainingSplitId: number) {
+    return await trainingSplitRepository.getTrainingSplitById(trainingSplitId);
+  },
+
   async updateTrainingSplit(
     trainingSplitId: number,
     data: UpdateTrainingSplitRequestDto,

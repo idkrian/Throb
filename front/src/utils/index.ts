@@ -1,3 +1,5 @@
+import type { MuscleGroupItemsDto, MuscleGroupType } from "../dtos/muscle.dto";
+
 export const getWeekDays = () => {
   const days = [];
   const today = new Date();
@@ -19,4 +21,22 @@ export const getWeekDays = () => {
   }
 
   return days;
+};
+
+export const getExercisesByMuscleGroup = (
+  muscleGroupExercises: MuscleGroupItemsDto[],
+  group: MuscleGroupType
+) => {
+  return (
+    muscleGroupExercises.find((mg) => mg.muscleGroup === group)?.items || []
+  );
+};
+
+export const getMusclesByMuscleGroup = (
+  muscleGroupExercises: MuscleGroupItemsDto[],
+  group: MuscleGroupType
+) => {
+  const exercises = getExercisesByMuscleGroup(muscleGroupExercises, group);
+  const musclesSet = [...new Set(exercises.map((m) => m.muscle))];
+  return musclesSet;
 };
