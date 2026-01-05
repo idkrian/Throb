@@ -50,10 +50,10 @@ export const trainingSplitRepository = {
           exercises: {
             deleteMany: {},
             create: data.exercises.map((ex) => ({
-              exerciseId: ex.exerciseId,
               order: ex.order,
               sets: ex.sets,
               reps: ex.reps,
+              exerciseId: ex.exerciseId,
             })),
           },
         }),

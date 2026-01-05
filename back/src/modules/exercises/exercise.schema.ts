@@ -10,6 +10,13 @@ export const createExerciseSchema = z.object({
   muscle: z.enum(Muscle),
 });
 
-export type CreateWorkoutRequestDto = z.infer<typeof createExerciseSchema>;
+export const updateExerciseSchema = z.object({
+  id: z.number().int().positive().min(1),
+  title: z.string().max(255),
+  muscleGroup: z.enum(MuscleGroup),
+  muscle: z.enum(Muscle),
+});
 
-export type UpdateWorkoutRequestDto = z.infer<typeof createExerciseSchema>;
+export type CreateExerciseRequestDto = z.infer<typeof createExerciseSchema>;
+
+export type UpdateExerciseRequestDto = z.infer<typeof updateExerciseSchema>;

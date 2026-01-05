@@ -1,13 +1,13 @@
 import { PrismaClient } from "../../../database/prisma/generated/prisma/index.js";
 import type {
-  CreateWorkoutRequestDto,
-  UpdateWorkoutRequestDto,
+  CreateExerciseRequestDto,
+  UpdateExerciseRequestDto,
 } from "./exercise.schema.js";
 
 const prisma = new PrismaClient();
 
 export const exerciseRepository = {
-  async createExercise(data: CreateWorkoutRequestDto) {
+  async createExercise(data: CreateExerciseRequestDto) {
     return await prisma.exercises.create({ data });
   },
 
@@ -16,10 +16,6 @@ export const exerciseRepository = {
   },
 
   async getAllExercisesByMuscleGroup() {
-    // return await prisma.exercises.groupBy({
-    //   by: ["muscleGroup"],
-    // });
-    //
     const result = await prisma.$queryRaw`
       SELECT
         "muscleGroup",
@@ -35,7 +31,7 @@ export const exerciseRepository = {
     return result;
   },
 
-  async updateExercise(exerciseId: number, data: UpdateWorkoutRequestDto) {
+  async updateExercise(exerciseId: number, data: UpdateExerciseRequestDto) {
     return await prisma.exercises.update({ where: { id: exerciseId }, data });
   },
 

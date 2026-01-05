@@ -7,17 +7,17 @@ import {
   MuscleGroupLabel,
   MuscleLabel,
   type MuscleGroupItemsDto,
+  type MuscleType,
 } from "../../dtos/muscle.dto";
-import {
-  getExercisesByMuscleGroup,
-  getMusclesByMuscleGroup,
-} from "../../utils";
+import { getMusclesByMuscleGroup } from "../../utils";
+import type { ExerciseDto } from "../../dtos/exercise.dto";
 
 const TrainingSplitsDetails = () => {
   const [formData, setFormData] = useState<TrainingSplitDto | null>(null);
   const [muscleGroupExercises, setMuscleGroupExercises] = useState<
     MuscleGroupItemsDto[]
   >([]);
+  const [exercises, setExercises] = useState<ExerciseDto[]>([]);
   const params = useParams();
 
   useEffect(() => {
@@ -33,19 +33,77 @@ const TrainingSplitsDetails = () => {
       );
       setMuscleGroupExercises(response.data.data);
     };
+    const fetchExercises = async () => {
+      const response = await axios.get(`http://localhost:3000/exercise`);
+      setExercises(response.data.data);
+    };
     fetchMuscles();
     fetchTrainingSplit();
+    fetchExercises();
   }, [params.id]);
+
+  const updateTrainingExercise = (
+    prop: string,
+    value: string,
+    index: number
+  ) => {
+    if (!formData) return;
+
+    const updatedExercises = formData.exercises.map((ex, i) => {
+      if (i !== index) return ex;
+
+      if (prop === "exerciseId") {
+        return { ...ex, exerciseId: Number(value) };
+      }
+
+      // campos de nível raiz
+      if (prop === "order" || prop === "sets") {
+        return { ...ex, [prop]: Number(value) };
+      }
+      if (prop === "reps") {
+        return { ...ex, reps: value };
+      }
+
+      // campos dentro de exercise
+      return {
+        ...ex,
+        exercise: {
+          ...ex.exercise,
+          [prop]: value,
+        },
+      };
+    });
+
+    setFormData({ ...formData, exercises: updatedExercises });
+  };
+
+  const updateTrainingSplit = async (
+    trainingSplitId: number,
+    data: TrainingSplitDto
+  ) => {
+    try {
+      await axios.put(
+        `http://localhost:3000/training-split/${trainingSplitId}`,
+        data
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const filterExercisesByMuscle = (muscle: MuscleType) => {
+    return exercises.filter((ex) => ex.muscle === muscle);
+  };
 
   return (
     <div className="flex flex-col w-full h-full">
       {formData && (
-        <div className="flex w-full h-full items-center gap-16">
+        <div className="flex w-full h-full items-center gap-8">
           <div className="flex flex-col items-center justify-center gap-8 w-96">
             <LuBicepsFlexed size={100} className="text-indigo" />
             <input
               type="text"
-              value={formData.title}
+              defaultValue={formData.title}
               className="text-center text-white font-bold text-5xl bg-transparent"
             />
           </div>
@@ -69,6 +127,13 @@ const TrainingSplitsDetails = () => {
                       <input
                         type="number"
                         value={exercise.order}
+                        onChange={(e) => {
+                          updateTrainingExercise(
+                            "order",
+                            e.target.value,
+                            index
+                          );
+                        }}
                         className="w-12 text-center bg-transparent"
                       />
                     </td>
@@ -76,6 +141,9 @@ const TrainingSplitsDetails = () => {
                       <input
                         type="number"
                         value={exercise.sets}
+                        onChange={(e) => {
+                          updateTrainingExercise("sets", e.target.value, index);
+                        }}
                         className="w-12 text-center bg-transparent"
                       />
                     </td>
@@ -83,11 +151,23 @@ const TrainingSplitsDetails = () => {
                       <input
                         type="text"
                         value={exercise.reps}
+                        onChange={(e) => {
+                          updateTrainingExercise("reps", e.target.value, index);
+                        }}
                         className="w-12 text-center bg-transparent"
                       />
                     </td>
                     <td className="py-2">
-                      <select value={exercise.exercise.muscleGroup}>
+                      <select
+                        value={exercise.exercise.muscleGroup}
+                        onChange={(e) => {
+                          updateTrainingExercise(
+                            "muscleGroup",
+                            e.target.value,
+                            index
+                          );
+                        }}
+                      >
                         {muscleGroupExercises.map((mg) => (
                           <option key={mg.muscleGroup} value={mg.muscleGroup}>
                             {MuscleGroupLabel[mg.muscleGroup]}
@@ -96,7 +176,16 @@ const TrainingSplitsDetails = () => {
                       </select>
                     </td>
                     <td className="py-2">
-                      <select value={exercise.exercise.muscle}>
+                      <select
+                        value={exercise.exercise.muscle}
+                        onChange={(e) => {
+                          updateTrainingExercise(
+                            "muscle",
+                            e.target.value,
+                            index
+                          );
+                        }}
+                      >
                         {getMusclesByMuscleGroup(
                           muscleGroupExercises,
                           exercise.exercise.muscleGroup
@@ -112,19 +201,30 @@ const TrainingSplitsDetails = () => {
                       </select>
                     </td>
                     <td className="py-2">
-                      <select value={exercise.exercise.muscle}>
-                        {getExercisesByMuscleGroup(
-                          muscleGroupExercises,
-                          exercise.exercise.muscleGroup
-                        ).map((muscle) => (
-                          <option
-                            className="text-black"
-                            key={muscle.id}
-                            value={muscle.title}
-                          >
-                            {muscle.title}
-                          </option>
-                        ))}
+                      <select
+                        value={String(
+                          exercise.exerciseId ?? exercise.exercise.id
+                        )}
+                        onChange={(e) => {
+                          const selectedId = Number(e.target.value);
+                          updateTrainingExercise(
+                            "exerciseId",
+                            String(selectedId),
+                            index
+                          );
+                        }}
+                      >
+                        {filterExercisesByMuscle(exercise.exercise.muscle).map(
+                          (exOpt) => (
+                            <option
+                              className="text-black"
+                              key={exOpt.id}
+                              value={String(exOpt.id)}
+                            >
+                              {exOpt.title}
+                            </option>
+                          )
+                        )}
                       </select>
                     </td>
                   </tr>
@@ -132,9 +232,12 @@ const TrainingSplitsDetails = () => {
               </tbody>
             </table>
           </div>
-          <div>
+          <div className="flex w-full">
             <div>FEEDBACK DE TREINO</div>
-            <button className="px-4 py-2 text-white font-semibold bg-indigo rounded-md">
+            <button
+              className="cursor-pointer px-4 py-2 ml-auto text-white font-semibold bg-indigo rounded-md"
+              onClick={() => updateTrainingSplit(Number(params.id), formData)}
+            >
               SALVAR
             </button>
           </div>

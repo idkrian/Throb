@@ -1,9 +1,9 @@
-import type { ExerciseDto } from "./exercise.dto";
+import type { TrainingSplitExerciseDto } from "./training-split-exercise.dto";
 
 export interface TrainingSplitDto {
   id: number;
   createdAt: Date;
   updatedAt: Date;
   title: string;
-  exercises: ExerciseDto[];
+  exercises: TrainingSplitExerciseDto[];
 }

@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const trainingSplitExerciseSchema = z.object({
+export const trainingSplitExerciseInputSchema = z.object({
   exerciseId: z.number().int().positive().min(1),
   reps: z.string().max(12),
   sets: z.number().int().positive().min(1),
@@ -9,12 +9,12 @@ export const trainingSplitExerciseSchema = z.object({
 
 export const createTrainingSplitScheme = z.object({
   title: z.string().max(255),
-  exercises: z.array(trainingSplitExerciseSchema).min(1),
+  exercises: z.array(trainingSplitExerciseInputSchema).min(1),
 });
 
 export const updateTrainingSplitScheme = z.object({
   title: z.string().max(255),
-  exercises: z.array(trainingSplitExerciseSchema).min(1),
+  exercises: z.array(trainingSplitExerciseInputSchema).min(1),
 });
 
 export type CreateTrainingSplitRequestDto = z.infer<

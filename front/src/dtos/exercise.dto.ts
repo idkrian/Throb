@@ -1,13 +1,10 @@
-import type { MuscleDto } from "./muscle.dto";
+import type { MuscleGroupType, MuscleType } from "./muscle.dto";
 
 export interface ExerciseDto {
   id: number;
-  createdAt: Date;
-  updatedAt: Date;
-  trainingSplitId: number;
-  exerciseId: number;
-  order: number;
-  sets: number;
-  reps: string;
-  exercise: MuscleDto;
+  createdAt: string;
+  updatedAt: string;
+  title: string;
+  muscleGroup: MuscleGroupType;
+  muscle: MuscleType;
 }

@@ -15,4 +15,6 @@ trainingSplitRouter.get("/", trainingSplitController.getAllTrainingSplits);
 
 trainingSplitRouter.get("/:id", trainingSplitController.getTrainingSplitById);
 
+trainingSplitRouter.put("/:id", trainingSplitController.updateTrainingSplit);
+
 export default trainingSplitRouter;

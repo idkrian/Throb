@@ -54,7 +54,6 @@ export const trainingSplitController = {
   async updateTrainingSplit(req: Request, res: Response, next: NextFunction) {
     try {
       const trainingSplitId = Number(req.params.id);
-
       const trainingSplit = await trainingSplitService.updateTrainingSplit(
         trainingSplitId,
         req.body,

@@ -1,3 +1,5 @@
+import type { ExerciseDto } from "./exercise.dto";
+
 export const MuscleGroup = {
   CHEST: "CHEST",
   BACK: "BACK",
@@ -122,14 +124,5 @@ export const MuscleGroupLabel: Record<MuscleGroupType, string> = {
 
 export interface MuscleGroupItemsDto {
   muscleGroup: MuscleGroupType;
-  items: MuscleDto[];
-}
-
-export interface MuscleDto {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  title: string;
-  muscleGroup: MuscleGroupType;
-  muscle: MuscleType;
+  items: ExerciseDto[];
 }
