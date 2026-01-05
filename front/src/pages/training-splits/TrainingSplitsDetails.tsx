@@ -98,14 +98,12 @@ const TrainingSplitsDetails = () => {
   return (
     <div className="flex flex-col w-full h-full">
       {formData && (
-        <div className="flex w-full h-full items-center gap-8">
-          <div className="flex flex-col items-center justify-center gap-8 w-96">
+        <div className="flex flex-col w-full h-full items-center gap-8">
+          <div className="flex flex-col items-center justify-center gap-2 w-96">
             <LuBicepsFlexed size={100} className="text-indigo" />
-            <input
-              type="text"
-              defaultValue={formData.title}
-              className="text-center text-white font-bold text-5xl bg-transparent"
-            />
+            <h1 className="text-center text-white font-bold text-5xl bg-transparent">
+              {formData.title}
+            </h1>
           </div>
 
           <div className="flex flex-col w-full">
@@ -167,9 +165,14 @@ const TrainingSplitsDetails = () => {
                             index
                           );
                         }}
+                        className="w-5/6"
                       >
                         {muscleGroupExercises.map((mg) => (
-                          <option key={mg.muscleGroup} value={mg.muscleGroup}>
+                          <option
+                            key={mg.muscleGroup}
+                            value={mg.muscleGroup}
+                            className="text-black"
+                          >
                             {MuscleGroupLabel[mg.muscleGroup]}
                           </option>
                         ))}
@@ -185,6 +188,7 @@ const TrainingSplitsDetails = () => {
                             index
                           );
                         }}
+                        className="w-5/6"
                       >
                         {getMusclesByMuscleGroup(
                           muscleGroupExercises,
@@ -213,6 +217,7 @@ const TrainingSplitsDetails = () => {
                             index
                           );
                         }}
+                        className="w-5/6"
                       >
                         {filterExercisesByMuscle(exercise.exercise.muscle).map(
                           (exOpt) => (
