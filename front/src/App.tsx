@@ -19,7 +19,7 @@ function App() {
                 <LuLayoutDashboard size={32} className="text-indigo" />
               </div>
             </Link>
-            <Link to="/muscles">
+            <Link to="/exercises">
               <div className="bg-mediumGrey p-2 rounded-xl group cursor-pointer shadow-lg hover:shadow-indigo-500/50">
                 <LuBicepsFlexed size={32} className="text-indigo" />
               </div>

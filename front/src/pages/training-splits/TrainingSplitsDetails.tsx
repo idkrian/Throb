@@ -11,6 +11,7 @@ import {
 } from "../../dtos/muscle.dto";
 import { getMusclesByMuscleGroup } from "../../utils";
 import type { ExerciseDto } from "../../dtos/exercise.dto";
+import Button from "../../ui/core/Button";
 
 const TrainingSplitsDetails = () => {
   const [formData, setFormData] = useState<TrainingSplitDto | null>(null);
@@ -237,14 +238,11 @@ const TrainingSplitsDetails = () => {
               </tbody>
             </table>
           </div>
-          <div className="flex w-full">
-            <div>FEEDBACK DE TREINO</div>
-            <button
-              className="cursor-pointer px-4 py-2 ml-auto text-white font-semibold bg-indigo rounded-md"
+          <div className="flex w-full ml-auto">
+            <Button
+              label="SALVAR"
               onClick={() => updateTrainingSplit(Number(params.id), formData)}
-            >
-              SALVAR
-            </button>
+            />
           </div>
         </div>
       )}
