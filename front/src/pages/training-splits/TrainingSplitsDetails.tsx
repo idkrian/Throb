@@ -12,6 +12,7 @@ import {
 import { getMusclesByMuscleGroup } from "../../utils";
 import type { ExerciseDto } from "../../dtos/exercise.dto";
 import Button from "../../ui/core/Button";
+import FeedbackModal from "../../ui/feedback/FeedbackModal";
 
 const TrainingSplitsDetails = () => {
   const [formData, setFormData] = useState<TrainingSplitDto | null>(null);
@@ -19,6 +20,11 @@ const TrainingSplitsDetails = () => {
     MuscleGroupItemsDto[]
   >([]);
   const [exercises, setExercises] = useState<ExerciseDto[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [feedbackStatus, setFeedbackStatus] = useState<"success" | "error">(
+    "error"
+  );
+  const [openFeedbackModal, setOpenFeedbackModal] = useState<boolean>(false);
   const params = useParams();
 
   useEffect(() => {
@@ -82,13 +88,18 @@ const TrainingSplitsDetails = () => {
     trainingSplitId: number,
     data: TrainingSplitDto
   ) => {
+    setLoading(true);
     try {
       await axios.put(
         `http://localhost:3000/training-split/${trainingSplitId}`,
         data
       );
+      setFeedbackStatus("success");
+      setLoading(false);
+      setOpenFeedbackModal(true);
     } catch (error) {
       console.log(error);
+      setFeedbackStatus("error");
     }
   };
 
@@ -98,6 +109,16 @@ const TrainingSplitsDetails = () => {
 
   return (
     <div className="flex flex-col w-full h-full">
+      <FeedbackModal
+        open={openFeedbackModal}
+        status={feedbackStatus}
+        description={
+          feedbackStatus === "success"
+            ? "Training split updated successfully."
+            : "There was an error updating the training split."
+        }
+        onClose={() => setOpenFeedbackModal(false)}
+      />
       {formData && (
         <div className="flex flex-col w-full h-full items-center gap-8">
           <div className="flex flex-col items-center justify-center gap-2 w-96">
@@ -242,6 +263,7 @@ const TrainingSplitsDetails = () => {
             <Button
               label="SALVAR"
               onClick={() => updateTrainingSplit(Number(params.id), formData)}
+              loading={loading}
             />
           </div>
         </div>
