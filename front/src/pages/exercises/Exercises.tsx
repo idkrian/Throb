@@ -21,9 +21,9 @@ const Exercises = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center overflow-y-auto">
       <Button label="Create Exercise" />
-      <div className="grid grid-cols-4 grid-rows-2 auto-rows-max place-content-center h-full gap-4 p-4 items-center">
+      <div className="flex flex-wrap items-center justify-center h-full gap-14 p-4 ">
         {Object.values(MuscleGroup).map((mg) => (
           <MuscleGroupCard
             muscleGroupExercises={muscleGroupExercises}

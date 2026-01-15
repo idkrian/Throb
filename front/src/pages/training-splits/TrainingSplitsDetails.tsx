@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { LuBicepsFlexed } from "react-icons/lu";
+import { LuClipboardList } from "react-icons/lu";
 import { useParams } from "react-router";
 import type { TrainingSplitDto } from "../../dtos/training-splits.dto";
 import {
@@ -122,7 +122,7 @@ const TrainingSplitsDetails = () => {
       {formData && (
         <div className="flex flex-col w-full h-full items-center gap-8">
           <div className="flex flex-col items-center justify-center gap-2 w-96">
-            <LuBicepsFlexed size={100} className="text-indigo" />
+            <LuClipboardList size={100} className="text-indigo" />
             <h1 className="text-center text-white font-bold text-5xl bg-transparent">
               {formData.title}
             </h1>

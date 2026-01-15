@@ -9,7 +9,7 @@ import { Link } from "react-router";
 
 function App() {
   return (
-    <div className="w-screen h-screen px-24 py-20 bg-backgroundBlack">
+    <div className="w-screen h-screen px-24 py-16 bg-backgroundBlack">
       <div className="flex flex-col w-full h-full shadow-xl rounded-xl p-8 bg-darkGrey">
         <div className="flex flex-col w-full h-full gap-4">
           <h1 className="text-3xl font-bold mx-auto text-indigo">CHEST DAY!</h1>
