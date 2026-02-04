@@ -2,12 +2,12 @@ import type { Response } from "express";
 import { requestErrorHandler } from "../../shared/utils/requestHandlers.js";
 import { exerciseRepository } from "./exercise.repository.js";
 import type {
-  CreateWorkoutRequestDto,
-  UpdateWorkoutRequestDto,
+  CreateExerciseRequestDto,
+  UpdateExerciseRequestDto,
 } from "./exercise.schema.js";
 
 export const exerciseService = {
-  async createExercise(data: CreateWorkoutRequestDto) {
+  async createExercise(data: CreateExerciseRequestDto) {
     return await exerciseRepository.createExercise(data);
   },
 
@@ -19,7 +19,7 @@ export const exerciseService = {
     return await exerciseRepository.getAllExercisesByMuscleGroup();
   },
 
-  async updateExercise(exerciseId: number, data: UpdateWorkoutRequestDto) {
+  async updateExercise(exerciseId: number, data: UpdateExerciseRequestDto) {
     return await exerciseRepository.updateExercise(exerciseId, data);
   },
 

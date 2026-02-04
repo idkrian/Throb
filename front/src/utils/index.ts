@@ -17,6 +17,7 @@ export const getWeekDays = () => {
       date: date,
       dayName: date.toLocaleDateString("pt-BR", { weekday: "long" }),
       day: `${date.getDate()}/${date.getMonth() + 1}`,
+      dayNumber: date.getDay() - 1,
     });
   }
 
@@ -25,7 +26,7 @@ export const getWeekDays = () => {
 
 export const getExercisesByMuscleGroup = (
   muscleGroupExercises: MuscleGroupItemsDto[],
-  group: MuscleGroupType
+  group: MuscleGroupType,
 ) => {
   return (
     muscleGroupExercises.find((mg) => mg.muscleGroup === group)?.items || []
@@ -34,7 +35,7 @@ export const getExercisesByMuscleGroup = (
 
 export const getMusclesByMuscleGroup = (
   muscleGroupExercises: MuscleGroupItemsDto[],
-  group: MuscleGroupType
+  group: MuscleGroupType,
 ) => {
   const exercises = getExercisesByMuscleGroup(muscleGroupExercises, group);
   const musclesSet = [...new Set(exercises.map((m) => m.muscle))];

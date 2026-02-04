@@ -8,7 +8,7 @@ const TrainingSplits = () => {
   useEffect(() => {
     const fetchTrainingSplits = async () => {
       const trainingSplitsData = await axios.get(
-        "http://localhost:3000/training-split"
+        "http://localhost:3000/training-split",
       );
       const data = await trainingSplitsData.data.data;
 
@@ -20,7 +20,9 @@ const TrainingSplits = () => {
     <div>
       <div>
         {trainingSplits &&
-          trainingSplits.map((split) => <TrainingSplitCard split={split} />)}
+          trainingSplits.map((split) => (
+            <TrainingSplitCard split={split} width={300} />
+          ))}
       </div>
     </div>
   );

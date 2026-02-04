@@ -4,27 +4,43 @@ import { Link } from "react-router";
 
 interface TrainingSplitCardProps {
   split: TrainingSplitDto;
+  width?: number;
+  showDetailsOnHover?: boolean;
 }
 
-const TrainingSplitCard = ({ split }: TrainingSplitCardProps) => {
+const TrainingSplitCard = ({
+  split,
+  width,
+  showDetailsOnHover = true,
+}: TrainingSplitCardProps) => {
   return (
-    <div key={split.id} className="w-80 shadow-2xl">
+    <div
+      key={split.id}
+      className="shadow-2xl"
+      style={width ? { width: `${width}px` } : {}}
+    >
       <div className="bg-indigo w-full rounded-t-md p-1">
         <p className="text-xl text-white font-bold text-center">
           {split.title}
         </p>
       </div>
-      <div className="bg-mediumGrey p-4 group rounded-b-md">
+      <div
+        className={`bg-mediumGrey p-4 rounded-b-md ${showDetailsOnHover ? "group" : ""}`}
+      >
         {split.exercises.map((exercise) => (
           <div key={exercise.id} className="mb-2 text-white">
             <p className="font-bold text-md">{exercise.exercise.title}</p>
-            <p className="text-sm hidden group-hover:block">
+            <p
+              className={`text-sm ${showDetailsOnHover ? "hidden group-hover:block" : ""}`}
+            >
               Sets: {exercise.sets} | Reps: {exercise.reps} | Order:{" "}
               {exercise.order}
             </p>
           </div>
         ))}
-        <div className="h-10 bg-indigo justify-center items-center w-full divide-x-3 divide-black divide hidden group-hover:flex rounded-lg">
+        <div
+          className={`h-10 bg-indigo justify-center items-center w-full divide-x-3 divide-black divide rounded-lg ${showDetailsOnHover ? "hidden group-hover:flex" : "flex"}`}
+        >
           <Link
             to={`/training-splits/${split.id}`}
             className="flex w-full justify-center items-center cursor-pointer"
