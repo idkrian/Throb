@@ -12,7 +12,7 @@ const Exercises = () => {
   useEffect(() => {
     const fetchMuscles = async () => {
       const response = await axios.get(
-        "http://localhost:3000/exercise/muscle-groups"
+        "http://localhost:3000/exercise/muscle-groups",
       );
       const data = await response.data.data;
       setMuscleGroupExercises(data);

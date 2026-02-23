@@ -12,9 +12,11 @@ import {
 import { getMusclesByMuscleGroup } from "../../utils";
 import type { ExerciseDto } from "../../dtos/exercise.dto";
 import Button from "../../ui/core/Button";
-import FeedbackModal from "../../ui/feedback/FeedbackModal";
+import FeedbackModal from "../../ui/modal/FeedbackModal";
 
 const TrainingSplitsDetails = () => {
+  const params = useParams();
+
   const [formData, setFormData] = useState<TrainingSplitDto | null>(null);
   const [muscleGroupExercises, setMuscleGroupExercises] = useState<
     MuscleGroupItemsDto[]
@@ -22,21 +24,20 @@ const TrainingSplitsDetails = () => {
   const [exercises, setExercises] = useState<ExerciseDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [feedbackStatus, setFeedbackStatus] = useState<"success" | "error">(
-    "error"
+    "error",
   );
   const [openFeedbackModal, setOpenFeedbackModal] = useState<boolean>(false);
-  const params = useParams();
 
   useEffect(() => {
     const fetchTrainingSplit = async () => {
       const response = await axios.get(
-        `http://localhost:3000/training-split/${params.id}`
+        `http://localhost:3000/training-split/${params.id}`,
       );
       setFormData(response.data.data);
     };
     const fetchMuscles = async () => {
       const response = await axios.get(
-        "http://localhost:3000/exercise/muscle-groups"
+        "http://localhost:3000/exercise/muscle-groups",
       );
       setMuscleGroupExercises(response.data.data);
     };
@@ -52,7 +53,7 @@ const TrainingSplitsDetails = () => {
   const updateTrainingExercise = (
     prop: string,
     value: string,
-    index: number
+    index: number,
   ) => {
     if (!formData) return;
 
@@ -86,13 +87,13 @@ const TrainingSplitsDetails = () => {
 
   const updateTrainingSplit = async (
     trainingSplitId: number,
-    data: TrainingSplitDto
+    data: TrainingSplitDto,
   ) => {
     setLoading(true);
     try {
       await axios.put(
         `http://localhost:3000/training-split/${trainingSplitId}`,
-        data
+        data,
       );
       setFeedbackStatus("success");
       setLoading(false);
@@ -151,7 +152,7 @@ const TrainingSplitsDetails = () => {
                           updateTrainingExercise(
                             "order",
                             e.target.value,
-                            index
+                            index,
                           );
                         }}
                         className="w-12 text-center bg-transparent"
@@ -184,7 +185,7 @@ const TrainingSplitsDetails = () => {
                           updateTrainingExercise(
                             "muscleGroup",
                             e.target.value,
-                            index
+                            index,
                           );
                         }}
                         className="w-5/6"
@@ -207,14 +208,14 @@ const TrainingSplitsDetails = () => {
                           updateTrainingExercise(
                             "muscle",
                             e.target.value,
-                            index
+                            index,
                           );
                         }}
                         className="w-5/6"
                       >
                         {getMusclesByMuscleGroup(
                           muscleGroupExercises,
-                          exercise.exercise.muscleGroup
+                          exercise.exercise.muscleGroup,
                         ).map((muscle) => (
                           <option
                             className="text-black"
@@ -229,14 +230,14 @@ const TrainingSplitsDetails = () => {
                     <td className="py-2">
                       <select
                         value={String(
-                          exercise.exerciseId ?? exercise.exercise.id
+                          exercise.exerciseId ?? exercise.exercise.id,
                         )}
                         onChange={(e) => {
                           const selectedId = Number(e.target.value);
                           updateTrainingExercise(
                             "exerciseId",
                             String(selectedId),
-                            index
+                            index,
                           );
                         }}
                         className="w-5/6"
@@ -250,7 +251,7 @@ const TrainingSplitsDetails = () => {
                             >
                               {exOpt.title}
                             </option>
-                          )
+                          ),
                         )}
                       </select>
                     </td>

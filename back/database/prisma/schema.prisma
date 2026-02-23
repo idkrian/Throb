@@ -13,6 +13,7 @@ model exercises {
   createdAt      DateTime                   @default(now())
   updatedAt      DateTime                   @updatedAt
   title          String                     @db.VarChar(255)
+  description    String?
   muscleGroup    MuscleGroup
   muscle         Muscle
   trainingSplits training_split_exercises[]

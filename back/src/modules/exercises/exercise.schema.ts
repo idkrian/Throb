@@ -6,6 +6,7 @@ import {
 
 export const createExerciseSchema = z.object({
   title: z.string().max(255),
+  description: z.string().optional(),
   muscleGroup: z.enum(MuscleGroup),
   muscle: z.enum(Muscle),
 });
