@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import Body from "../../src/assets/body3.png";
 import type { TrainingSplitDto } from "../dtos/training-splits.dto";
 import TrainingSplitCard from "../components/TrainingSplitCard";
+import BarMixed from "@/components/charts/bar-mixed";
 
 const Dashboard = () => {
   const [trainingSplitByDay, setTrainingSplitByDay] = useState<
@@ -17,10 +17,6 @@ const Dashboard = () => {
       const data = await response.data.data;
 
       setTrainingSplitByDay(data);
-      console.log(todayNumber);
-      console.log(data);
-
-      console.log(data[todayNumber]);
     };
     fetchTrainingSplitDays();
   }, []);
@@ -28,7 +24,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col w-full h-full border-amber-600">
       <div className="flex w-full h-full justify-between">
-        <img src={Body} alt="body" className="h-112 p-8" />
+        <BarMixed />
         <div className="flex flex-col gap-4">
           <p className="text-center text-2xl font-semibold text-white italic ">
             Today Training Split
