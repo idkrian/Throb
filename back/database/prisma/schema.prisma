@@ -9,25 +9,27 @@ datasource db {
 }
 
 model exercises {
-  id             Int                        @id @default(autoincrement())
-  createdAt      DateTime                   @default(now())
-  updatedAt      DateTime                   @updatedAt
-  title          String                     @db.VarChar(255)
-  description    String?
-  muscleGroup    MuscleGroup
-  muscle         Muscle
-  trainingSplits training_split_exercises[]
+  id                  Int                        @id @default(autoincrement())
+  createdAt           DateTime                   @default(now())
+  updatedAt           DateTime                   @updatedAt
+  title               String                     @db.VarChar(255)
+  description         String?
+  muscleGroup         MuscleGroup
+  muscle              Muscle
+  trainingSplits      training_split_exercises[]
+  workoutExerciseLogs workout_exercise_logs[]
 
   @@unique([muscleGroup, muscle, title])
 }
 
 model training_splits {
-  id        Int                        @id @default(autoincrement())
-  createdAt DateTime                   @default(now())
-  updatedAt DateTime                   @updatedAt
-  title     String                     @db.VarChar(255)
-  exercises training_split_exercises[]
-  days      training_split_days[]
+  id              Int                        @id @default(autoincrement())
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
+  title           String                     @db.VarChar(255)
+  exercises       training_split_exercises[]
+  days            training_split_days[]
+  workoutSessions workout_sessions[]
 }
 
 model training_split_exercises {
@@ -55,6 +57,34 @@ model training_split_days {
   restDay         Boolean         @default(false)
 
   @@unique([trainingSplitId, dayOfWeek])
+}
+
+model workout_sessions {
+  id                  Int                     @id @default(autoincrement())
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
+  trainingSplit       training_splits         @relation(fields: [trainingSplitId], references: [id])
+  trainingSplitId     Int
+  notes               String?
+  workoutExerciseLogs workout_exercise_logs[]
+}
+
+model workout_exercise_logs {
+  id               Int              @id @default(autoincrement())
+  workoutSession   workout_sessions @relation(fields: [workoutSessionId], references: [id])
+  workoutSessionId Int
+  exercise         exercises        @relation(fields: [exerciseId], references: [id])
+  exerciseId       Int
+  workoutSets      workout_sets[]
+}
+
+model workout_sets {
+  id                   Int                   @id @default(autoincrement())
+  workoutExerciseLog   workout_exercise_logs @relation(fields: [workoutExerciseLogId], references: [id])
+  workoutExerciseLogId Int
+  setNumber            Int
+  reps                 Int
+  weight               Int?
 }
 
 enum MuscleGroup {
