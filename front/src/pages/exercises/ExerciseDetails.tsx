@@ -5,8 +5,8 @@ import axios from "axios";
 import type { MuscleGroupType } from "../../dtos/muscle.dto";
 import { useCallback, useEffect, useState } from "react";
 import type { ExerciseDto } from "../../dtos/exercise.dto";
-import Button from "../../ui/core/Button";
-import CreateExerciseModal from "../../ui/modal/CreateExerciseModal";
+import Button from "../../components/ui/Button";
+import CreateExerciseModal from "../../components/modals/CreateExerciseModal";
 
 const ExerciseDetails = () => {
   const params = useParams();

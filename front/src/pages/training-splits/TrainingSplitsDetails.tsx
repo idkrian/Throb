@@ -11,8 +11,8 @@ import {
 } from "../../dtos/muscle.dto";
 import { getMusclesByMuscleGroup } from "../../utils";
 import type { ExerciseDto } from "../../dtos/exercise.dto";
-import Button from "../../ui/core/Button";
-import FeedbackModal from "../../ui/modal/FeedbackModal";
+import Button from "../../components/ui/Button";
+import FeedbackModal from "../../components/modals/FeedbackModal";
 
 const TrainingSplitsDetails = () => {
   const params = useParams();
@@ -260,6 +260,7 @@ const TrainingSplitsDetails = () => {
               </tbody>
             </table>
           </div>
+
           <div className="flex w-full ml-auto">
             <Button
               label="SALVAR"

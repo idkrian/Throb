@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getWeekDays } from "../../utils";
-import Button from "../../ui/core/Button";
+import Button from "../../components/ui/Button";
 import axios from "axios";
 import TrainingSplitCard from "../../components/TrainingSplitCard";
 import type { TrainingSplitDto } from "../../dtos/training-splits.dto";
