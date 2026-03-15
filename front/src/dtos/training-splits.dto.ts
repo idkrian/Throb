@@ -7,3 +7,13 @@ export interface TrainingSplitDto {
   title: string;
   exercises: TrainingSplitExerciseDto[];
 }
+
+export interface CreateTrainingSplitRequestDto  {
+  title: string;
+  exercises: {
+    exerciseId: number;
+    sets: number;
+    reps: string;
+    order: number;
+  }[];
+}

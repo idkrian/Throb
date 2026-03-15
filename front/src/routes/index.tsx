@@ -6,6 +6,7 @@ import TrainingSplitsDetails from "../pages/training-splits/TrainingSplitsDetail
 import Exercises from "../pages/exercises/Exercises";
 import ExerciseDetails from "../pages/exercises/ExerciseDetails";
 import Workout from "@/pages/workout/Workout";
+import TrainingSplitCreate from "@/pages/training-splits/TrainingSplitCreate";
 
 export default function AppRoutes() {
   return (
@@ -15,6 +16,7 @@ export default function AppRoutes() {
       <Route path="/exercises/:muscle" element={<ExerciseDetails />} />
       <Route path="/training-splits" element={<TrainingSplits />} />
       <Route path="/training-splits/:id" element={<TrainingSplitsDetails />} />
+      <Route path="/training-splits/create" element={<TrainingSplitCreate />} />
       <Route path="/calendar" element={<Calendar />} />
       <Route path="/workout/:splitId" element={<Workout />} />
     </Routes>
