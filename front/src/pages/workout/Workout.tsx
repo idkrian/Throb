@@ -10,10 +10,12 @@ import {
 import type { TrainingSplitExerciseDto } from "@/dtos/training-split-exercise.dto";
 import type { TrainingSplitDto } from "@/dtos/training-splits.dto";
 import { getMusclesByMuscleGroup } from "@/utils";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { FaPlus, FaRegTrashCan } from "react-icons/fa6";
 import { useParams } from "react-router";
+import { getTrainingSplitById } from "@/api/training-split";
+import { getMuscleGroups, getAllExercises } from "@/api/exercise";
+import { createWorkout } from "@/api/workout";
 
 const Workout = () => {
   const params = useParams();
@@ -114,7 +116,7 @@ const Workout = () => {
     const payload = {
       id: formData.id,
       title: formData.title,
-      durationSeconds, // tempo do Stopwatch (segundos)
+      durationSeconds,
       exercises: formData.exercises.map((exercise) => ({
         exerciseId: exercise.exerciseId ?? exercise.exercise.id,
         sets: Array.from({ length: exercise.sets ?? 3 }, (_, i) => ({
@@ -124,35 +126,20 @@ const Workout = () => {
         })),
       })),
     };
-    console.log(payload);
 
     try {
-      await axios.post(`http://localhost:3000/workout`, payload);
+      await createWorkout(payload);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    const fetchTrainingSplit = async () => {
-      const response = await axios.get(
-        `http://localhost:3000/training-split/${params.splitId}`,
-      );
-      setFormData(response.data.data);
-    };
-    const fetchMuscles = async () => {
-      const response = await axios.get(
-        "http://localhost:3000/exercise/muscle-groups",
-      );
-      setMuscleGroupExercises(response.data.data);
-    };
-    const fetchExercises = async () => {
-      const response = await axios.get(`http://localhost:3000/exercise`);
-      setExercises(response.data.data);
-    };
-    fetchMuscles();
-    fetchTrainingSplit();
-    fetchExercises();
+    if (params.splitId) {
+      getTrainingSplitById(params.splitId).then(setFormData);
+    }
+    getMuscleGroups().then(setMuscleGroupExercises);
+    getAllExercises().then(setExercises);
   }, [params.splitId]);
 
   return (

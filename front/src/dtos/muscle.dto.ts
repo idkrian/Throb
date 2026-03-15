@@ -68,46 +68,46 @@ export const Muscle = {
 export type MuscleType = (typeof Muscle)[keyof typeof Muscle];
 
 export const MuscleLabel: Record<MuscleType, string> = {
-  CHEST_GENERAL: "Chest",
+  CHEST_GENERAL: "Chest General",
   UPPER_CHEST: "Upper Chest",
   MIDDLE_CHEST: "Middle Chest",
   LOWER_CHEST: "Lower Chest",
 
-  BACK_GENERAL: "Back",
+  BACK_GENERAL: "Back General",
   LATS: "Lats",
   TRAPS: "Traps",
   LOWER_BACK: "Lower Back",
   RHOMBOIDS: "Rhomboids",
 
-  SHOULDERS_GENERAL: "Shoulders",
+  SHOULDERS_GENERAL: "Shoulders General",
   FRONT_DELTOID: "Front Deltoid",
   SIDE_DELTOID: "Side Deltoid",
   REAR_DELTOID: "Rear Deltoid",
 
-  ARMS_GENERAL: "Arms",
+  ARMS_GENERAL: "Arms General",
   BICEPS_LONG_HEAD: "Biceps Long Head",
   BICEPS_SHORT_HEAD: "Biceps Short Head",
   TRICEPS_LONG_HEAD: "Triceps Long Head",
   TRICEPS_LATERAL_HEAD: "Triceps Lateral Head",
   TRICEPS_MEDIAL_HEAD: "Triceps Medial Head",
 
-  FOREARMS_GENERAL: "Forearms",
+  FOREARMS_GENERAL: "Forearms General",
   BRACHIORADIALIS: "Brachioradialis",
   PRONATOR_TERES: "Pronator Teres",
   FLEXORS: "Flexors",
   EXTENSORS: "Extensors",
 
-  LEGS_GENERAL: "Legs",
+  LEGS_GENERAL: "Legs General",
   QUADRICEPS: "Quadriceps",
   HAMSTRINGS: "Hamstrings",
   CALVES: "Calves",
 
-  GLUTES_GENERAL: "Glutes",
+  GLUTES_GENERAL: "Glutes General",
   GLUTEUS_MAXIMUS: "Gluteus Maximus",
   GLUTEUS_MEDIUS: "Gluteus Medius",
   GLUTEUS_MINIMUS: "Gluteus Minimus",
 
-  CORE_GENERAL: "Core",
+  CORE_GENERAL: "Core General",
   ABS: "Abs",
   OBLIQUES: "Obliques",
 };

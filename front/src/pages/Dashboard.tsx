@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import type { TrainingSplitDto } from "../dtos/training-splits.dto";
 import TrainingSplitCard from "../components/TrainingSplitCard";
 import BarMixed from "@/components/charts/bar-mixed";
+import { getTrainingSplitDays } from "@/api/training-split-day";
 
 const Dashboard = () => {
   const [trainingSplitByDay, setTrainingSplitByDay] = useState<
@@ -10,15 +10,7 @@ const Dashboard = () => {
   >({});
   const todayNumber = new Date().getDay();
   useEffect(() => {
-    const fetchTrainingSplitDays = async () => {
-      const response = await axios.get(
-        "http://localhost:3000/training-split-day",
-      );
-      const data = await response.data.data;
-
-      setTrainingSplitByDay(data);
-    };
-    fetchTrainingSplitDays();
+    getTrainingSplitDays().then(setTrainingSplitByDay);
   }, []);
 
   return (

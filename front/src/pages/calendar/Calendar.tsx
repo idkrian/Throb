@@ -1,24 +1,16 @@
 import { useEffect, useState } from "react";
 import { getWeekDays } from "../../utils";
 import Button from "../../components/ui/Button";
-import axios from "axios";
 import TrainingSplitCard from "../../components/TrainingSplitCard";
 import type { TrainingSplitDto } from "../../dtos/training-splits.dto";
+import { getTrainingSplitDays } from "@/api/training-split-day";
 
 const Calendar = () => {
   const [trainingSplitByDay, setTrainingSplitByDay] = useState<
     Record<number, TrainingSplitDto>
   >({});
   useEffect(() => {
-    const fetchTrainingSplitDays = async () => {
-      const response = await axios.get(
-        "http://localhost:3000/training-split-day",
-      );
-      const data = await response.data.data;
-
-      setTrainingSplitByDay(data);
-    };
-    fetchTrainingSplitDays();
+    getTrainingSplitDays().then(setTrainingSplitByDay);
   }, []);
 
   return (

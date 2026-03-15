@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import MuscleGroupCard from "../../components/MuscleGroupCard";
 import { type MuscleGroupItemsDto, MuscleGroup } from "../../dtos/muscle.dto";
+import { getMuscleGroups } from "@/api/exercise";
 
 const Exercises = () => {
   const [muscleGroupExercises, setMuscleGroupExercises] = useState<
@@ -9,14 +9,7 @@ const Exercises = () => {
   >([]);
 
   useEffect(() => {
-    const fetchMuscles = async () => {
-      const response = await axios.get(
-        "http://localhost:3000/exercise/muscle-groups",
-      );
-      const data = await response.data.data;
-      setMuscleGroupExercises(data);
-    };
-    fetchMuscles();
+    getMuscleGroups().then(setMuscleGroupExercises);
   }, []);
 
   return (

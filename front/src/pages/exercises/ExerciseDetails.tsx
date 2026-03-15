@@ -1,12 +1,12 @@
 import { useParams } from "react-router";
 import "../../assets/muscles/BACK.png";
 import { getExercisesByMuscleGroup } from "../../utils";
-import axios from "axios";
 import type { MuscleGroupType } from "../../dtos/muscle.dto";
 import { useCallback, useEffect, useState } from "react";
 import type { ExerciseDto } from "../../dtos/exercise.dto";
 import Button from "../../components/ui/Button";
 import CreateExerciseModal from "../../components/modals/CreateExerciseModal";
+import { getMuscleGroups } from "@/api/exercise";
 
 const ExerciseDetails = () => {
   const params = useParams();
@@ -21,10 +21,7 @@ const ExerciseDetails = () => {
   const [openCreateExerciseModal, setOpenCreateExerciseModal] = useState(false);
 
   const fetchMuscles = useCallback(async () => {
-    const response = await axios.get(
-      "http://localhost:3000/exercise/muscle-groups",
-    );
-    const data = await response.data.data;
+    const data = await getMuscleGroups();
     const exercisesByMuscleGroup = getExercisesByMuscleGroup(
       data,
       params.muscle?.toUpperCase() as MuscleGroupType,
