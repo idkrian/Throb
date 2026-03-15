@@ -31,7 +31,10 @@ const TrainingSplitCard = ({
           <div key={exercise.id} className="mb-2 text-white">
             <p className="font-bold text-md">{exercise.exercise.title}</p>
             <p
-              className={`text-sm ${showDetailsOnHover ? "hidden group-hover:block" : ""}`}
+              className={`text-sm overflow-hidden transition-all duration-300 ease-in-out ${showDetailsOnHover
+                ? "max-h-0 opacity-0 group-hover:max-h-10 group-hover:opacity-100"
+                : "max-h-10 opacity-100"
+                }`}
             >
               Sets: {exercise.sets} | Reps: {exercise.reps} | Order:{" "}
               {exercise.order}
@@ -39,17 +42,20 @@ const TrainingSplitCard = ({
           </div>
         ))}
         <div
-          className={`h-10 bg-indigo justify-center items-center w-full divide-x-3 divide-black divide rounded-lg ${showDetailsOnHover ? "hidden group-hover:flex" : "flex"}`}
+          className={`flex h-10 bg-indigo justify-center items-center w-full divide-x-3 divide-black divide rounded-lg overflow-hidden transition-all duration-300 ease-in-out ${showDetailsOnHover
+            ? "max-h-0 opacity-0 group-hover:max-h-10 group-hover:opacity-100"
+            : "max-h-10 opacity-100"
+            }`}
         >
           <Link
             to={`/training-splits/${split.id}`}
-            className="flex w-full justify-center items-center cursor-pointer"
+            className="flex w-full justify-center items-center cursor-pointer transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105"
           >
             <LuTrash2 size={20} color="red" />
           </Link>
           <Link
             to={`/training-splits/${split.id}`}
-            className="flex w-full justify-center items-center cursor-pointer"
+            className="flex w-full justify-center items-center cursor-pointer transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105"
           >
             <LuPencil size={20} color="orange" />
           </Link>

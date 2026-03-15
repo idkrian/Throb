@@ -35,6 +35,7 @@ const TrainingSplitCreate = () => {
     const [exercises, setExercises] = useState<ExerciseDto[]>([]);
     const [feedbackStatus, setFeedbackStatus] = useState<"success" | "error">("error");
     const [openFeedbackModal, setOpenFeedbackModal] = useState(false);
+    const [animatingRows, setAnimatingRows] = useState<Set<number>>(new Set());
 
     const filterExercisesByMuscle = (muscle: MuscleType) =>
         exercises.filter((ex) => ex.muscle === muscle);
@@ -72,7 +73,16 @@ const TrainingSplitCreate = () => {
             muscle: defaultMuscle,
         };
 
+        const newIndex = exerciseRows.length;
         setExerciseRows((rows) => [...rows, newRow]);
+        setAnimatingRows((prev) => new Set([...prev, newIndex]));
+        setTimeout(() => {
+            setAnimatingRows((prev) => {
+                const next = new Set(prev);
+                next.delete(newIndex);
+                return next;
+            });
+        }, 50);
     };
 
     const deleteExercise = (index: number) => {
@@ -156,7 +166,13 @@ const TrainingSplitCreate = () => {
                         </thead>
                         <tbody>
                             {exerciseRows.map((row, index) => (
-                                <tr key={index} className="gap-2">
+                                <tr
+                                    key={index}
+                                    className={`gap-2 transition-all duration-300 ease-out ${animatingRows.has(index)
+                                        ? "opacity-0 -translate-y-2"
+                                        : "opacity-100 translate-y-0"
+                                        }`}
+                                >
                                     <td className="py-2">
                                         <input
                                             type="number"

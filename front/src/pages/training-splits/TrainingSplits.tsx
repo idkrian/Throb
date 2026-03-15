@@ -16,19 +16,19 @@ const TrainingSplits = () => {
     fetchTrainingSplits();
   }, []);
   return (
-    <div className="flex gap-4">
-      <div>
+    <div className="flex flex-col h-full gap-4 py-4 w-full justify-between">
+      <div className="flex w-full flex-wrap justify-around gap-4">
         {trainingSplits &&
           trainingSplits.map((split) => (
-            <TrainingSplitCard split={split} width={300} />
+            <TrainingSplitCard split={split} width={300} key={split.id} />
           ))}
       </div>
       <div className="flex items-center justify-center">
         <button
-          className="flex items-center justify-center text-center p-2 bg-indigo rounded-sm cursor-pointer inset-shadow-xl size-22"
+          className="flex items-center justify-center text-center p-2 bg-indigo rounded-sm cursor-pointer shadow-md inset-shadow-xl size-16 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
           onClick={() => navigate("/training-splits/create")}
         >
-          <FaPlus color="white" size={40} />
+          <FaPlus color="white" size={30} />
         </button>
       </div>
     </div>

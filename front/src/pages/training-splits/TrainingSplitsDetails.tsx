@@ -244,7 +244,7 @@ const TrainingSplitsDetails = () => {
             </table>
           </div>
 
-          <div className="flex w-full ml-auto">
+          <div className="flex self-end">
             <Button
               label="SALVAR"
               onClick={() => handleUpdateTrainingSplit(Number(params.id), formData)}

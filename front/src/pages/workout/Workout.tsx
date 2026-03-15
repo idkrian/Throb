@@ -25,6 +25,7 @@ const Workout = () => {
   >([]);
   const [exercises, setExercises] = useState<ExerciseDto[]>([]);
   const [durationSeconds, setDurationSeconds] = useState(0);
+  const [animatingRows, setAnimatingRows] = useState<Set<number>>(new Set());
 
   const updateTrainingExercise = (
     prop: string,
@@ -96,10 +97,19 @@ const Workout = () => {
       },
     };
 
+    const newIndex = formData.exercises.length;
     setFormData({
       ...formData,
       exercises: [...formData.exercises, newExercise],
     });
+    setAnimatingRows((prev) => new Set([...prev, newIndex]));
+    setTimeout(() => {
+      setAnimatingRows((prev) => {
+        const next = new Set(prev);
+        next.delete(newIndex);
+        return next;
+      });
+    }, 50);
   };
 
   const removeExercise = (index: number) => {
@@ -168,7 +178,14 @@ const Workout = () => {
                 </thead>
                 <tbody>
                   {formData.exercises.map((exercise, index) => (
-                    <tr key={exercise.id || index} className="gap-2">
+                    <tr
+                      key={exercise.id || index}
+                      className={`gap-2 transition-all duration-300 ease-out ${
+                        animatingRows.has(index)
+                          ? "opacity-0 -translate-y-2"
+                          : "opacity-100 translate-y-0"
+                      }`}
+                    >
                       <td className="py-2">
                         <input
                           type="number"
