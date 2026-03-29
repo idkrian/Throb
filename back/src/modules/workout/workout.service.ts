@@ -5,4 +5,20 @@ export const workoutService = {
   async createWorkout(data: CreateWorkoutRequestDto) {
     return await workoutRepository.createWorkout(data);
   },
+
+  async getAllWorkouts() {
+    return await workoutRepository.getAllWorkouts();
+  },
+
+  async getWorkoutById(id: number) {
+    return await workoutRepository.getWorkoutById(id);
+  },
+
+  async getMuscleGroupStats() {
+    return await workoutRepository.getMuscleGroupStats();
+  },
+
+  async getSummaryStats() {
+    return await workoutRepository.getSummaryStats();
+  },
 };
