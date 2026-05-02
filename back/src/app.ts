@@ -7,7 +7,7 @@ import trainingSplitDayRouter from "./modules/training-split-day/training-split-
 import workoutRouter from "./modules/workout/workout.router.js";
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
 app.use("/exercise", exerciseRouter);
