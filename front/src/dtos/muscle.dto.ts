@@ -220,3 +220,5 @@ export interface MuscleGroupItemsDto {
   muscleGroup: MuscleGroupType;
   items: ExerciseDto[];
 }
+
+export type ExerciseFilter = MuscleGroupType | "ALL";

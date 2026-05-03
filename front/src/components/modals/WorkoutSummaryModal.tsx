@@ -1,6 +1,6 @@
 import { LuTrophy } from "react-icons/lu";
 import Button from "@/components/ui/Button";
-import { formatTime } from "./utils";
+import { formatTime } from "@/utils";
 
 type Props = {
   open: boolean;

@@ -1,5 +1,5 @@
 import { LuPause, LuPlay, LuRotateCw } from "react-icons/lu";
-import { REST_PRESETS, formatTime } from "./utils";
+import { REST_PRESETS, formatTime } from "@/utils";
 
 type Props = {
   remaining: number;

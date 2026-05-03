@@ -5,7 +5,7 @@ import {
   LuTimer,
   LuTrophy,
 } from "react-icons/lu";
-import { formatTime } from "./utils";
+import { formatTime } from "@/utils";
 
 type Props = {
   workoutSeconds: number;

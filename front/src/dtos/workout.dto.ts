@@ -1,11 +1,11 @@
-export type LoggedSet = {
+export interface LoggedSet {
   weight: number;
   reps: number;
   rpe: number;
   completed: boolean;
-};
+}
 
-export type ExerciseProgress = {
+export interface ExerciseProgress {
   sets: LoggedSet[];
   notes: string;
-};
+}

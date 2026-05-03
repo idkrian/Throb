@@ -1,6 +1,6 @@
 import { LuCheck, LuMinus, LuPlus } from "react-icons/lu";
-import type { LoggedSet } from "./types";
-import { rpeColor } from "./utils";
+import type { LoggedSet } from "@/dtos/workout.dto";
+import { rpeColor } from "@/utils";
 
 type Props = {
   set: LoggedSet;

@@ -5,14 +5,14 @@ import { getTrainingSplitById } from "@/api/training-split";
 import { createWorkout } from "@/api/workout";
 import type { TrainingSplitDto } from "@/dtos/training-splits.dto";
 import Button from "@/components/ui/Button";
-import type { ExerciseProgress, LoggedSet } from "./types";
-import { DEFAULT_REST } from "./utils";
-import PRToast from "./PRToast";
-import WorkoutHeader from "./WorkoutHeader";
-import ActiveExerciseCard from "./ActiveExerciseCard";
-import RestTimer from "./RestTimer";
-import UpNextList from "./UpNextList";
-import WorkoutSummaryModal from "./WorkoutSummaryModal";
+import type { ExerciseProgress, LoggedSet } from "@/dtos/workout.dto";
+import { DEFAULT_REST } from "@/utils";
+import PRToast from "@/components/workout/PRToast";
+import WorkoutHeader from "@/components/workout/WorkoutHeader";
+import ActiveExerciseCard from "@/components/workout/ActiveExerciseCard";
+import RestTimer from "@/components/workout/RestTimer";
+import UpNextList from "@/components/workout/UpNextList";
+import WorkoutSummaryModal from "@/components/modals/WorkoutSummaryModal";
 
 const Workout = () => {
   const { splitId } = useParams();

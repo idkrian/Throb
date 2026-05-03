@@ -4,7 +4,7 @@ import {
   LuStickyNote,
 } from "react-icons/lu";
 import type { TrainingSplitExerciseDto } from "@/dtos/training-split-exercise.dto";
-import type { ExerciseProgress, LoggedSet } from "./types";
+import type { ExerciseProgress, LoggedSet } from "@/dtos/workout.dto";
 import SetRow from "./SetRow";
 
 type Props = {

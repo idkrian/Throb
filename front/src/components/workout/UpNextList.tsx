@@ -1,6 +1,6 @@
 import { LuCircleCheck } from "react-icons/lu";
 import type { TrainingSplitExerciseDto } from "@/dtos/training-split-exercise.dto";
-import type { ExerciseProgress } from "./types";
+import type { ExerciseProgress } from "@/dtos/workout.dto";
 
 type Props = {
   exercises: TrainingSplitExerciseDto[];

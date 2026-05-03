@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -i 's|from \"./types\"|from \"@/dtos/workout.dto\"|g; s|from \"./utils\"|from \"@/utils\"|g' SetRow.tsx ActiveExerciseCard.tsx WorkoutHeader.tsx RestTimer.tsx UpNextList.tsx)",
+      "Bash(sed -i 's|from \"./utils\"|from \"@/utils\"|g' \"c:/Users/Rian/Documents/projects/fit/front/src/components/modals/WorkoutSummaryModal.tsx\")",
+      "Bash(npx tsc *)"
+    ]
+  }
+}
