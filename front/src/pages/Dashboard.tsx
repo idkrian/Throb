@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import type { TrainingSplitDto } from "../dtos/training-splits.dto";
 import TrainingSplitCard from "../components/TrainingSplitCard";
 import BarMixed from "@/components/charts/bar-mixed";
+import Button from "@/components/ui/Button";
 import { getTrainingSplitDays } from "@/api/training-split-day";
 
 const Dashboard = () => {
@@ -9,6 +11,8 @@ const Dashboard = () => {
     Record<number, TrainingSplitDto>
   >({});
   const todayNumber = new Date().getDay();
+  const navigate = useNavigate();
+  const todaySplit = trainingSplitByDay[todayNumber];
   useEffect(() => {
     getTrainingSplitDays().then(setTrainingSplitByDay);
   }, []);
@@ -21,13 +25,19 @@ const Dashboard = () => {
           <p className="text-center text-2xl font-semibold text-white italic ">
             Today Training Split
           </p>
-          <div className="">
-            {trainingSplitByDay[todayNumber] ? (
-              <TrainingSplitCard
-                split={trainingSplitByDay[todayNumber]}
-                width={300}
-                showDetailsOnHover={false}
-              />
+          <div className="flex flex-col items-center gap-4">
+            {todaySplit ? (
+              <>
+                <TrainingSplitCard
+                  split={todaySplit}
+                  width={300}
+                  showDetailsOnHover={false}
+                />
+                <Button
+                  label="Start Workout"
+                  onClick={() => navigate(`/workout/${todaySplit.id}`)}
+                />
+              </>
             ) : (
               <p className="text-center text-lg font-medium text-lightGrey mt-4">
                 Rest Day! No training scheduled.

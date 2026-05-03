@@ -1,0 +1,119 @@
+import {
+  LuChevronLeft,
+  LuChevronRight,
+  LuStickyNote,
+} from "react-icons/lu";
+import type { TrainingSplitExerciseDto } from "@/dtos/training-split-exercise.dto";
+import type { ExerciseProgress, LoggedSet } from "./types";
+import SetRow from "./SetRow";
+
+type Props = {
+  exercise: TrainingSplitExerciseDto;
+  progress: ExerciseProgress;
+  activeIndex: number;
+  totalExercises: number;
+  onPrev: () => void;
+  onNext: () => void;
+  onUpdateSet: (setIdx: number, patch: Partial<LoggedSet>) => void;
+  onLogSet: (setIdx: number) => void;
+  onUpdateNotes: (value: string) => void;
+};
+
+const ActiveExerciseCard = ({
+  exercise,
+  progress,
+  activeIndex,
+  totalExercises,
+  onPrev,
+  onNext,
+  onUpdateSet,
+  onLogSet,
+  onUpdateNotes,
+}: Props) => {
+  const completedSets = progress.sets.filter((s) => s.completed).length;
+
+  return (
+    <div className="col-span-2 relative bg-linear-to-br from-mediumGrey to-darkGrey rounded-2xl p-5 shadow-xl shadow-indigo/10 border border-indigo/10 flex flex-col min-h-0 gap-4 overflow-hidden">
+      <div className="flex items-center justify-between shrink-0">
+        <button
+          className="p-1.5 rounded-lg bg-darkGrey hover:bg-indigo/30 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+          onClick={onPrev}
+          disabled={activeIndex === 0}
+        >
+          <LuChevronLeft size={18} />
+        </button>
+
+        <div className="text-center">
+          <p className="text-[10px] uppercase tracking-widest text-lightIndigo">
+            Exercise {activeIndex + 1} of {totalExercises}
+          </p>
+          <h2 className="text-xl font-bold leading-tight">
+            {exercise.exercise.title}
+          </h2>
+          <p className="text-xs text-lightGrey/60">
+            Target: {exercise.sets} × {exercise.reps} reps
+          </p>
+        </div>
+
+        <button
+          className="p-1.5 rounded-lg bg-darkGrey hover:bg-indigo/30 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+          onClick={onNext}
+          disabled={activeIndex === totalExercises - 1}
+        >
+          <LuChevronRight size={18} />
+        </button>
+      </div>
+
+      <div className="flex gap-1.5 justify-center shrink-0">
+        {progress.sets.map((s, i) => (
+          <div
+            key={i}
+            className={`h-1 w-8 rounded-full transition-all duration-300 ${
+              s.completed
+                ? "bg-linear-to-r from-indigo to-lightIndigo"
+                : "bg-darkGrey"
+            }`}
+          />
+        ))}
+      </div>
+
+      <div className="flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto pr-1">
+        <div className="grid grid-cols-[28px_1fr_70px_1.2fr_56px] gap-2 px-2 text-[10px] uppercase tracking-wider text-lightGrey/50 shrink-0">
+          <span>Set</span>
+          <span>Weight (kg)</span>
+          <span className="text-center">Reps</span>
+          <span>RPE</span>
+          <span></span>
+        </div>
+
+        {progress.sets.map((set, i) => (
+          <SetRow
+            key={i}
+            set={set}
+            index={i}
+            targetReps={exercise.reps}
+            onUpdate={(patch) => onUpdateSet(i, patch)}
+            onLog={() => onLogSet(i)}
+          />
+        ))}
+      </div>
+
+      <div className="flex items-start gap-2 shrink-0">
+        <LuStickyNote size={14} className="mt-1.5 text-lightIndigo shrink-0" />
+        <textarea
+          value={progress.notes}
+          placeholder="Notes — how did this exercise feel?"
+          onChange={(e) => onUpdateNotes(e.target.value)}
+          className="flex-1 bg-darkGrey/60 rounded-lg px-2 py-1.5 text-xs outline-none focus:bg-darkGrey resize-none"
+          rows={1}
+        />
+      </div>
+
+      <p className="text-[10px] text-lightGrey/40 text-center shrink-0">
+        {completedSets} / {progress.sets.length} sets logged
+      </p>
+    </div>
+  );
+};
+
+export default ActiveExerciseCard;
