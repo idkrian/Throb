@@ -3,12 +3,18 @@ import type {
   CreateExerciseRequestDto,
   UpdateExerciseRequestDto,
 } from "./exercise.schema.js";
-
 const prisma = new PrismaClient();
 
 export const exerciseRepository = {
   async createExercise(data: CreateExerciseRequestDto) {
-    return await prisma.exercises.create({ data });
+    return await prisma.exercises.create({
+      data: {
+        title: data.title,
+        muscleGroup: data.muscleGroup,
+        muscle: data.muscle,
+        description: data.description ?? null,
+      },
+    });
   },
 
   async getAllExercises() {
@@ -16,7 +22,7 @@ export const exerciseRepository = {
   },
 
   async getAllExercisesByMuscleGroup() {
-    const result = await prisma.$queryRaw`
+    return await prisma.$queryRaw`
       SELECT
         "muscleGroup",
         json_agg(json_build_object(
@@ -27,8 +33,6 @@ export const exerciseRepository = {
       FROM "exercises"
       GROUP BY "muscleGroup"
     `;
-
-    return result;
   },
 
   async updateExercise(exerciseId: number, data: UpdateExerciseRequestDto) {
@@ -37,5 +41,19 @@ export const exerciseRepository = {
 
   async deleteExercise(exerciseId: number) {
     return await prisma.exercises.delete({ where: { id: exerciseId } });
+  },
+
+  async getExerciseLogs(exerciseId: number) {
+    return await prisma.workout_exercise_logs.findMany({
+      where: { exerciseId },
+      include: {
+        workoutSession: { select: { createdAt: true } },
+        workoutSets: {
+          select: { setNumber: true, reps: true, weight: true },
+          orderBy: { setNumber: "asc" },
+        },
+      },
+      orderBy: { workoutSession: { createdAt: "desc" } },
+    });
   },
 };

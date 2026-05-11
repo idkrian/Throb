@@ -73,4 +73,16 @@ export const exerciseController = {
       next(error);
     }
   },
+
+  async getExerciseStats(req: Request, res: Response, next: NextFunction) {
+    try {
+      const exerciseId = Number(req.params.id);
+
+      const stats = await exerciseService.getExerciseStats(exerciseId);
+
+      requestSuccessHandler(res, stats, "Exercise stats retrieved successfully!");
+    } catch (error) {
+      next(error);
+    }
+  },
 };

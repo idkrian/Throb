@@ -18,6 +18,8 @@ exerciseRouter.get(
   exerciseController.getAllExercisesByMuscleGroup,
 );
 
+exerciseRouter.get("/:id/stats", exerciseController.getExerciseStats);
+
 exerciseRouter.put(
   "/:id",
   validateRequest(createExerciseSchema),

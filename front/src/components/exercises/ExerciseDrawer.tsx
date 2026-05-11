@@ -1,7 +1,10 @@
+import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { MuscleGroupLabel, MuscleLabel } from "@/dtos/muscle.dto";
 import type { ExerciseDto } from "@/dtos/exercise.dto";
+import type { ExerciseStatsDto } from "@/dtos/exercise.dto";
 import MuscleIcon from "@/components/exercises/MuscleIcon";
+import { getExerciseStats } from "@/api/exercise";
 
 type Props = {
   exercise: ExerciseDto | null;
@@ -10,6 +13,18 @@ type Props = {
 
 const ExerciseDrawer = ({ exercise, onClose }: Props) => {
   const open = !!exercise;
+  const [stats, setStats] = useState<ExerciseStatsDto | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!exercise) return;
+    setStats(null);
+    setLoading(true);
+    getExerciseStats(exercise.id)
+      .then(setStats)
+      .finally(() => setLoading(false));
+  }, [exercise?.id]);
+
   return (
     <>
       <div
@@ -55,21 +70,72 @@ const ExerciseDrawer = ({ exercise, onClose }: Props) => {
               </Section>
 
               <Section label="Personal Best">
-                <p className="text-sm text-lightGrey/60 italic">
-                  No data yet — log a workout to see your PRs.
-                </p>
+                {loading ? (
+                  <Placeholder />
+                ) : stats?.personalBest ? (
+                  <div className="flex items-center gap-2">
+                    {stats.personalBest.weight !== null && (
+                      <Stat value={`${stats.personalBest.weight} kg`} />
+                    )}
+                    <Stat value={`${stats.personalBest.reps} reps`} />
+                  </div>
+                ) : (
+                  <Empty text="No data yet — log a workout to see your PRs." />
+                )}
               </Section>
 
               <Section label="Last Performed">
-                <p className="text-sm text-lightGrey/60 italic">
-                  Not performed yet.
-                </p>
+                {loading ? (
+                  <Placeholder />
+                ) : stats?.lastPerformed ? (
+                  <p className="text-sm text-lightGrey">
+                    {new Date(stats.lastPerformed).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                ) : (
+                  <Empty text="Not performed yet." />
+                )}
               </Section>
 
               <Section label="History">
-                <p className="text-sm text-lightGrey/60 italic">
-                  Volume and weight trends will appear here.
-                </p>
+                {loading ? (
+                  <Placeholder />
+                ) : stats && stats.history.length > 0 ? (
+                  <div className="flex flex-col gap-4">
+                    {stats.history.map((entry, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <p className="text-xs text-lightGrey/50">
+                          {new Date(entry.date).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </p>
+                        <div className="flex flex-col gap-1">
+                          {entry.sets.map((set) => (
+                            <p
+                              key={set.setNumber}
+                              className="text-sm text-lightGrey"
+                            >
+                              Set {set.setNumber}:{" "}
+                              <span className="font-medium">
+                                {set.reps} reps
+                                {set.weight !== null
+                                  ? ` × ${set.weight} kg`
+                                  : ""}
+                              </span>
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <Empty text="Volume and weight trends will appear here." />
+                )}
               </Section>
             </div>
           </>
@@ -92,6 +158,20 @@ const Section = ({
     </p>
     {children}
   </div>
+);
+
+const Stat = ({ value }: { value: string }) => (
+  <span className="text-sm font-semibold px-3 py-1.5 rounded-md bg-mediumGrey text-white">
+    {value}
+  </span>
+);
+
+const Empty = ({ text }: { text: string }) => (
+  <p className="text-sm text-lightGrey/60 italic">{text}</p>
+);
+
+const Placeholder = () => (
+  <div className="h-5 w-32 rounded bg-mediumGrey animate-pulse" />
 );
 
 export default ExerciseDrawer;

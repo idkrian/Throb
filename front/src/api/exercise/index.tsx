@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { MuscleGroupItemsDto } from "@/dtos/muscle.dto";
-import type { ExerciseDto } from "@/dtos/exercise.dto";
+import type { ExerciseDto, ExerciseStatsDto } from "@/dtos/exercise.dto";
 
 export const getMuscleGroups = async (): Promise<MuscleGroupItemsDto[]> => {
     const response = await axios.get("http://localhost:3000/exercise/muscle-groups");
@@ -9,5 +9,10 @@ export const getMuscleGroups = async (): Promise<MuscleGroupItemsDto[]> => {
 
 export const getAllExercises = async (): Promise<ExerciseDto[]> => {
     const response = await axios.get("http://localhost:3000/exercise");
+    return response.data.data;
+};
+
+export const getExerciseStats = async (exerciseId: number): Promise<ExerciseStatsDto> => {
+    const response = await axios.get(`http://localhost:3000/exercise/${exerciseId}/stats`);
     return response.data.data;
 };
