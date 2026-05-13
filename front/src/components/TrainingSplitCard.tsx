@@ -1,65 +1,161 @@
+import type { MouseEvent } from "react";
 import type { TrainingSplitDto } from "../dtos/training-splits.dto";
-import { LuTrash2, LuPencil } from "react-icons/lu";
-import { Link } from "react-router";
+import { LuTrash2, LuPencil, LuPlay, LuClock, LuLayers, LuDumbbell } from "react-icons/lu";
+import { useNavigate } from "react-router";
+import { MuscleGroupLabel } from "../dtos/muscle.dto";
+import { DEFAULT_ACCENT, muscleGroupAccent, summarizeSplit } from "../utils";
 
 interface TrainingSplitCardProps {
   split: TrainingSplitDto;
   width?: number;
-  showDetailsOnHover?: boolean;
+  onDelete?: (split: TrainingSplitDto) => void;
+  hideActions?: boolean;
 }
+
+const MAX_EXERCISES_VISIBLE = 4;
 
 const TrainingSplitCard = ({
   split,
   width,
-  showDetailsOnHover = true,
+  onDelete,
+  hideActions = false,
 }: TrainingSplitCardProps) => {
+  const navigate = useNavigate();
+  const summary = summarizeSplit(split);
+  const accent = summary.primaryGroup
+    ? muscleGroupAccent[summary.primaryGroup]
+    : DEFAULT_ACCENT;
+
+  const visibleExercises = split.exercises.slice(0, MAX_EXERCISES_VISIBLE);
+  const hiddenCount = split.exercises.length - visibleExercises.length;
+
+  const handleCardClick = () => navigate(`/training-splits/${split.id}`);
+
+  const stopAnd = (fn: () => void) => (e: MouseEvent) => {
+    e.stopPropagation();
+    fn();
+  };
+
   return (
     <div
-      key={split.id}
-      className="shadow-2xl"
-      style={width ? { width: `${width}px` } : {}}
+      role="button"
+      tabIndex={0}
+      onClick={handleCardClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleCardClick();
+        }
+      }}
+      className={`group flex flex-col rounded-xl bg-mediumGrey border border-transparent ${accent.ring} shadow-lg cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl overflow-hidden text-left`}
+      style={width ? { width: `${width}px` } : undefined}
     >
-      <div className="bg-indigo w-full rounded-t-md p-1">
-        <p className="text-xl text-white font-bold text-center">
-          {split.title}
-        </p>
-      </div>
       <div
-        className={`bg-mediumGrey p-4 rounded-b-md ${showDetailsOnHover ? "group" : ""}`}
+        className={`relative bg-linear-to-br ${accent.gradient} px-4 py-3 flex items-center gap-3`}
       >
-        {split.exercises.map((exercise) => (
-          <div key={exercise.id} className="mb-2 text-white">
-            <p className="font-bold text-md">{exercise.exercise.title}</p>
-            <p
-              className={`text-sm overflow-hidden transition-all duration-300 ease-in-out ${showDetailsOnHover
-                ? "max-h-0 opacity-0 group-hover:max-h-10 group-hover:opacity-100"
-                : "max-h-10 opacity-100"
-                }`}
-            >
-              Sets: {exercise.sets} | Reps: {exercise.reps} | Order:{" "}
-              {exercise.order}
-            </p>
-          </div>
-        ))}
-        <div
-          className={`flex h-10 bg-indigo justify-center items-center w-full divide-x-3 divide-black divide rounded-lg overflow-hidden transition-all duration-300 ease-in-out ${showDetailsOnHover
-            ? "max-h-0 opacity-0 group-hover:max-h-10 group-hover:opacity-100"
-            : "max-h-10 opacity-100"
-            }`}
-        >
-          <Link
-            to={`/training-splits/${split.id}`}
-            className="flex w-full justify-center items-center cursor-pointer transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105"
-          >
-            <LuTrash2 size={20} color="red" />
-          </Link>
-          <Link
-            to={`/training-splits/${split.id}`}
-            className="flex w-full justify-center items-center cursor-pointer transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105"
-          >
-            <LuPencil size={20} color="orange" />
-          </Link>
+        <div className="flex-1 min-w-0">
+          <p className="text-lg font-bold text-white truncate">{split.title}</p>
+          <p className="text-xs text-white/70">
+            {summary.muscleGroups.length} muscle group
+            {summary.muscleGroups.length === 1 ? "" : "s"}
+          </p>
         </div>
+      </div>
+
+      <div className="flex flex-col gap-3 p-4">
+        {summary.muscleGroups.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {summary.muscleGroups.slice(0, 4).map(({ group }) => (
+              <span
+                key={group}
+                className={`text-[11px] px-2 py-0.5 rounded-full border ${muscleGroupAccent[group].chip}`}
+              >
+                {MuscleGroupLabel[group]}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <div className="grid grid-cols-3 gap-2 rounded-lg bg-darkGrey/60 p-2 text-white">
+          <div className="flex flex-col items-center justify-center">
+            <div className="flex items-center gap-1">
+              <LuDumbbell size={12} className={accent.text} />
+              <span className="text-sm font-bold">{summary.exerciseCount}</span>
+            </div>
+            <span className="text-[10px] text-lightGrey/60 uppercase tracking-wide">
+              exercises
+            </span>
+          </div>
+          <div className="flex flex-col items-center justify-center border-x border-white/5">
+            <div className="flex items-center gap-1">
+              <LuLayers size={12} className={accent.text} />
+              <span className="text-sm font-bold">{summary.totalSets}</span>
+            </div>
+            <span className="text-[10px] text-lightGrey/60 uppercase tracking-wide">
+              sets
+            </span>
+          </div>
+          <div className="flex flex-col items-center justify-center">
+            <div className="flex items-center gap-1">
+              <LuClock size={12} className={accent.text} />
+              <span className="text-sm font-bold">
+                {summary.estimatedMinutes > 0 ? `~${summary.estimatedMinutes}m` : "—"}
+              </span>
+            </div>
+            <span className="text-[10px] text-lightGrey/60 uppercase tracking-wide">
+              duration
+            </span>
+          </div>
+        </div>
+
+        {visibleExercises.length > 0 && (
+          <div className="flex flex-col gap-1">
+            {visibleExercises.map((ex) => (
+              <div
+                key={ex.id}
+                className="flex items-center justify-between text-sm text-white/90"
+              >
+                <span className="truncate pr-2">{ex.exercise.title}</span>
+                <span className="text-xs text-lightGrey/60 shrink-0 tabular-nums">
+                  {ex.sets}×{ex.reps}
+                </span>
+              </div>
+            ))}
+            {hiddenCount > 0 && (
+              <span className="text-xs text-lightGrey/50 italic">
+                +{hiddenCount} more
+              </span>
+            )}
+          </div>
+        )}
+
+        {!hideActions && (
+          <div className="flex items-center gap-2 mt-1">
+            <button
+              onClick={stopAnd(() => navigate(`/workout/${split.id}`))}
+              className="flex-1 flex items-center justify-center gap-1.5 h-9 rounded-md bg-indigo hover:bg-darkIndigo text-white text-sm font-semibold cursor-pointer transition"
+            >
+              <LuPlay size={14} />
+              Start Workout
+            </button>
+            <button
+              onClick={stopAnd(() => navigate(`/training-splits/${split.id}`))}
+              aria-label="Edit split"
+              className="flex items-center justify-center w-9 h-9 rounded-md bg-darkGrey hover:bg-darkGrey/70 text-white cursor-pointer transition"
+            >
+              <LuPencil size={16} className="text-amber-400" />
+            </button>
+            {onDelete && (
+              <button
+                onClick={stopAnd(() => onDelete(split))}
+                aria-label="Delete split"
+                className="flex items-center justify-center w-9 h-9 rounded-md bg-darkGrey hover:bg-red-500/20 text-white cursor-pointer transition"
+              >
+                <LuTrash2 size={16} className="text-red-400" />
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

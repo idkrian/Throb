@@ -69,4 +69,22 @@ export const trainingSplitController = {
       next(error);
     }
   },
+
+  async deleteTrainingSplit(req: Request, res: Response, next: NextFunction) {
+    try {
+      const trainingSplitId = Number(req.params.id);
+      const trainingSplit = await trainingSplitService.deleteTrainingSplit(
+        trainingSplitId,
+        res
+      );
+
+      requestSuccessHandler(
+        res,
+        trainingSplit,
+        "Training Split Deleted Succesfully!"
+      );
+    } catch (error) {
+      next(error);
+    }
+  },
 };

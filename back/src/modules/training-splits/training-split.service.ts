@@ -33,4 +33,12 @@ export const trainingSplitService = {
       data
     );
   },
+
+  async deleteTrainingSplit(trainingSplitId: number, res: Response) {
+    if (!trainingSplitId) {
+      requestErrorHandler(res, "Training Split ID not informed!");
+    }
+
+    return await trainingSplitRepository.deleteTrainingSplit(trainingSplitId);
+  },
 };

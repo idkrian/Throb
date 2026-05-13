@@ -18,3 +18,7 @@ export const updateTrainingSplit = async (id: number, data: TrainingSplitDto): P
 export const createTrainingSplit = async (data: CreateTrainingSplitRequestDto): Promise<void> => {
     await axios.post("http://localhost:3000/training-split", data);
 };
+
+export const deleteTrainingSplit = async (id: number): Promise<void> => {
+    await axios.delete(`http://localhost:3000/training-split/${id}`);
+};

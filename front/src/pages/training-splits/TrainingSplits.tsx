@@ -1,36 +1,126 @@
 import { useEffect, useState } from "react";
 import type { TrainingSplitDto } from "../../dtos/training-splits.dto";
 import TrainingSplitCard from "../../components/TrainingSplitCard";
-import { getAllTrainingSplits } from "@/api/training-split";
+import TrainingSplitCardSkeleton from "../../components/TrainingSplitCardSkeleton";
+import ConfirmModal from "../../components/modals/ConfirmModal";
+import {
+  deleteTrainingSplit,
+  getAllTrainingSplits,
+} from "@/api/training-split";
 import { FaPlus } from "react-icons/fa";
+import { LuClipboardList } from "react-icons/lu";
 import { useNavigate } from "react-router";
 
+const SKELETON_COUNT = 4;
+
 const TrainingSplits = () => {
-  const [trainingSplits, setTrainingSplits] = useState<TrainingSplitDto[]>([]);
   const navigate = useNavigate();
+  const [trainingSplits, setTrainingSplits] = useState<TrainingSplitDto[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [pendingDelete, setPendingDelete] = useState<TrainingSplitDto | null>(
+    null,
+  );
+  const [deleting, setDeleting] = useState(false);
+
   useEffect(() => {
     const fetchTrainingSplits = async () => {
-      const trainingSplitsData = await getAllTrainingSplits();
-      setTrainingSplits(trainingSplitsData);
+      try {
+        const data = await getAllTrainingSplits();
+        setTrainingSplits(data);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchTrainingSplits();
   }, []);
+
+  const confirmDelete = async () => {
+    if (!pendingDelete) return;
+    setDeleting(true);
+    try {
+      await deleteTrainingSplit(pendingDelete.id);
+      setTrainingSplits((prev) =>
+        prev.filter((s) => s.id !== pendingDelete.id),
+      );
+      setPendingDelete(null);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const isEmpty = !loading && trainingSplits.length === 0;
+
   return (
-    <div className="flex flex-col h-full gap-4 py-4 w-full justify-between">
-      <div className="flex w-full flex-wrap justify-around gap-4">
-        {trainingSplits &&
-          trainingSplits.map((split) => (
-            <TrainingSplitCard split={split} width={300} key={split.id} />
+    <div className="relative flex flex-col h-full w-full py-4">
+      <ConfirmModal
+        open={pendingDelete !== null}
+        title="Delete training split?"
+        description={
+          pendingDelete
+            ? `"${pendingDelete.title}" will be permanently removed.`
+            : undefined
+        }
+        loading={deleting}
+        onConfirm={confirmDelete}
+        onCancel={() => (deleting ? null : setPendingDelete(null))}
+      />
+
+      {loading && (
+        <div className="flex w-full flex-wrap justify-center gap-4">
+          {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+            <TrainingSplitCardSkeleton key={i} />
           ))}
-      </div>
-      <div className="flex items-center justify-center">
+        </div>
+      )}
+
+      {isEmpty && (
+        <div className="flex flex-1 flex-col items-center justify-center text-center gap-4 px-6">
+          <div className="w-20 h-20 rounded-full bg-mediumGrey flex items-center justify-center">
+            <LuClipboardList size={40} className="text-indigo" />
+          </div>
+          <div className="flex flex-col gap-1">
+            <h2 className="text-2xl font-bold text-white">
+              No training splits yet
+            </h2>
+            <p className="text-sm text-lightGrey/60 max-w-sm">
+              Create your first split to plan your weekly workouts and start
+              tracking your sessions.
+            </p>
+          </div>
+          <button
+            onClick={() => navigate("/training-splits/create")}
+            className="flex items-center gap-2 px-4 py-2 rounded-md bg-indigo hover:bg-darkIndigo text-white font-semibold cursor-pointer transition"
+          >
+            <FaPlus size={14} />
+            Create training split
+          </button>
+        </div>
+      )}
+
+      {!loading && !isEmpty && (
+        <div className="flex w-full flex-wrap justify-center gap-4">
+          {trainingSplits.map((split) => (
+            <TrainingSplitCard
+              split={split}
+              width={300}
+              key={split.id}
+              onDelete={setPendingDelete}
+            />
+          ))}
+        </div>
+      )}
+
+      {!isEmpty && (
         <button
-          className="flex items-center justify-center text-center p-2 bg-indigo rounded-sm cursor-pointer shadow-md inset-shadow-xl size-16 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
+          aria-label="Create training split"
+          className="fixed bottom-6 right-6 z-40 flex items-center justify-center size-14 rounded-full bg-indigo hover:bg-darkIndigo shadow-xl cursor-pointer transition duration-300 hover:-translate-y-1 hover:scale-110"
           onClick={() => navigate("/training-splits/create")}
         >
-          <FaPlus color="white" size={30} />
+          <FaPlus color="white" size={24} />
         </button>
-      </div>
+      )}
     </div>
   );
 };

@@ -67,4 +67,10 @@ export const trainingSplitRepository = {
       },
     });
   },
+
+  async deleteTrainingSplit(trainingSplitId: number) {
+    return await prisma.training_splits.delete({
+      where: { id: trainingSplitId },
+    });
+  },
 };

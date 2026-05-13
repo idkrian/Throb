@@ -31,7 +31,7 @@ const Dashboard = () => {
                 <TrainingSplitCard
                   split={todaySplit}
                   width={300}
-                  showDetailsOnHover={false}
+                  hideActions
                 />
                 <Button
                   label="Start Workout"

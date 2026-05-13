@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { getWeekDays } from "../../utils";
-import Button from "../../components/ui/Button";
 import TrainingSplitCard from "../../components/TrainingSplitCard";
 import type { TrainingSplitDto } from "../../dtos/training-splits.dto";
 import { getTrainingSplitDays } from "@/api/training-split-day";
@@ -46,7 +45,6 @@ const Calendar = () => {
               {trainingSplit && (
                 <div>
                   <TrainingSplitCard split={trainingSplit} />
-                  <Button label="Edit Training Split" color="alert" />
                 </div>
               )}
             </div>
