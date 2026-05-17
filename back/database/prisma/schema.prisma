@@ -56,7 +56,7 @@ model training_split_days {
   restDay         Boolean         @default(false)
   trainingSplit   training_splits @relation(fields: [trainingSplitId], references: [id])
 
-  @@unique([trainingSplitId, dayOfWeek])
+  @@unique([dayOfWeek])
 }
 
 model workout_sessions {

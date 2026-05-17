@@ -1,7 +1,7 @@
 import type { MuscleGroupItemsDto, MuscleGroupType } from "../dtos/muscle.dto";
 import type { TrainingSplitDto } from "../dtos/training-splits.dto";
 
-export const getWeekDays = () => {
+export const getWeekDays = (weekOffset: number = 0) => {
   const days = [];
   const today = new Date();
   const dayOfWeek = today.getDay();
@@ -9,7 +9,7 @@ export const getWeekDays = () => {
   const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
 
   const monday = new Date(today);
-  monday.setDate(today.getDate() + daysToMonday);
+  monday.setDate(today.getDate() + daysToMonday + weekOffset * 7);
 
   for (let i = 0; i < 7; i++) {
     const date = new Date(monday);
@@ -18,11 +18,38 @@ export const getWeekDays = () => {
       date: date,
       dayName: date.toLocaleDateString("pt-BR", { weekday: "long" }),
       day: `${date.getDate()}/${date.getMonth() + 1}`,
-      dayNumber: date.getDay() - 1,
+      dayNumber: date.getDay(),
     });
   }
 
   return days;
+};
+
+export const isSameDay = (a: Date, b: Date) =>
+  a.getFullYear() === b.getFullYear() &&
+  a.getMonth() === b.getMonth() &&
+  a.getDate() === b.getDate();
+
+export const startOfDay = (d: Date) => {
+  const copy = new Date(d);
+  copy.setHours(0, 0, 0, 0);
+  return copy;
+};
+
+export const formatWeekRangeLabel = (days: { date: Date }[]) => {
+  if (days.length === 0) return "";
+  const first = days[0].date;
+  const last = days[days.length - 1].date;
+  const sameMonth = first.getMonth() === last.getMonth();
+  const fmt = (d: Date) =>
+    d.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: sameMonth ? undefined : "short",
+    });
+  const monthLabel = first.toLocaleDateString("pt-BR", { month: "long" });
+  return sameMonth
+    ? `${fmt(first)} – ${fmt(last)} ${monthLabel}`
+    : `${fmt(first)} – ${fmt(last)}`;
 };
 
 export const getExercisesByMuscleGroup = (

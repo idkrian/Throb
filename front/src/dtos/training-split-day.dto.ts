@@ -8,3 +8,11 @@ export interface TrainingSplitDayDto {
   restDay: boolean;
   trainingSplit: TrainingSplitDto;
 }
+
+export interface TrainingSplitDayEntry {
+  id: number;
+  restDay: boolean;
+  trainingSplit: TrainingSplitDto;
+}
+
+export type TrainingSplitDayMap = Record<number, TrainingSplitDayEntry>;

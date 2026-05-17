@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import type { TrainingSplitDto } from "../dtos/training-splits.dto";
 import TrainingSplitCard from "../components/TrainingSplitCard";
 import BarMixed from "@/components/charts/bar-mixed";
 import Button from "@/components/ui/Button";
 import { getTrainingSplitDays } from "@/api/training-split-day";
+import type { TrainingSplitDayMap } from "@/dtos/training-split-day.dto";
 
 const Dashboard = () => {
-  const [trainingSplitByDay, setTrainingSplitByDay] = useState<
-    Record<number, TrainingSplitDto>
-  >({});
+  const [trainingSplitByDay, setTrainingSplitByDay] =
+    useState<TrainingSplitDayMap>({});
   const todayNumber = new Date().getDay();
   const navigate = useNavigate();
-  const todaySplit = trainingSplitByDay[todayNumber];
+  const todayEntry = trainingSplitByDay[todayNumber];
+  const todaySplit =
+    todayEntry && !todayEntry.restDay ? todayEntry.trainingSplit : undefined;
   useEffect(() => {
     getTrainingSplitDays().then(setTrainingSplitByDay);
   }, []);
