@@ -45,6 +45,15 @@ export const workoutController = {
     }
   },
 
+  async getMuscleStats(req: Request, res: Response, next: NextFunction) {
+    try {
+      const stats = await workoutService.getMuscleStats();
+      requestSuccessHandler(res, stats, "Muscle stats retrieved successfully!");
+    } catch (error) {
+      next(error);
+    }
+  },
+
   async getMuscleGroupStats(req: Request, res: Response, next: NextFunction) {
     try {
       const stats = await workoutService.getMuscleGroupStats();

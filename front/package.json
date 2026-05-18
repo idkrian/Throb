@@ -17,6 +17,7 @@
     "lucide-react": "^0.575.0",
     "radix-ui": "^1.4.3",
     "react": "^19.1.1",
+    "react-body-highlighter": "^2.0.5",
     "react-dom": "^19.1.1",
     "react-icons": "^5.5.0",
     "react-is": "^19.2.5",

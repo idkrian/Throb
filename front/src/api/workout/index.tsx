@@ -23,6 +23,11 @@ export interface MuscleGroupStat {
   totalSets: number;
 }
 
+export interface MuscleStat {
+  muscle: string;
+  totalSets: number;
+}
+
 export interface WorkoutSummaryStats {
   totalWorkouts: number;
   totalDurationSeconds: number;
@@ -54,6 +59,11 @@ export const getWorkoutMuscleGroupsStats = async (): Promise<
   MuscleGroupStat[]
 > => {
   const response = await axios.get(`${BASE_URL}/stats/muscle-groups`);
+  return response.data.data;
+};
+
+export const getWorkoutMuscleStats = async (): Promise<MuscleStat[]> => {
+  const response = await axios.get(`${BASE_URL}/stats/muscles`);
   return response.data.data;
 };
 

@@ -5,6 +5,7 @@ import BarMixed from "@/components/charts/bar-mixed";
 import Button from "@/components/ui/Button";
 import { getTrainingSplitDays } from "@/api/training-split-day";
 import type { TrainingSplitDayMap } from "@/dtos/training-split-day.dto";
+import MuscleHeatmap from "@/components/analytics/MuscleHeatmap";
 
 const Dashboard = () => {
   const [trainingSplitByDay, setTrainingSplitByDay] =
@@ -22,6 +23,7 @@ const Dashboard = () => {
     <div className="flex flex-col w-full h-full border-amber-600">
       <div className="flex w-full h-full justify-between">
         <BarMixed />
+        <MuscleHeatmap />
         <div className="flex flex-col gap-4">
           <p className="text-center text-2xl font-semibold text-white italic ">
             Today Training Split

@@ -14,6 +14,10 @@ export const workoutService = {
     return await workoutRepository.getWorkoutById(id);
   },
 
+  async getMuscleStats() {
+    return await workoutRepository.getMuscleStats();
+  },
+
   async getMuscleGroupStats() {
     return await workoutRepository.getMuscleGroupStats();
   },

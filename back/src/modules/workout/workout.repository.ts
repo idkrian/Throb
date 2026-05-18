@@ -48,6 +48,25 @@ export const workoutRepository = {
     });
   },
 
+  async getMuscleStats() {
+    const result = await prisma.$queryRaw<
+      { muscle: string; totalSets: bigint }[]
+    >`
+      SELECT e."muscle", COUNT(ws.id)::bigint AS "totalSets"
+      FROM workout_sessions wsess
+      JOIN workout_exercise_logs wel ON wel."workoutSessionId" = wsess.id
+      JOIN exercises e ON e.id = wel."exerciseId"
+      JOIN workout_sets ws ON ws."workoutExerciseLogId" = wel.id
+      GROUP BY e."muscle"
+      ORDER BY "totalSets" DESC
+    `;
+
+    return result.map((row) => ({
+      muscle: row.muscle,
+      totalSets: Number(row.totalSets),
+    }));
+  },
+
   async getMuscleGroupStats() {
     const result = await prisma.$queryRaw<
       { muscleGroup: string; totalSets: bigint }[]
