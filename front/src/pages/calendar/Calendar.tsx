@@ -61,6 +61,10 @@ const Calendar = () => {
   const today = useMemo(() => startOfDay(new Date()), []);
   const todayDayNumber = new Date().getDay();
   const todayEntry = splitsByDay[todayDayNumber];
+  const todaySession = useMemo(
+    () => findSessionOnDate(sessions, today),
+    [sessions, today],
+  );
 
   const weekRangeLabel = formatWeekRangeLabel(week);
 
@@ -159,6 +163,7 @@ const Calendar = () => {
     <div className="flex w-full h-full">
       <CalendarLeftPanel
         todayEntry={todayEntry}
+        todaySession={todaySession}
         weekVolume={weekVolume}
         sessionsCompleted={sessionsCompleted}
         sessionsPlanned={sessionsPlanned}

@@ -1,10 +1,12 @@
-import { LuFlame, LuPlay, LuMoon, LuDumbbell, LuLayers } from "react-icons/lu";
+import { LuFlame, LuPlay, LuMoon, LuDumbbell, LuLayers, LuTrophy } from "react-icons/lu";
 import type { TrainingSplitDayEntry } from "@/dtos/training-split-day.dto";
+import type { WorkoutSessionDto } from "@/dtos/workout-session.dto";
 import { DEFAULT_ACCENT, muscleGroupAccent, summarizeSplit } from "@/utils";
-import { formatVolume } from "@/utils/workout-history";
+import { formatVolume, sessionVolume } from "@/utils/workout-history";
 
 interface CalendarLeftPanelProps {
   todayEntry?: TrainingSplitDayEntry;
+  todaySession?: WorkoutSessionDto;
   weekVolume: number;
   sessionsCompleted: number;
   sessionsPlanned: number;
@@ -14,6 +16,7 @@ interface CalendarLeftPanelProps {
 
 const CalendarLeftPanel = ({
   todayEntry,
+  todaySession,
   weekVolume,
   sessionsCompleted,
   sessionsPlanned,
@@ -49,12 +52,32 @@ const CalendarLeftPanel = ({
       </div>
 
       <div className="flex flex-col items-center gap-3 w-full">
-        {!isRest && (
+        {!isRest && !todaySession && (
           <p className="text-white/70 font-semibold text-sm uppercase tracking-wider">
             Treino do Dia
           </p>
         )}
-        {isRest ? (
+        {todaySession ? (
+          <div className="flex flex-col items-center gap-2 py-4 text-center">
+            <LuTrophy size={36} className="text-yellow-300" />
+            <p className="text-white font-bold text-2xl">Workout Done!</p>
+            <p className="text-white/70 text-sm">
+              {split ? split.title : "Great session"} completed
+            </p>
+            <div className="grid grid-cols-2 gap-2 w-full mt-1">
+              <div className="flex flex-col items-center rounded-md bg-black/20 py-1.5 text-white">
+                <span className="text-sm font-semibold">
+                  {todaySession.workoutExerciseLogs?.length ?? 0} ex
+                </span>
+              </div>
+              <div className="flex flex-col items-center rounded-md bg-black/20 py-1.5 text-white">
+                <span className="text-sm font-semibold">
+                  {formatVolume(sessionVolume(todaySession))}
+                </span>
+              </div>
+            </div>
+          </div>
+        ) : isRest ? (
           <div className="flex flex-col items-center gap-2 py-4">
             <LuMoon size={36} className="text-white/80" />
             <p className="text-white font-bold text-2xl">Rest Day</p>
