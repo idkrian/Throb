@@ -1,6 +1,13 @@
 import type { MouseEvent } from "react";
 import type { TrainingSplitDto } from "../dtos/training-splits.dto";
-import { LuTrash2, LuPencil, LuPlay, LuClock, LuLayers, LuDumbbell } from "react-icons/lu";
+import {
+  LuTrash2,
+  LuPencil,
+  LuPlay,
+  LuClock,
+  LuLayers,
+  LuDumbbell,
+} from "react-icons/lu";
 import { useNavigate } from "react-router";
 import { MuscleGroupLabel } from "../dtos/muscle.dto";
 import { DEFAULT_ACCENT, muscleGroupAccent, summarizeSplit } from "../utils";
@@ -10,16 +17,17 @@ interface TrainingSplitCardProps {
   width?: number;
   onDelete?: (split: TrainingSplitDto) => void;
   hideActions?: boolean;
+  fullHeight?: boolean;
 }
-
-const MAX_EXERCISES_VISIBLE = 4;
 
 const TrainingSplitCard = ({
   split,
   width,
   onDelete,
   hideActions = false,
+  fullHeight = false,
 }: TrainingSplitCardProps) => {
+  const MAX_EXERCISES_VISIBLE = fullHeight ? 12 : 4;
   const navigate = useNavigate();
   const summary = summarizeSplit(split);
   const accent = summary.primaryGroup
@@ -47,7 +55,7 @@ const TrainingSplitCard = ({
           handleCardClick();
         }
       }}
-      className={`group flex flex-col rounded-xl bg-mediumGrey border border-transparent ${accent.ring} shadow-lg cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl overflow-hidden text-left`}
+      className={`group flex flex-col rounded-xl bg-mediumGrey border border-transparent ${accent.ring} shadow-lg cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl overflow-hidden text-left ${fullHeight ? "h-full" : ""}`}
       style={width ? { width: `${width}px` } : undefined}
     >
       <div
@@ -99,7 +107,9 @@ const TrainingSplitCard = ({
             <div className="flex items-center gap-1">
               <LuClock size={12} className={accent.text} />
               <span className="text-sm font-bold">
-                {summary.estimatedMinutes > 0 ? `~${summary.estimatedMinutes}m` : "—"}
+                {summary.estimatedMinutes > 0
+                  ? `~${summary.estimatedMinutes}m`
+                  : "—"}
               </span>
             </div>
             <span className="text-[10px] text-lightGrey/60 uppercase tracking-wide">
