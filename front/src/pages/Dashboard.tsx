@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import TrainingSplitCard from "../components/TrainingSplitCard";
-import BarMixed from "@/components/charts/bar-mixed";
 import Button from "@/components/ui/Button";
 import { getTrainingSplitDays } from "@/api/training-split-day";
 import type { TrainingSplitDayMap } from "@/dtos/training-split-day.dto";
 import MuscleHeatmap from "@/components/analytics/MuscleHeatmap";
+import WorkoutStatsCards from "@/components/charts/WorkoutStatsCards";
+import MuscleGroupRadarChart from "@/components/charts/MuscleGroupRadarChart";
+import WorkoutFrequencyChart from "@/components/charts/WorkoutFrequencyChart";
 
 const Dashboard = () => {
   const [trainingSplitByDay, setTrainingSplitByDay] =
@@ -15,38 +17,44 @@ const Dashboard = () => {
   const todayEntry = trainingSplitByDay[todayNumber];
   const todaySplit =
     todayEntry && !todayEntry.restDay ? todayEntry.trainingSplit : undefined;
+
   useEffect(() => {
     getTrainingSplitDays().then(setTrainingSplitByDay);
   }, []);
 
   return (
-    <div className="flex flex-col w-full h-full border-amber-600">
-      <div className="flex w-full h-full justify-between">
-        <BarMixed />
-        <MuscleHeatmap />
-        <div className="flex flex-col gap-4">
-          <p className="text-center text-2xl font-semibold text-white italic ">
-            Today Training Split
+    <div className="flex flex-col w-full h-full gap-3 overflow-hidden">
+      <WorkoutStatsCards />
+      <div className="grid flex-1 min-h-0 grid-cols-[300px_1fr_minmax(280px,320px)] gap-3">
+        <div className="flex flex-col gap-3 min-h-0">
+          <MuscleGroupRadarChart />
+          <WorkoutFrequencyChart />
+        </div>
+        <div className="flex flex-col rounded-lg bg-mediumGrey p-3 min-h-0">
+          <MuscleHeatmap />
+        </div>
+        <div className="flex flex-col gap-3 rounded-lg bg-mediumGrey p-3 min-h-0 overflow-y-auto">
+          <p className="text-center text-lg font-semibold text-white">
+            Today's Training
           </p>
-          <div className="flex flex-col items-center gap-4">
-            {todaySplit ? (
-              <>
-                <TrainingSplitCard
-                  split={todaySplit}
-                  width={300}
-                  hideActions
-                />
-                <Button
-                  label="Start Workout"
-                  onClick={() => navigate(`/workout/${todaySplit.id}`)}
-                />
-              </>
-            ) : (
-              <p className="text-center text-lg font-medium text-lightGrey mt-4">
-                Rest Day! No training scheduled.
-              </p>
-            )}
-          </div>
+          {todaySplit ? (
+            <>
+              <TrainingSplitCard
+                fullHeight
+                split={todaySplit}
+                width={280}
+                hideActions
+              />
+              <Button
+                label="Start Workout"
+                onClick={() => navigate(`/workout/${todaySplit.id}`)}
+              />
+            </>
+          ) : (
+            <p className="text-center text-base font-medium text-lightGrey mt-2">
+              Rest Day! No training scheduled.
+            </p>
+          )}
         </div>
       </div>
     </div>
