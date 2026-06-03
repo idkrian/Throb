@@ -1,102 +1,144 @@
-import Button from "@/components/ui/Button";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router";
+import { LuArrowLeft, LuClipboardList, LuPlus, LuRotateCw } from "react-icons/lu";
+import { TbPencil } from "react-icons/tb";
 import type { ExerciseDto } from "@/dtos/exercise.dto";
+import type { TrainingSplitExerciseDto } from "@/dtos/training-split-exercise.dto";
+import type { CreateTrainingSplitRequestDto } from "@/dtos/training-splits.dto";
 import {
-    MuscleGroupLabel,
-    MuscleLabel,
-    type MuscleGroupItemsDto,
+    MuscleGroup,
+    MusclesByGroup,
     type MuscleGroupType,
     type MuscleType,
 } from "@/dtos/muscle.dto";
-import type { CreateTrainingSplitRequestDto } from "@/dtos/training-splits.dto";
-import { getMusclesByMuscleGroup } from "@/utils";
-import { useEffect, useState } from "react";
-import { FaPlus, FaRegTrashCan } from "react-icons/fa6";
-import { getMuscleGroups, getAllExercises } from "@/api/exercise";
-import { LuClipboardList } from "react-icons/lu";
-import { TbPencil } from "react-icons/tb";
+import { getAllExercises } from "@/api/exercise";
 import { createTrainingSplit } from "@/api/training-split";
 import FeedbackModal from "@/components/modals/FeedbackModal";
-import { useNavigate } from "react-router";
-
-interface ExerciseFormItem {
-    exerciseId: number;
-    sets: number;
-    reps: string;
-    order: number;
-    muscleGroup: MuscleGroupType;
-    muscle: MuscleType;
-}
+import ExerciseListItem from "@/components/training-splits/ExerciseListItem";
+import ExerciseEditPanel from "@/components/training-splits/ExerciseEditPanel";
 
 const TrainingSplitCreate = () => {
     const navigate = useNavigate();
+    const rowIdRef = useRef(0);
+
     const [title, setTitle] = useState("New Training Split");
-    const [exerciseRows, setExerciseRows] = useState<ExerciseFormItem[]>([]);
-    const [muscleGroupExercises, setMuscleGroupExercises] = useState<MuscleGroupItemsDto[]>([]);
+    const [editingTitle, setEditingTitle] = useState(false);
+    const [rows, setRows] = useState<TrainingSplitExerciseDto[]>([]);
     const [exercises, setExercises] = useState<ExerciseDto[]>([]);
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+    const [saving, setSaving] = useState(false);
     const [feedbackStatus, setFeedbackStatus] = useState<"success" | "error">("error");
     const [openFeedbackModal, setOpenFeedbackModal] = useState(false);
-    const [animatingRows, setAnimatingRows] = useState<Set<number>>(new Set());
 
-    const filterExercisesByMuscle = (muscle: MuscleType) =>
+    useEffect(() => {
+        getAllExercises().then(setExercises);
+    }, []);
+
+    const filterByMuscle = (muscle: MuscleType) =>
         exercises.filter((ex) => ex.muscle === muscle);
 
-    const updateExercise = (index: number, updates: Partial<ExerciseFormItem>) => {
-        setExerciseRows((rows) =>
-            rows.map((row, i) => (i === index ? { ...row, ...updates } : row)),
+    const orderedRows = useMemo(
+        () => [...rows].sort((a, b) => a.order - b.order),
+        [rows],
+    );
+
+    const selectedExercise =
+        selectedIndex !== null ? orderedRows[selectedIndex] ?? null : null;
+
+    const summary = useMemo(() => {
+        const totalSets = rows.reduce((sum, r) => sum + (r.sets ?? 0), 0);
+        return {
+            exerciseCount: rows.length,
+            totalSets,
+            estimatedMinutes: totalSets > 0 ? Math.round(totalSets * 2 + 5) : 0,
+        };
+    }, [rows]);
+
+    const buildRow = (exercise: ExerciseDto, order: number): TrainingSplitExerciseDto => ({
+        id: --rowIdRef.current,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        trainingSplitId: 0,
+        exerciseId: exercise.id,
+        order,
+        sets: 3,
+        reps: "10",
+        exercise,
+    });
+
+    const patchById = (targetId: number, patch: Partial<TrainingSplitExerciseDto>) => {
+        setRows((prev) =>
+            prev.map((row) => (row.id === targetId ? { ...row, ...patch } : row)),
         );
     };
 
-    const handleMuscleGroupChange = (index: number, newMg: MuscleGroupType) => {
-        const muscles = getMusclesByMuscleGroup(muscleGroupExercises, newMg);
-        const newMuscle = muscles[0];
-        const newExerciseId = newMuscle ? (filterExercisesByMuscle(newMuscle)[0]?.id ?? 0) : 0;
-        updateExercise(index, { muscleGroup: newMg, muscle: newMuscle, exerciseId: newExerciseId });
+    const updateExercise = (
+        orderedIndex: number,
+        patch: Partial<TrainingSplitExerciseDto>,
+    ) => {
+        const target = orderedRows[orderedIndex];
+        if (target) patchById(target.id, patch);
     };
 
-    const handleMuscleChange = (index: number, newMuscle: MuscleType) => {
-        const newExerciseId = filterExercisesByMuscle(newMuscle)[0]?.id ?? 0;
-        updateExercise(index, { muscle: newMuscle, exerciseId: newExerciseId });
+    const moveExercise = (orderedIndex: number, direction: -1 | 1) => {
+        const swapIndex = orderedIndex + direction;
+        if (swapIndex < 0 || swapIndex >= orderedRows.length) return;
+        const a = orderedRows[orderedIndex];
+        const b = orderedRows[swapIndex];
+        setRows((prev) =>
+            prev.map((row) => {
+                if (row.id === a.id) return { ...row, order: b.order };
+                if (row.id === b.id) return { ...row, order: a.order };
+                return row;
+            }),
+        );
+        setSelectedIndex(swapIndex);
+    };
+
+    const deleteExercise = (orderedIndex: number) => {
+        const target = orderedRows[orderedIndex];
+        if (!target) return;
+        setRows((prev) =>
+            prev
+                .filter((row) => row.id !== target.id)
+                .sort((a, b) => a.order - b.order)
+                .map((row, i) => ({ ...row, order: i + 1 })),
+        );
+        setSelectedIndex(null);
     };
 
     const addExercise = () => {
-        const defaultMg = (muscleGroupExercises[0]?.muscleGroup ?? "CHEST") as MuscleGroupType;
-        const muscles = getMusclesByMuscleGroup(muscleGroupExercises, defaultMg);
-        const defaultMuscle = muscles[0] ?? ("CHEST_GENERAL" as MuscleType);
-        const defaultExerciseId = filterExercisesByMuscle(defaultMuscle)[0]?.id ?? 0;
+        const defaultMuscle = MusclesByGroup[MuscleGroup.CHEST][0].value;
+        const defaultExercise = filterByMuscle(defaultMuscle)[0] ?? exercises[0];
+        if (!defaultExercise) return;
 
-        const newRow: ExerciseFormItem = {
-            exerciseId: defaultExerciseId,
-            order: exerciseRows.length + 1,
-            sets: 3,
-            reps: "10",
-            muscleGroup: defaultMg,
-            muscle: defaultMuscle,
-        };
-
-        const newIndex = exerciseRows.length;
-        setExerciseRows((rows) => [...rows, newRow]);
-        setAnimatingRows((prev) => new Set([...prev, newIndex]));
-        setTimeout(() => {
-            setAnimatingRows((prev) => {
-                const next = new Set(prev);
-                next.delete(newIndex);
-                return next;
-            });
-        }, 50);
+        const newRow = buildRow(defaultExercise, rows.length + 1);
+        setRows((prev) => [...prev, newRow]);
+        setSelectedIndex(rows.length);
     };
 
-    const deleteExercise = (index: number) => {
-        setExerciseRows((rows) =>
-            rows
-                .filter((_, i) => i !== index)
-                .map((row, i) => ({ ...row, order: i + 1 })),
-        );
+    const handleMuscleGroupChange = (orderedIndex: number, newMg: MuscleGroupType) => {
+        const firstExercise = exercises.find((e) => e.muscleGroup === newMg);
+        if (!firstExercise) return;
+        updateExercise(orderedIndex, { exercise: firstExercise, exerciseId: firstExercise.id });
+    };
+
+    const handleMuscleChange = (orderedIndex: number, newMuscle: MuscleType) => {
+        const firstExercise = filterByMuscle(newMuscle)[0];
+        if (!firstExercise) return;
+        updateExercise(orderedIndex, { exercise: firstExercise, exerciseId: firstExercise.id });
+    };
+
+    const handleExerciseChange = (orderedIndex: number, exerciseId: number) => {
+        const ex = exercises.find((e) => e.id === exerciseId);
+        if (!ex) return;
+        updateExercise(orderedIndex, { exercise: ex, exerciseId: ex.id });
     };
 
     const submitTrainingSplit = async () => {
         const payload: CreateTrainingSplitRequestDto = {
             title,
-            exercises: exerciseRows.map(({ exerciseId, sets, reps, order }) => ({
+            exercises: orderedRows.map(({ exerciseId, sets, reps, order }) => ({
                 exerciseId,
                 sets,
                 reps,
@@ -104,24 +146,21 @@ const TrainingSplitCreate = () => {
             })),
         };
 
+        setSaving(true);
         try {
             await createTrainingSplit(payload);
             setFeedbackStatus("success");
-            setOpenFeedbackModal(true);
         } catch (error) {
             console.log(error);
             setFeedbackStatus("error");
+        } finally {
+            setSaving(false);
             setOpenFeedbackModal(true);
         }
     };
 
-    useEffect(() => {
-        getMuscleGroups().then(setMuscleGroupExercises);
-        getAllExercises().then(setExercises);
-    }, []);
-
     return (
-        <div className="flex flex-col h-full items-center justify-center gap-12">
+        <div className="flex flex-col w-full h-full min-h-0 text-white overflow-hidden">
             <FeedbackModal
                 open={openFeedbackModal}
                 status={feedbackStatus}
@@ -135,159 +174,134 @@ const TrainingSplitCreate = () => {
                     if (feedbackStatus === "success") navigate("/training-splits");
                 }}
             />
-            <div className="flex flex-col items-center justify-center gap-2 w-96">
-                <LuClipboardList size={80} className="text-indigo" />
-                <div className="flex items-center gap-2">
-                    <input
-                        type="text"
-                        name="title"
-                        id="title"
-                        placeholder="Training Split Title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className="w-full rounded-md bg-darkGrey border-indigo text-white text-center text-3xl font-bold"
-                    />
-                    <TbPencil size={20} className="text-white" />
-                </div>
-            </div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <div className="flex flex-col w-full">
-                    <table className="table-auto w-full text-white text-center rounded-2xl">
-                        <thead className="bg-mediumGrey rounded-2xl">
-                            <tr>
-                                <th className="py-2 px-4 rounded-l-md">Order</th>
-                                <th className="py-2 px-4">Sets</th>
-                                <th className="py-2 px-4">Reps</th>
-                                <th className="py-2 px-4">Muscle Group</th>
-                                <th className="py-2 px-4">Muscle</th>
-                                <th className="py-2 px-4 rounded-r-md">Exercise</th>
-                                <th className="py-2 px-4 rounded-r-md"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {exerciseRows.map((row, index) => (
-                                <tr
-                                    key={index}
-                                    className={`gap-2 transition-all duration-300 ease-out ${animatingRows.has(index)
-                                        ? "opacity-0 -translate-y-2"
-                                        : "opacity-100 translate-y-0"
-                                        }`}
-                                >
-                                    <td className="py-2">
-                                        <input
-                                            type="number"
-                                            value={row.order}
-                                            onChange={(e) =>
-                                                updateExercise(index, { order: Number(e.target.value) })
-                                            }
-                                            className="w-12 text-center bg-transparent"
-                                        />
-                                    </td>
-                                    <td className="py-2">
-                                        <input
-                                            type="number"
-                                            value={row.sets}
-                                            onChange={(e) =>
-                                                updateExercise(index, { sets: Number(e.target.value) })
-                                            }
-                                            className="w-12 text-center bg-transparent"
-                                        />
-                                    </td>
-                                    <td className="py-2">
-                                        <input
-                                            type="number"
-                                            value={row.reps}
-                                            onChange={(e) =>
-                                                updateExercise(index, { reps: e.target.value })
-                                            }
-                                            className="w-12 text-center bg-transparent"
-                                        />
-                                    </td>
-                                    <td className="py-2">
-                                        <select
-                                            value={row.muscleGroup}
-                                            onChange={(e) =>
-                                                handleMuscleGroupChange(index, e.target.value as MuscleGroupType)
-                                            }
-                                            className="w-5/6"
-                                        >
-                                            {muscleGroupExercises.map((mg) => (
-                                                <option
-                                                    key={mg.muscleGroup}
-                                                    value={mg.muscleGroup}
-                                                    className="text-black"
-                                                >
-                                                    {MuscleGroupLabel[mg.muscleGroup]}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                    <td className="py-2">
-                                        <select
-                                            value={row.muscle}
-                                            onChange={(e) =>
-                                                handleMuscleChange(index, e.target.value as MuscleType)
-                                            }
-                                            className="w-5/6"
-                                        >
-                                            {getMusclesByMuscleGroup(
-                                                muscleGroupExercises,
-                                                row.muscleGroup,
-                                            ).map((muscle) => (
-                                                <option
-                                                    className="text-black"
-                                                    key={muscle}
-                                                    value={muscle}
-                                                >
-                                                    {MuscleLabel[muscle]}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                    <td className="py-2">
-                                        <select
-                                            value={String(row.exerciseId)}
-                                            onChange={(e) =>
-                                                updateExercise(index, {
-                                                    exerciseId: Number(e.target.value),
-                                                })
-                                            }
-                                            className="w-5/6"
-                                        >
-                                            {filterExercisesByMuscle(row.muscle).map((exOpt) => (
-                                                <option
-                                                    className="text-black"
-                                                    key={exOpt.id}
-                                                    value={String(exOpt.id)}
-                                                >
-                                                    {exOpt.title}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                    <td className="py-2">
-                                        <button
-                                            onClick={() => deleteExercise(index)}
-                                            className="flex items-center justify-center p-1.5 bg-red-500 rounded-sm cursor-pointer shadow-md"
-                                        >
-                                            <FaRegTrashCan color="white" size={12} />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+
+            <header className="flex items-center gap-4 px-6 py-4 border-b border-darkGrey shrink-0">
+                <button
+                    onClick={() => navigate("/training-splits")}
+                    className="flex items-center justify-center w-9 h-9 rounded-md bg-mediumGrey hover:bg-mediumGrey/70 cursor-pointer transition"
+                >
+                    <LuArrowLeft size={18} />
+                </button>
+
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                    {editingTitle ? (
+                        <input
+                            autoFocus
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            onBlur={() => setEditingTitle(false)}
+                            onKeyDown={(e) => e.key === "Enter" && setEditingTitle(false)}
+                            className="text-2xl font-bold bg-transparent border-b border-indigo outline-none text-white w-full max-w-md"
+                        />
+                    ) : (
+                        <button
+                            onClick={() => setEditingTitle(true)}
+                            className="flex items-center gap-2 group cursor-pointer min-w-0"
+                        >
+                            <h1 className="text-2xl font-bold text-white truncate">{title}</h1>
+                            <TbPencil
+                                size={16}
+                                className="text-lightGrey/40 group-hover:text-indigo transition shrink-0"
+                            />
+                        </button>
+                    )}
                 </div>
 
+                {summary.exerciseCount > 0 && (
+                    <div className="hidden md:flex items-center gap-3 text-sm text-lightGrey/60 shrink-0">
+                        <span>{summary.exerciseCount} exercises</span>
+                        <span>·</span>
+                        <span>{summary.totalSets} sets</span>
+                        <span>·</span>
+                        <span>~{summary.estimatedMinutes}min</span>
+                    </div>
+                )}
+
                 <button
-                    onClick={addExercise}
-                    className="flex items-center justify-center text-center p-2 bg-indigo rounded-sm cursor-pointer inset-shadow-xl"
+                    onClick={submitTrainingSplit}
+                    disabled={saving || rows.length === 0}
+                    className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-md bg-indigo hover:bg-darkIndigo text-white text-sm font-semibold cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed min-w-20 shrink-0"
                 >
-                    <FaPlus color="white" />
+                    {saving ? <LuRotateCw size={14} className="animate-spin" /> : "Create"}
                 </button>
-            </div>
-            <div className="self-end">
-                <Button label="Salvar" onClick={submitTrainingSplit} />
+            </header>
+
+            <div className="flex flex-1 min-h-0 overflow-hidden">
+                <div className="flex flex-col flex-1 min-w-0 overflow-y-auto p-6 gap-3">
+                    {rows.length === 0 ? (
+                        <div className="flex flex-1 flex-col items-center justify-center text-center gap-5 px-6">
+                            <div className="w-20 h-20 rounded-2xl bg-mediumGrey flex items-center justify-center">
+                                <LuClipboardList size={40} className="text-indigo" />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <h2 className="text-xl font-bold text-white">
+                                    Build your training split
+                                </h2>
+                                <p className="text-sm text-lightGrey/50 max-w-sm">
+                                    Add exercises one by one, set your reps and sets, and arrange
+                                    them in the order you'll train.
+                                </p>
+                            </div>
+                            <button
+                                onClick={addExercise}
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-indigo hover:bg-darkIndigo text-white font-semibold cursor-pointer transition duration-300 hover:-translate-y-0.5 shadow-lg shadow-indigo/20"
+                            >
+                                <LuPlus size={16} />
+                                Add your first exercise
+                            </button>
+                        </div>
+                    ) : (
+                        <>
+                            {orderedRows.map((ex, index) => (
+                                <ExerciseListItem
+                                    key={ex.id}
+                                    ex={ex}
+                                    index={index}
+                                    isSelected={selectedIndex === index}
+                                    isFirst={index === 0}
+                                    isLast={index === orderedRows.length - 1}
+                                    onSelect={() =>
+                                        setSelectedIndex(selectedIndex === index ? null : index)
+                                    }
+                                    onMoveUp={() => moveExercise(index, -1)}
+                                    onMoveDown={() => moveExercise(index, 1)}
+                                    onDelete={() => deleteExercise(index)}
+                                />
+                            ))}
+
+                            <button
+                                onClick={addExercise}
+                                className="flex items-center justify-center gap-2 p-4 rounded-xl border border-dashed border-white/10 hover:border-indigo/50 text-lightGrey/50 hover:text-indigo transition-all cursor-pointer"
+                            >
+                                <LuPlus size={14} />
+                                <span className="text-sm font-medium">Add exercise</span>
+                            </button>
+                        </>
+                    )}
+                </div>
+
+                <aside
+                    className={`flex flex-col bg-darkGrey border-l border-mediumGrey shrink-0 transition-[width] duration-300 overflow-hidden ${
+                        selectedIndex !== null ? "w-80" : "w-0"
+                    }`}
+                >
+                    <div className="w-80 flex flex-col h-full">
+                        {selectedExercise && selectedIndex !== null && (
+                            <ExerciseEditPanel
+                                exercise={selectedExercise}
+                                exercises={exercises}
+                                onClose={() => setSelectedIndex(null)}
+                                onUpdate={(patch) => updateExercise(selectedIndex, patch)}
+                                onDelete={() => deleteExercise(selectedIndex)}
+                                onMuscleGroupChange={(mg) => handleMuscleGroupChange(selectedIndex, mg)}
+                                onMuscleChange={(muscle) => handleMuscleChange(selectedIndex, muscle)}
+                                onExerciseChange={(exerciseId) =>
+                                    handleExerciseChange(selectedIndex, exerciseId)
+                                }
+                            />
+                        )}
+                    </div>
+                </aside>
             </div>
         </div>
     );

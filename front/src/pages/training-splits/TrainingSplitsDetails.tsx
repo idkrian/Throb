@@ -127,9 +127,7 @@ const TrainingSplitsDetails = () => {
   };
 
   const handleMuscleGroupChange = (orderedIndex: number, newMg: MuscleGroupType) => {
-    const firstMuscle = MusclesByGroup[newMg][0]?.value;
-    if (!firstMuscle) return;
-    const firstExercise = filterByMuscle(firstMuscle)[0];
+    const firstExercise = exercises.find((e) => e.muscleGroup === newMg);
     if (!firstExercise) return;
     updateExercise(orderedIndex, { exercise: firstExercise, exerciseId: firstExercise.id });
   };
