@@ -34,11 +34,11 @@ const Dashboard = () => {
           <MuscleHeatmap />
         </div>
         <div className="flex flex-col gap-3 rounded-lg bg-mediumGrey p-3 min-h-0 overflow-y-auto">
-          <p className="text-center text-lg font-semibold text-white">
-            Today's Training
-          </p>
           {todaySplit ? (
             <>
+              <p className="text-center text-lg font-semibold text-white">
+                Today's Training
+              </p>
               <TrainingSplitCard
                 fullHeight
                 split={todaySplit}
@@ -51,9 +51,13 @@ const Dashboard = () => {
               />
             </>
           ) : (
-            <p className="text-center text-base font-medium text-lightGrey mt-2">
-              Rest Day! No training scheduled.
-            </p>
+            <div className="flex flex-col items-center justify-center flex-1 gap-2">
+              <p className="text-5xl">🔋</p>
+              <p className="text-2xl font-bold text-white">Rest Day</p>
+              <p className="text-sm font-medium text-lightGrey text-center">
+                No training scheduled for today. Recover well!
+              </p>
+            </div>
           )}
         </div>
       </div>
