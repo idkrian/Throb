@@ -9,6 +9,13 @@ export interface ExerciseDto {
   muscle: MuscleType;
 }
 
+export interface CreateExerciseDto {
+  muscleGroup: MuscleGroupType;
+  muscle: MuscleType;
+  title: string;
+  description: string;
+}
+
 export interface ExerciseSetDto {
   setNumber: number;
   reps: number;

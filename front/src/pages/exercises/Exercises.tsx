@@ -131,7 +131,7 @@ const Exercises = () => {
         <CreateExerciseModal
           open={!!createOpen}
           onClose={() => setCreateOpen(null)}
-          muscle={createOpen}
+          initialGroup={createOpen}
           onSuccess={fetchData}
         />
       )}
