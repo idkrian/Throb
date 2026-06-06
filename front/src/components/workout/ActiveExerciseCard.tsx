@@ -1,6 +1,7 @@
 import {
   LuChevronLeft,
   LuChevronRight,
+  LuPlus,
   LuStickyNote,
 } from "react-icons/lu";
 import type { TrainingSplitExerciseDto } from "@/dtos/training-split-exercise.dto";
@@ -12,6 +13,7 @@ type Props = {
   progress: ExerciseProgress;
   activeIndex: number;
   totalExercises: number;
+  addSet: () => void;
   onPrev: () => void;
   onNext: () => void;
   onUpdateSet: (setIdx: number, patch: Partial<LoggedSet>) => void;
@@ -29,6 +31,7 @@ const ActiveExerciseCard = ({
   onUpdateSet,
   onLogSet,
   onUpdateNotes,
+  addSet,
 }: Props) => {
   const completedSets = progress.sets.filter((s) => s.completed).length;
 
@@ -96,6 +99,13 @@ const ActiveExerciseCard = ({
             onLog={() => onLogSet(i)}
           />
         ))}
+        <button
+          onClick={addSet}
+          className="group flex items-center justify-center gap-1.5 h-10 shrink-0 rounded-lg border border-dashed border-indigo/30 text-lightIndigo/70 text-xs font-semibold uppercase tracking-wider cursor-pointer transition-colors hover:border-indigo/60 hover:bg-indigo/10 hover:text-lightIndigo"
+        >
+          <LuPlus size={16} className="transition-transform group-hover:rotate-90 duration-300" />
+          Add set
+        </button>
       </div>
 
       <div className="flex items-start gap-2 shrink-0">

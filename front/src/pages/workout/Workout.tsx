@@ -118,6 +118,19 @@ const Workout = () => {
     progress[ex.id]?.sets.every((s) => s.completed),
   ).length;
 
+  const addSet = () => {
+    if (!activeExercise) return;
+    setProgress((prev) => {
+      const ex = prev[activeExercise.id];
+      if (!ex) return prev;
+      const sets = [
+        ...ex.sets,
+        { weight: 0, reps: 0, rpe: 7, completed: false },
+      ];
+      return { ...prev, [activeExercise.id]: { ...ex, sets } };
+    });
+  };
+
   const updateSet = (
     exerciseId: number,
     setIdx: number,
@@ -232,6 +245,7 @@ const Workout = () => {
           progress={progress[activeExercise.id]}
           activeIndex={activeIndex}
           totalExercises={orderedExercises.length}
+          addSet={addSet}
           onPrev={() => setActiveIndex((i) => Math.max(0, i - 1))}
           onNext={() =>
             setActiveIndex((i) => Math.min(orderedExercises.length - 1, i + 1))

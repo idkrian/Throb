@@ -1,7 +1,7 @@
 import { LuRotateCw } from "react-icons/lu";
 
 interface ButtonProps {
-  label: string;
+  label: string | React.ReactNode;
   onClick?: () => void;
   loading?: boolean;
   color?: "error" | "alert";
