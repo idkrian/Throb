@@ -11,6 +11,13 @@ import {
   type MuscleType,
 } from "@/dtos/muscle.dto";
 import MuscleIcon from "@/components/exercises/MuscleIcon";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type Props = {
   exercise: TrainingSplitExerciseDto;
@@ -93,48 +100,60 @@ const ExerciseEditPanel = ({
         </div>
 
         <PanelField label="Muscle Group">
-          <select
+          <Select
             value={exercise.exercise?.muscleGroup ?? ""}
-            onChange={(e) => onMuscleGroupChange(e.target.value as MuscleGroupType)}
-            className="w-full bg-mediumGrey rounded-lg px-3 py-2 text-sm outline-none border border-transparent focus:border-indigo transition-colors text-white cursor-pointer"
+            onValueChange={(value) => onMuscleGroupChange(value as MuscleGroupType)}
           >
-            {(Object.values(MuscleGroup) as MuscleGroupType[]).map((mg) => (
-              <option key={mg} value={mg} className="text-black">
-                {MuscleGroupLabel[mg]}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full bg-mediumGrey border-transparent text-white data-placeholder:text-lightGrey/50 focus-visible:border-indigo focus-visible:ring-0">
+              <SelectValue placeholder="Select muscle group" />
+            </SelectTrigger>
+            <SelectContent position="popper">
+              {(Object.values(MuscleGroup) as MuscleGroupType[]).map((mg) => (
+                <SelectItem key={mg} value={mg}>
+                  {MuscleGroupLabel[mg]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </PanelField>
 
         <PanelField label="Muscle">
-          <select
+          <Select
             value={exercise.exercise?.muscle ?? ""}
-            onChange={(e) => onMuscleChange(e.target.value as MuscleType)}
-            className="w-full bg-mediumGrey rounded-lg px-3 py-2 text-sm outline-none border border-transparent focus:border-indigo transition-colors text-white cursor-pointer"
+            onValueChange={(value) => onMuscleChange(value as MuscleType)}
           >
-            {exercise.exercise?.muscleGroup &&
-              MusclesByGroup[
-                exercise.exercise.muscleGroup as keyof typeof MusclesByGroup
-              ]?.map(({ text, value }) => (
-                <option key={value} value={value} className="text-black">
-                  {text}
-                </option>
-              ))}
-          </select>
+            <SelectTrigger className="w-full bg-mediumGrey border-transparent text-white data-placeholder:text-lightGrey/50 focus-visible:border-indigo focus-visible:ring-0">
+              <SelectValue placeholder="Select muscle" />
+            </SelectTrigger>
+            <SelectContent position="popper">
+              {exercise.exercise?.muscleGroup &&
+                MusclesByGroup[
+                  exercise.exercise.muscleGroup as keyof typeof MusclesByGroup
+                ]?.map(({ text, value }) => (
+                  <SelectItem key={value} value={value}>
+                    {text}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
         </PanelField>
 
         <PanelField label="Exercise">
-          <select
+          <Select
             value={String(exercise.exerciseId ?? exercise.exercise?.id ?? "")}
-            onChange={(e) => onExerciseChange(Number(e.target.value))}
-            className="w-full bg-mediumGrey rounded-lg px-3 py-2 text-sm outline-none border border-transparent focus:border-indigo transition-colors text-white cursor-pointer"
+            onValueChange={(value) => onExerciseChange(Number(value))}
           >
-            {filterByMuscle(exercise.exercise?.muscle).map((exOpt) => (
-              <option key={exOpt.id} value={String(exOpt.id)} className="text-black">
-                {exOpt.title}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full bg-mediumGrey border-transparent text-white data-placeholder:text-lightGrey/50 focus-visible:border-indigo focus-visible:ring-0">
+              <SelectValue placeholder="Select exercise" />
+            </SelectTrigger>
+            <SelectContent position="popper">
+              {filterByMuscle(exercise.exercise?.muscle).map((exOpt) => (
+                <SelectItem key={exOpt.id} value={String(exOpt.id)}>
+                  {exOpt.title}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </PanelField>
 
         <button

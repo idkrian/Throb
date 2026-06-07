@@ -10,7 +10,10 @@
       "Bash(xargs grep *)",
       "Bash(npm install *)",
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Rian\\\\Documents\\\\projects\\\\fit\" -Force)",
-      "Bash(Select-Object Name, PSIsContainer)"
+      "Bash(Select-Object Name, PSIsContainer)",
+      "Bash(ls src/*.css src/**/*.css)",
+      "Bash(ls tailwind.config.*)",
+      "Bash(cat components.json)"
     ]
   }
 }

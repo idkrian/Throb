@@ -9,6 +9,13 @@ import {
 } from "@/dtos/muscle.dto";
 import { createExercise } from "@/api/exercise";
 import MuscleIcon from "@/components/exercises/MuscleIcon";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import FeedbackModal from "./FeedbackModal";
 
 type Props = {
@@ -149,17 +156,24 @@ const CreateExerciseModal = ({
           </Field>
 
           <Field label="Target Muscle">
-            <select
+            <Select
               value={muscle}
-              onChange={(e) => setMuscle(e.target.value as typeof muscle)}
-              className="w-full bg-darkGrey rounded-lg px-3 py-2.5 text-sm outline-none border border-transparent focus:border-indigo transition-colors cursor-pointer"
+              onValueChange={(value) => setMuscle(value as typeof muscle)}
             >
-              {MusclesByGroup[muscleGroup].map((m) => (
-                <option key={m.value} value={m.value}>
-                  {m.text}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full bg-darkGrey border-transparent text-white focus-visible:border-indigo focus-visible:ring-0">
+                <SelectValue placeholder="Select muscle" />
+              </SelectTrigger>
+              <SelectContent
+                position="popper"
+                className="bg-darkGrey border-darkGrey"
+              >
+                {MusclesByGroup[muscleGroup].map((m) => (
+                  <SelectItem key={m.value} value={m.value}>
+                    {m.text}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </Field>
 
           <Field label="Title">
