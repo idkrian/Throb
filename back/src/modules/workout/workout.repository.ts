@@ -48,7 +48,7 @@ export const workoutRepository = {
     });
   },
 
-  async getMuscleStats() {
+  async getMuscleStats(startDate: Date) {
     const result = await prisma.$queryRaw<
       { muscle: string; totalSets: bigint }[]
     >`
@@ -57,6 +57,7 @@ export const workoutRepository = {
       JOIN workout_exercise_logs wel ON wel."workoutSessionId" = wsess.id
       JOIN exercises e ON e.id = wel."exerciseId"
       JOIN workout_sets ws ON ws."workoutExerciseLogId" = wel.id
+      WHERE wsess."createdAt" BETWEEN ${startDate} AND NOW()
       GROUP BY e."muscle"
       ORDER BY "totalSets" DESC
     `;
@@ -67,7 +68,7 @@ export const workoutRepository = {
     }));
   },
 
-  async getMuscleGroupStats() {
+  async getMuscleGroupStats(startDate: Date) {
     const result = await prisma.$queryRaw<
       { muscleGroup: string; totalSets: bigint }[]
     >`
@@ -76,6 +77,7 @@ export const workoutRepository = {
       JOIN workout_exercise_logs wel ON wel."workoutSessionId" = wsess.id
       JOIN exercises e ON e.id = wel."exerciseId"
       JOIN workout_sets ws ON ws."workoutExerciseLogId" = wel.id
+      WHERE wsess."createdAt" BETWEEN ${startDate} AND NOW()
       GROUP BY e."muscleGroup"
       ORDER BY "totalSets" DESC
     `;

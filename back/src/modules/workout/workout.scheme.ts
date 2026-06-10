@@ -23,6 +23,14 @@ export const updateWorkoutScheme = z.object({
   exercises: z.array(workoutExerciseInputSchema).min(1),
 });
 
+export const getMuscleStatsScheme = z.object({
+  period: z.enum(["week", "month", "trimester", "semester"]).default("week"),
+});
+
+export type MuscleStatsPeriod = z.infer<typeof getMuscleStatsScheme>["period"];
+
 export type CreateWorkoutRequestDto = z.infer<typeof createWorkoutScheme>;
 
 export type UpdateWorkoutRequestDto = z.infer<typeof updateWorkoutScheme>;
+
+export type GetMuscleStatsRequestDto = z.infer<typeof getMuscleStatsScheme>;

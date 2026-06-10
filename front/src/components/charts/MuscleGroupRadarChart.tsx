@@ -13,7 +13,11 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import { getWorkoutMuscleGroupsStats, type MuscleGroupStat } from "@/api/workout";
+import {
+  getWorkoutMuscleGroupsStats,
+  type MuscleGroupStat,
+  type MuscleStatsPeriod,
+} from "@/api/workout";
 
 const MUSCLE_GROUPS: { key: string; label: string }[] = [
   { key: "CHEST", label: "Chest" },
@@ -32,12 +36,16 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const MuscleGroupRadarChart = () => {
+type MuscleGroupRadarChartProps = {
+  period: MuscleStatsPeriod;
+};
+
+const MuscleGroupRadarChart = ({ period }: MuscleGroupRadarChartProps) => {
   const [data, setData] = useState<MuscleGroupStat[]>([]);
 
   useEffect(() => {
-    getWorkoutMuscleGroupsStats().then(setData);
-  }, []);
+    getWorkoutMuscleGroupsStats(period).then(setData);
+  }, [period]);
 
   const totals: Record<string, number> = {};
   for (const item of data) {

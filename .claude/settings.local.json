@@ -13,7 +13,9 @@
       "Bash(Select-Object Name, PSIsContainer)",
       "Bash(ls src/*.css src/**/*.css)",
       "Bash(ls tailwind.config.*)",
-      "Bash(cat components.json)"
+      "Bash(cat components.json)",
+      "Bash(cd front *)",
+      "Read(//c/Users/Rian/Documents/projects/**)"
     ]
   }
 }

@@ -35,6 +35,8 @@ export interface WorkoutSummaryStats {
   workoutsThisMonth: number;
 }
 
+export type MuscleStatsPeriod = "week" | "month" | "trimester" | "semester";
+
 const BASE_URL = `${import.meta.env.VITE_API_BASE}/workout`;
 
 export const createWorkout = async (
@@ -55,15 +57,17 @@ export const getWorkoutById = async (
   return response.data.data;
 };
 
-export const getWorkoutMuscleGroupsStats = async (): Promise<
-  MuscleGroupStat[]
-> => {
-  const response = await axios.get(`${BASE_URL}/stats/muscle-groups`);
+export const getWorkoutMuscleGroupsStats = async (
+  period: MuscleStatsPeriod,
+): Promise<MuscleGroupStat[]> => {
+  const response = await axios.get(`${BASE_URL}/stats/muscle-groups/${period}`);
   return response.data.data;
 };
 
-export const getWorkoutMuscleStats = async (): Promise<MuscleStat[]> => {
-  const response = await axios.get(`${BASE_URL}/stats/muscles`);
+export const getWorkoutMuscleStats = async (
+  period: MuscleStatsPeriod,
+): Promise<MuscleStat[]> => {
+  const response = await axios.get(`${BASE_URL}/stats/muscles/${period}`);
   return response.data.data;
 };
 

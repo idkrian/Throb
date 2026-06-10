@@ -5,6 +5,7 @@ import {
   requestErrorHandler,
 } from "../../shared/utils/requestHandlers.js";
 import { HttpStatus } from "../../shared/constants/http-status.js";
+import type { MuscleStatsPeriod } from "./workout.scheme.js";
 
 export const workoutController = {
   async createWorkout(req: Request, res: Response, next: NextFunction) {
@@ -47,7 +48,8 @@ export const workoutController = {
 
   async getMuscleStats(req: Request, res: Response, next: NextFunction) {
     try {
-      const stats = await workoutService.getMuscleStats();
+      const period = req.params.period as MuscleStatsPeriod;
+      const stats = await workoutService.getMuscleStats({ period });
       requestSuccessHandler(res, stats, "Muscle stats retrieved successfully!");
     } catch (error) {
       next(error);
@@ -56,7 +58,8 @@ export const workoutController = {
 
   async getMuscleGroupStats(req: Request, res: Response, next: NextFunction) {
     try {
-      const stats = await workoutService.getMuscleGroupStats();
+      const period = req.params.period as MuscleStatsPeriod;
+      const stats = await workoutService.getMuscleGroupStats({ period });
       requestSuccessHandler(
         res,
         stats,

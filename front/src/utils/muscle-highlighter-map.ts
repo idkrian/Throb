@@ -1,4 +1,5 @@
 import type { Muscle } from "react-body-highlighter";
+import type { MuscleStatsPeriod } from "@/api/workout";
 import type { MuscleType } from "@/dtos/muscle.dto";
 
 export const muscleToHighlighter: Partial<Record<MuscleType, Muscle[]>> = {
@@ -51,12 +52,26 @@ export type NormalizedMuscleStat = {
   muscles: Muscle[];
   frequency: number;
 };
+const WEEKS_PER_PERIOD: Record<MuscleStatsPeriod, number> = {
+  week: 1,
+  month: 4.33,
+  trimester: 13,
+  semester: 26,
+};
+
+function weeklyAvgToZone(weeklyAvg: number): number {
+  if (weeklyAvg < 6) return 1;
+  if (weeklyAvg < 10) return 2;
+  if (weeklyAvg < 20) return 3;
+  if (weeklyAvg < 23) return 4;
+  return 5;
+}
 
 export function buildHighlighterData(
   stats: { muscle: string; totalSets: number }[],
-  buckets = 5,
+  period: MuscleStatsPeriod,
 ): NormalizedMuscleStat[] {
-  const maxSets = Math.max(...stats.map((s) => s.totalSets), 1);
+  const weeks = WEEKS_PER_PERIOD[period];
 
   const aggregated = new Map<Muscle, { totalSets: number; names: string[] }>();
 
@@ -78,14 +93,9 @@ export function buildHighlighterData(
     }
   }
 
-  const aggregatedMax = Math.max(
-    ...[...aggregated.values()].map((v) => v.totalSets),
-    maxSets,
-  );
-
   return [...aggregated.entries()].map(([muscle, data]) => ({
     name: muscle,
     muscles: [muscle],
-    frequency: Math.max(1, Math.ceil((data.totalSets / aggregatedMax) * buckets)),
+    frequency: weeklyAvgToZone(data.totalSets / weeks),
   }));
 }

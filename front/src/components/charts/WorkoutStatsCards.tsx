@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Dumbbell, CalendarDays, TrendingUp, Clock } from "lucide-react";
-import { getWorkoutSummaryStats, type WorkoutSummaryStats } from "@/api/workout";
+import {
+  getWorkoutSummaryStats,
+  type WorkoutSummaryStats,
+} from "@/api/workout";
 
 const WorkoutStatsCards = () => {
   const [stats, setStats] = useState<WorkoutSummaryStats | null>(null);
@@ -9,13 +12,35 @@ const WorkoutStatsCards = () => {
     getWorkoutSummaryStats().then(setStats);
   }, []);
 
-  const totalHours = stats ? (stats.totalDurationSeconds / 3600).toFixed(1) : "--";
+  const totalHours = stats
+    ? (stats.totalDurationSeconds / 3600).toFixed(1)
+    : "--";
 
   const items = [
-    { label: "Total Workouts", value: stats?.totalWorkouts ?? "--", icon: Dumbbell, sub: "all time" },
-    { label: "This Week", value: stats?.workoutsThisWeek ?? "--", icon: CalendarDays, sub: "sessions" },
-    { label: "This Month", value: stats?.workoutsThisMonth ?? "--", icon: TrendingUp, sub: "sessions" },
-    { label: "Total Hours", value: totalHours, icon: Clock, sub: "time trained" },
+    {
+      label: "Total Workouts",
+      value: stats?.totalWorkouts ?? "--",
+      icon: Dumbbell,
+      sub: "All Time",
+    },
+    {
+      label: "This Week",
+      value: stats?.workoutsThisWeek ?? "--",
+      icon: CalendarDays,
+      sub: "Sessions",
+    },
+    {
+      label: "This Month",
+      value: stats?.workoutsThisMonth ?? "--",
+      icon: TrendingUp,
+      sub: "Sessions",
+    },
+    {
+      label: "Total Hours",
+      value: totalHours,
+      icon: Clock,
+      sub: "Time Trained",
+    },
   ] as const;
 
   return (
@@ -29,7 +54,9 @@ const WorkoutStatsCards = () => {
             <Icon className="h-4 w-4 text-lightIndigo" />
           </div>
           <div className="min-w-0">
-            <p className="text-xl font-bold leading-tight text-white">{value}</p>
+            <p className="text-xl font-bold leading-tight text-white">
+              {value}
+            </p>
             <p className="truncate text-xs text-lightGrey/60">
               {label} · {sub}
             </p>
