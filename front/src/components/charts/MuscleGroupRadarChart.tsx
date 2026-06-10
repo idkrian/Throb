@@ -63,9 +63,16 @@ const MuscleGroupRadarChart = ({ period }: MuscleGroupRadarChartProps) => {
         <CardTitle className="text-white">Muscle Balance</CardTitle>
         <CardDescription>Sets per muscle group</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-2">
-        <ChartContainer config={chartConfig} className="mx-auto aspect-square h-full max-h-[220px]">
-          <RadarChart data={chartData}>
+      <CardContent className="flex-1 pb-2 -px-6">
+        <ChartContainer
+          config={chartConfig}
+          className="mx-auto aspect-square h-full max-h-[220px] w-full"
+        >
+          <RadarChart
+            data={chartData}
+            margin={{ top: 10, right: 40, bottom: 10, left: 40 }}
+            outerRadius="80%"
+          >
             <PolarGrid stroke="#e5e5f0" strokeOpacity={0.15} />
             <PolarAngleAxis
               dataKey="muscle"
