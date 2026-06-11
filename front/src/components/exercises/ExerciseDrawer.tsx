@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import { MuscleGroupLabel, MuscleLabel } from "@/dtos/muscle.dto";
 import type { ExerciseDto } from "@/dtos/exercise.dto";
 import type { ExerciseStatsDto } from "@/dtos/exercise.dto";
@@ -9,9 +10,11 @@ import { getExerciseStats } from "@/api/exercise";
 type Props = {
   exercise: ExerciseDto | null;
   onClose: () => void;
+  onEdit?: (exercise: ExerciseDto) => void;
+  onDelete?: (exercise: ExerciseDto) => void;
 };
 
-const ExerciseDrawer = ({ exercise, onClose }: Props) => {
+const ExerciseDrawer = ({ exercise, onClose, onEdit, onDelete }: Props) => {
   const open = !!exercise;
   const [stats, setStats] = useState<ExerciseStatsDto | null>(null);
   const [loading, setLoading] = useState(false);
@@ -137,6 +140,23 @@ const ExerciseDrawer = ({ exercise, onClose }: Props) => {
                   <Empty text="Volume and weight trends will appear here." />
                 )}
               </Section>
+            </div>
+
+            <div className="flex gap-2 p-5 border-t border-mediumGrey">
+              <button
+                onClick={() => onEdit?.(exercise)}
+                className="flex-1 flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold bg-mediumGrey hover:bg-mediumGrey/70 transition-colors cursor-pointer"
+              >
+                <FiEdit2 size={14} />
+                Edit
+              </button>
+              <button
+                onClick={() => onDelete?.(exercise)}
+                className="flex-1 flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold bg-red-500/15 text-red-400 hover:bg-red-500/25 transition-colors cursor-pointer"
+              >
+                <FiTrash2 size={14} />
+                Delete
+              </button>
             </div>
           </>
         )}

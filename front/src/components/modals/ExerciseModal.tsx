@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa";
+import { FiCheck } from "react-icons/fi";
 import {
   MuscleGroup,
   MuscleGroupLabel,
   MusclesByGroup,
   type MuscleGroupType,
 } from "@/dtos/muscle.dto";
-import { createExercise } from "@/api/exercise";
+import type { ExerciseDto } from "@/dtos/exercise.dto";
+import { createExercise, updateExercise } from "@/api/exercise";
 import MuscleIcon from "@/components/exercises/MuscleIcon";
 import {
   Select,
@@ -23,17 +25,24 @@ type Props = {
   onClose?: () => void;
   onSuccess?: () => void;
   initialGroup: MuscleGroupType;
+  exercise?: ExerciseDto | null;
 };
 
-const CreateExerciseModal = ({
+const ExerciseModal = ({
   open,
   onClose,
   onSuccess,
   initialGroup,
+  exercise,
 }: Props) => {
-  const [muscleGroup, setMuscleGroup] = useState<MuscleGroupType>(initialGroup);
-  const [muscle, setMuscle] = useState(MusclesByGroup[initialGroup][0].value);
-  const [title, setTitle] = useState("");
+  const isEditing = !!exercise;
+  const baseGroup = exercise?.muscleGroup ?? initialGroup;
+
+  const [muscleGroup, setMuscleGroup] = useState<MuscleGroupType>(baseGroup);
+  const [muscle, setMuscle] = useState(
+    exercise?.muscle ?? MusclesByGroup[baseGroup][0].value,
+  );
+  const [title, setTitle] = useState(exercise?.title ?? "");
   const [description, setDescription] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [feedbackStatus, setFeedbackStatus] = useState<"success" | "error">(
@@ -42,9 +51,12 @@ const CreateExerciseModal = ({
   const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   useEffect(() => {
-    setMuscleGroup(initialGroup);
-    setMuscle(MusclesByGroup[initialGroup][0].value);
-  }, [initialGroup]);
+    const group = exercise?.muscleGroup ?? initialGroup;
+    setMuscleGroup(group);
+    setMuscle(exercise?.muscle ?? MusclesByGroup[group][0].value);
+    setTitle(exercise?.title ?? "");
+    setDescription("");
+  }, [initialGroup, exercise]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose?.();
@@ -61,12 +73,20 @@ const CreateExerciseModal = ({
     if (!title.trim() || submitting) return;
     setSubmitting(true);
     try {
-      await createExercise({
-        muscleGroup,
-        muscle,
-        title: title.trim(),
-        description,
-      });
+      if (isEditing) {
+        await updateExercise(exercise.id, {
+          muscleGroup,
+          muscle,
+          title: title.trim(),
+        });
+      } else {
+        await createExercise({
+          muscleGroup,
+          muscle,
+          title: title.trim(),
+          description,
+        });
+      }
       setFeedbackStatus("success");
     } catch (error) {
       console.log(error);
@@ -89,8 +109,10 @@ const CreateExerciseModal = ({
         status={feedbackStatus}
         description={
           feedbackStatus === "success"
-            ? "Exercise created successfully."
-            : "There was an error creating the exercise."
+            ? `Exercise ${isEditing ? "updated" : "created"} successfully.`
+            : `There was an error ${
+                isEditing ? "updating" : "creating"
+              } the exercise.`
         }
         onClose={() => {
           setFeedbackOpen(false);
@@ -116,7 +138,7 @@ const CreateExerciseModal = ({
             </div>
             <div>
               <p className="text-xs uppercase tracking-wider text-lightGrey/60 font-semibold">
-                New Exercise
+                {isEditing ? "Edit Exercise" : "New Exercise"}
               </p>
               <h2 className="text-lg font-bold leading-tight">
                 {MuscleGroupLabel[muscleGroup]}
@@ -187,14 +209,16 @@ const CreateExerciseModal = ({
             />
           </Field>
 
-          <Field label="Description" optional>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Notes, cues, or setup details..."
-              className="w-full bg-darkGrey rounded-lg px-3 py-2.5 text-sm outline-none border border-transparent focus:border-indigo transition-colors placeholder:text-lightGrey/40 resize-none h-24"
-            />
-          </Field>
+          {!isEditing && (
+            <Field label="Description" optional>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Notes, cues, or setup details..."
+                className="w-full bg-darkGrey rounded-lg px-3 py-2.5 text-sm outline-none border border-transparent focus:border-indigo transition-colors placeholder:text-lightGrey/40 resize-none h-24"
+              />
+            </Field>
+          )}
         </div>
 
         {/* Footer */}
@@ -210,8 +234,14 @@ const CreateExerciseModal = ({
             disabled={!title.trim() || submitting}
             className="flex-1 flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold bg-indigo hover:bg-lightIndigo transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <FaPlus size={12} />
-            {submitting ? "Creating..." : "Create Exercise"}
+            {isEditing ? <FiCheck size={14} /> : <FaPlus size={12} />}
+            {submitting
+              ? isEditing
+                ? "Saving..."
+                : "Creating..."
+              : isEditing
+                ? "Save Changes"
+                : "Create Exercise"}
           </button>
         </div>
       </div>
@@ -243,4 +273,4 @@ const Field = ({
   </div>
 );
 
-export default CreateExerciseModal;
+export default ExerciseModal;

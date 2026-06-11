@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { LuSearch } from "react-icons/lu";
-import { getMuscleGroups } from "@/api/exercise";
+import { deleteExercise, getMuscleGroups } from "@/api/exercise";
 import {
   MuscleGroup,
   MuscleGroupLabel,
@@ -11,7 +11,8 @@ import {
   type MuscleGroupType,
 } from "@/dtos/muscle.dto";
 import type { ExerciseDto } from "@/dtos/exercise.dto";
-import CreateExerciseModal from "@/components/modals/CreateExerciseModal";
+import ExerciseModal from "@/components/modals/ExerciseModal";
+import ConfirmModal from "@/components/modals/ConfirmModal";
 import ExerciseSidebar from "@/components/exercises/ExerciseSidebar";
 import ExerciseCard from "@/components/exercises/ExerciseCard";
 import ExercisesEmptyState from "@/components/exercises/ExercisesEmptyState";
@@ -25,8 +26,26 @@ const Exercises = () => {
     null,
   );
   const [createOpen, setCreateOpen] = useState<MuscleGroupType | null>(null);
+  const [editExercise, setEditExercise] = useState<ExerciseDto | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<ExerciseDto | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchData = () => getMuscleGroups().then(setMuscleGroups);
+
+  const confirmDelete = async () => {
+    if (!deleteTarget || deleting) return;
+    setDeleting(true);
+    try {
+      await deleteExercise(deleteTarget.id);
+      setDeleteTarget(null);
+      setSelectedExercise(null);
+      await fetchData();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -125,16 +144,38 @@ const Exercises = () => {
       <ExerciseDrawer
         exercise={selectedExercise}
         onClose={() => setSelectedExercise(null)}
+        onEdit={(ex) => {
+          setSelectedExercise(null);
+          setEditExercise(ex);
+        }}
+        onDelete={setDeleteTarget}
       />
 
-      {createOpen && (
-        <CreateExerciseModal
-          open={!!createOpen}
-          onClose={() => setCreateOpen(null)}
-          initialGroup={createOpen}
+      {(createOpen || editExercise) && (
+        <ExerciseModal
+          open
+          exercise={editExercise}
+          initialGroup={createOpen ?? MuscleGroup.CHEST}
+          onClose={() => {
+            setCreateOpen(null);
+            setEditExercise(null);
+          }}
           onSuccess={fetchData}
         />
       )}
+
+      <ConfirmModal
+        open={!!deleteTarget}
+        title="Delete exercise?"
+        description={
+          deleteTarget
+            ? `"${deleteTarget.title}" will be permanently removed.`
+            : undefined
+        }
+        loading={deleting}
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 };

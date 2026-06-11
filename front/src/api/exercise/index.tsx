@@ -24,6 +24,18 @@ export const createExercise = async (
   return response.data.data;
 };
 
+export const updateExercise = async (
+  id: number,
+  data: Omit<CreateExerciseDto, "description">,
+): Promise<ExerciseDto> => {
+  const response = await axios.put(`${BASE_URL}/${id}`, data);
+  return response.data.data;
+};
+
+export const deleteExercise = async (id: number): Promise<void> => {
+  await axios.delete(`${BASE_URL}/${id}`);
+};
+
 export const getExerciseStats = async (
   exerciseId: number,
 ): Promise<ExerciseStatsDto> => {
