@@ -6,6 +6,7 @@ import trainingSplitRouter from "./modules/training-splits/training-split.router
 import trainingSplitDayRouter from "./modules/training-split-day/training-split-day.router.js";
 import workoutRouter from "./modules/workout/workout.router.js";
 import userRouter from "./modules/user/user.router.js";
+import authRouter from "./modules/auth/auth.router.js";
 
 const app = express();
 app.use(cors({ origin: "http://localhost:5173" }));
@@ -16,6 +17,7 @@ app.use("/training-split", trainingSplitRouter);
 app.use("/training-split-day", trainingSplitDayRouter);
 app.use("/workout", workoutRouter);
 app.use("/user", userRouter);
+app.use("/auth", authRouter);
 
 app.use(requestErrorHandlerMiddleware);
 
