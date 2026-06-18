@@ -15,7 +15,15 @@
       "Bash(ls tailwind.config.*)",
       "Bash(cat components.json)",
       "Bash(cd front *)",
-      "Read(//c/Users/Rian/Documents/projects/**)"
+      "Read(//c/Users/Rian/Documents/projects/**)",
+      "Bash(ls && echo \"---BACK---\" && ls back 2>nul || echo \"sem pasta back\" && echo \"---FRONT---\" && ls front)",
+      "Bash(dir src *)",
+      "Bash(dir database *)",
+      "Read(//c/c/Users/Rian/Documents/projects/fit/back/**)",
+      "Read(//c/c/Users/Rian/Documents/projects/fit/front/**)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Rian\\Documents\\projects\\fit"
     ]
   }
 }
