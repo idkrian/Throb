@@ -209,7 +209,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-linear-to-r from-indigo to-darkIndigo font-semibold text-white shadow-lg shadow-indigo/20 transition-all hover:shadow-indigo/40 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+              className="group flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-linear-to-r from-indigo to-darkIndigo font-semibold text-white shadow-lg shadow-indigo/20 transition-all hover:shadow-indigo/40 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
             >
               {loading ? (
                 <LuRotateCw size={20} className="animate-spin" />
@@ -229,7 +229,7 @@ const Login = () => {
               <button
                 type="button"
                 onClick={toggleMode}
-                className="font-semibold text-lightIndigo transition-colors hover:text-indigo"
+                className="font-semibold text-lightIndigo transition-colors hover:text-indigo cursor-pointer"
               >
                 {isSignup ? "Entrar" : "Cadastre-se"}
               </button>
