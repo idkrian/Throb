@@ -20,7 +20,8 @@
       "Bash(dir src *)",
       "Bash(dir database *)",
       "Read(//c/c/Users/Rian/Documents/projects/fit/back/**)",
-      "Read(//c/c/Users/Rian/Documents/projects/fit/front/**)"
+      "Read(//c/c/Users/Rian/Documents/projects/fit/front/**)",
+      "Bash(find src *)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Rian\\Documents\\projects\\fit"

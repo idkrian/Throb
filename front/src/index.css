@@ -150,6 +150,71 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* ---- Login screen animations ---- */
+@keyframes auth-blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -40px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 25px) scale(0.95);
+  }
+}
+
+@keyframes auth-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes auth-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes auth-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-auth-blob {
+  animation: auth-blob 14s ease-in-out infinite;
+}
+
+.animate-auth-fade-up {
+  opacity: 0;
+  animation: auth-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-auth-fade-in {
+  opacity: 0;
+  animation: auth-fade-in 1s ease forwards;
+}
+
+.auth-shimmer-text {
+  background-size: 200% auto;
+  animation: auth-shimmer 5s ease-in-out infinite;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -6,11 +6,13 @@ import {
   LuCalendar,
   LuDumbbell,
   LuPlay,
+  LuLogOut,
 } from "react-icons/lu";
 import { Link, NavLink } from "react-router";
 import { getTrainingSplitDays } from "@/api/training-split-day";
 import { getAllWorkouts } from "@/api/workout";
 import type { TrainingSplitDayMap } from "@/dtos/training-split-day.dto";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
   { to: "/", label: "Dashboard", Icon: LuLayoutDashboard, end: true },
@@ -34,6 +36,7 @@ const startOfWeek = (d: Date) => {
 };
 
 const Navbar = () => {
+  const { user, logout } = useAuth();
   const [byDay, setByDay] = useState<TrainingSplitDayMap>({});
   const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
 
@@ -80,7 +83,7 @@ const Navbar = () => {
           </div>
         </div>
         <span className="text-2xl font-extrabold tracking-tight bg-linear-to-r from-lightIndigo via-indigo to-lightIndigo bg-clip-text text-transparent">
-          FitForge
+          Throb
         </span>
       </Link>
 
@@ -115,7 +118,8 @@ const Navbar = () => {
         ))}
       </nav>
 
-      <div className="flex flex-col items-end gap-1.5 shrink-0">
+      <div className="flex items-center gap-5 shrink-0">
+       <div className="flex flex-col items-end gap-1.5 shrink-0">
         <div className="flex gap-1">
           {weekCells.map(({ letter, i, isTraining, isToday, isCompleted }) => {
             let cellClass = "text-lightGrey/30";
@@ -164,6 +168,15 @@ const Navbar = () => {
             Rest Day
           </span>
         )}
+       </div>
+
+        <button
+          onClick={logout}
+          title={user ? `Sair (${user.name})` : "Sair"}
+          className="group flex h-9 w-9 items-center justify-center rounded-lg border border-mediumGrey text-lightGrey/50 transition-colors hover:border-red-500/40 hover:text-red-400"
+        >
+          <LuLogOut size={16} className="transition-transform group-hover:translate-x-0.5" />
+        </button>
       </div>
     </header>
   );
