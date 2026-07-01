@@ -78,7 +78,7 @@ const Navbar = () => {
       <Link to="/" className="flex items-center gap-3 group shrink-0">
         <div className="relative">
           <div className="absolute inset-0 bg-indigo/40 blur-xl rounded-xl group-hover:bg-indigo/60 transition" />
-          <img src={Icon} alt="Throb" className="size-14" />
+          <img src={Icon} alt="Throb" className="size-12" />
         </div>
       </Link>
 
@@ -170,7 +170,7 @@ const Navbar = () => {
         <button
           onClick={logout}
           title={user ? `Sair (${user.name})` : "Sair"}
-          className="group flex h-9 w-9 items-center justify-center rounded-lg border border-mediumGrey text-lightGrey/50 transition-colors hover:border-red-500/40 hover:text-red-400"
+          className="group flex h-9 w-9 items-center justify-center rounded-lg border border-mediumGrey text-lightGrey/50 transition-colors hover:border-red-500/40 hover:text-red-400 cursor-pointer"
         >
           <LuLogOut
             size={16}
