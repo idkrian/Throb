@@ -1,12 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
-import {
-  createTrainingSplitDay,
-  deleteTrainingSplitDay,
-  getTrainingSplitDays,
-  updateTrainingSplitDay,
-} from "@/api/training-split-day";
+import { getTrainingSplitDays } from "@/api/training-split-day";
 import { getAllWorkouts } from "@/api/workout";
+import { useSwapSplit } from "@/hooks/useSwapSplit";
 import type {
   TrainingSplitDayEntry,
   TrainingSplitDayMap,
@@ -39,15 +35,12 @@ const Calendar = () => {
   const [openSession, setOpenSession] = useState<WorkoutSessionDto | null>(
     null,
   );
-  const [swapTarget, setSwapTarget] = useState<{
-    date: Date;
-    dayName: string;
-    dayNumber: number;
-    entry?: TrainingSplitDayEntry;
-  } | null>(null);
 
   const refreshSchedule = () => getTrainingSplitDays().then(setSplitsByDay);
   const refreshSessions = () => getAllWorkouts().then(setSessions);
+
+  const { swapTarget, openSwap, closeSwap, handleAssign, handleRemove } =
+    useSwapSplit(refreshSchedule);
 
   useEffect(() => {
     refreshSchedule();
@@ -127,30 +120,7 @@ const Calendar = () => {
       navigate(`/workout/${entry.trainingSplit.id}`);
       return;
     }
-    setSwapTarget({ date, dayName, dayNumber, entry });
-  };
-
-  const handleAssign = async (trainingSplitId: number, restDay: boolean) => {
-    if (!swapTarget) return;
-    const { dayNumber, entry } = swapTarget;
-    if (entry) {
-      await updateTrainingSplitDay(entry.id, { trainingSplitId, restDay });
-    } else {
-      await createTrainingSplitDay({
-        dayOfWeek: dayNumber,
-        trainingSplitId,
-        restDay,
-      });
-    }
-    await refreshSchedule();
-    setSwapTarget(null);
-  };
-
-  const handleRemove = async () => {
-    if (!swapTarget?.entry) return;
-    await deleteTrainingSplitDay(swapTarget.entry.id);
-    await refreshSchedule();
-    setSwapTarget(null);
+    openSwap({ date, dayName, dayNumber, entry });
   };
 
   const startTodayWorkout = () => {
@@ -205,7 +175,7 @@ const Calendar = () => {
                   )
                 }
                 onEdit={() =>
-                  setSwapTarget({
+                  openSwap({
                     date: day.date,
                     dayName: day.dayName,
                     dayNumber: day.dayNumber,
@@ -230,7 +200,7 @@ const Calendar = () => {
           date={swapTarget.date}
           dayName={swapTarget.dayName}
           currentEntry={swapTarget.entry}
-          onClose={() => setSwapTarget(null)}
+          onClose={closeSwap}
           onAssign={handleAssign}
           onRemove={handleRemove}
         />

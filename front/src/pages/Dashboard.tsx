@@ -4,12 +4,15 @@ import TrainingSplitCard from "../components/TrainingSplitCard";
 import Button from "@/components/ui/Button";
 import { getTrainingSplitDays } from "@/api/training-split-day";
 import type { TrainingSplitDayMap } from "@/dtos/training-split-day.dto";
+import { useSwapSplit } from "@/hooks/useSwapSplit";
 import MuscleHeatmap from "@/components/analytics/MuscleHeatmap";
 import PeriodSelector from "@/components/analytics/PeriodSelector";
 import WorkoutStatsCards from "@/components/charts/WorkoutStatsCards";
 import MuscleGroupRadarChart from "@/components/charts/MuscleGroupRadarChart";
 import WorkoutFrequencyChart from "@/components/charts/WorkoutFrequencyChart";
 import type { MuscleStatsPeriod } from "@/api/workout";
+import { LuPencil } from "react-icons/lu";
+import SwapSplitModal from "@/components/calendar/SwapSplitModal";
 
 const Dashboard = () => {
   const [trainingSplitByDay, setTrainingSplitByDay] =
@@ -21,9 +24,23 @@ const Dashboard = () => {
   const todaySplit =
     todayEntry && !todayEntry.restDay ? todayEntry.trainingSplit : undefined;
 
-  useEffect(() => {
+  const refreshSchedule = () =>
     getTrainingSplitDays().then(setTrainingSplitByDay);
+
+  const { swapTarget, openSwap, closeSwap, handleAssign, handleRemove } =
+    useSwapSplit(refreshSchedule);
+
+  useEffect(() => {
+    refreshSchedule();
   }, []);
+
+  const openTodaySwap = () =>
+    openSwap({
+      date: new Date(),
+      dayName: new Date().toLocaleDateString("pt-BR", { weekday: "long" }),
+      dayNumber: todayNumber,
+      entry: todayEntry,
+    });
 
   return (
     <div className="flex flex-col w-full h-full gap-3 overflow-hidden">
@@ -51,10 +68,22 @@ const Dashboard = () => {
                 split={todaySplit}
                 hideActions
               />
-              <Button
-                label="Start Workout"
-                onClick={() => navigate(`/workout/${todaySplit.id}`)}
-              />
+              <div className="flex w-full gap-2">
+                <Button
+                  fullWidth
+                  label="Start Workout"
+                  onClick={() => navigate(`/workout/${todaySplit.id}`)}
+                />
+                <button
+                  type="button"
+                  onClick={openTodaySwap}
+                  title="Editar treino"
+                  aria-label="Editar treino"
+                  className="flex items-center justify-center h-full w-12 shrink-0 rounded-md bg-darkGrey/60 hover:bg-darkGrey text-white/70 hover:text-white transition cursor-pointer"
+                >
+                  <LuPencil size={14} />
+                </button>
+              </div>
             </>
           ) : (
             <div className="flex flex-col items-center justify-center flex-1 gap-2">
@@ -67,6 +96,18 @@ const Dashboard = () => {
           )}
         </div>
       </div>
+
+      {swapTarget && (
+        <SwapSplitModal
+          open
+          date={swapTarget.date}
+          dayName={swapTarget.dayName}
+          currentEntry={swapTarget.entry}
+          onClose={closeSwap}
+          onAssign={handleAssign}
+          onRemove={handleRemove}
+        />
+      )}
     </div>
   );
 };

@@ -16,3 +16,10 @@ export interface TrainingSplitDayEntry {
 }
 
 export type TrainingSplitDayMap = Record<number, TrainingSplitDayEntry>;
+
+export interface SwapTarget {
+  date: Date;
+  dayName: string;
+  dayNumber: number;
+  entry?: TrainingSplitDayEntry;
+}
