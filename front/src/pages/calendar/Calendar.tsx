@@ -204,6 +204,14 @@ const Calendar = () => {
                     status,
                   )
                 }
+                onEdit={() =>
+                  setSwapTarget({
+                    date: day.date,
+                    dayName: day.dayName,
+                    dayNumber: day.dayNumber,
+                    entry,
+                  })
+                }
               />
             );
           })}

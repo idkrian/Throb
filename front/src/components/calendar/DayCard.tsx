@@ -1,6 +1,7 @@
 import {
   LuCheck,
   LuMoon,
+  LuPencil,
   LuPlay,
   LuPlus,
   LuTriangleAlert,
@@ -30,6 +31,7 @@ interface DayCardProps {
   entry?: TrainingSplitDayEntry;
   session?: WorkoutSessionDto;
   onClick: () => void;
+  onEdit?: () => void;
 }
 
 const statusStyles: Record<DayStatus, string> = {
@@ -74,6 +76,7 @@ const DayCard = ({
   entry,
   session,
   onClick,
+  onEdit,
 }: DayCardProps) => {
   const split = entry?.trainingSplit;
   const summary = split ? summarizeSplit(split) : null;
@@ -157,9 +160,32 @@ const DayCard = ({
             )}
 
             {status === "today" && (
-              <div className="flex items-center justify-center gap-1 mt-auto h-7 rounded-md bg-indigo group-hover:bg-darkIndigo text-white text-xs font-semibold transition">
-                <LuPlay size={11} />
-                Start
+              <div className="flex items-center gap-1 mt-auto">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onClick();
+                  }}
+                  className="flex flex-1 items-center justify-center gap-1 h-7 rounded-md bg-indigo hover:bg-darkIndigo text-white text-xs font-semibold transition"
+                >
+                  <LuPlay size={11} />
+                  Start
+                </button>
+                {onEdit && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit();
+                    }}
+                    title="Editar treino"
+                    aria-label="Editar treino"
+                    className="flex items-center justify-center h-7 w-7 shrink-0 rounded-md bg-darkGrey/60 hover:bg-darkGrey text-white/70 hover:text-white transition"
+                  >
+                    <LuPencil size={12} />
+                  </button>
+                )}
               </div>
             )}
 
