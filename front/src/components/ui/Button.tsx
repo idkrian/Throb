@@ -20,7 +20,7 @@ const Button = ({ label, onClick, loading, color, fullWidth }: ButtonProps) => {
 
   return (
     <button
-      className={`flex px-3 justify-center items-center cursor-pointer min-w-24 h-10 text-center text-white font-semibold ${colorClass} ${fullWidthClass} rounded-md hover:bg-darkIndigo  transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110`}
+      className={`flex px-3 justify-center items-center cursor-pointer min-w-24 h-10 text-center text-white font-semibold ${colorClass} ${fullWidthClass} rounded-md transform-gpu will-change-transform transition duration-300 ease-in-out hover:-translate-y-0.5 hover:brightness-110`}
       onClick={onClick}
     >
       <div className="w-full h-full flex justify-center items-center">

@@ -47,8 +47,8 @@ const Dashboard = () => {
               </p>
               <TrainingSplitCard
                 fullHeight
+                fullWidth
                 split={todaySplit}
-                width={280}
                 hideActions
               />
               <Button

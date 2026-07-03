@@ -18,6 +18,7 @@ interface TrainingSplitCardProps {
   onDelete?: (split: TrainingSplitDto) => void;
   hideActions?: boolean;
   fullHeight?: boolean;
+  fullWidth?: boolean;
 }
 
 const TrainingSplitCard = ({
@@ -26,6 +27,7 @@ const TrainingSplitCard = ({
   onDelete,
   hideActions = false,
   fullHeight = false,
+  fullWidth = false,
 }: TrainingSplitCardProps) => {
   const MAX_EXERCISES_VISIBLE = fullHeight ? 12 : 4;
   const navigate = useNavigate();
@@ -56,7 +58,13 @@ const TrainingSplitCard = ({
         }
       }}
       className={`group flex flex-col rounded-xl bg-mediumGrey border border-transparent ${accent.ring} shadow-lg cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl overflow-hidden text-left ${fullHeight ? "h-full" : ""}`}
-      style={width ? { width: `${width}px` } : undefined}
+      style={
+        fullWidth
+          ? { width: "100%" }
+          : width
+            ? { width: `${width}px` }
+            : undefined
+      }
     >
       <div
         className={`relative bg-linear-to-br ${accent.gradient} px-4 py-3 flex items-center gap-3`}
