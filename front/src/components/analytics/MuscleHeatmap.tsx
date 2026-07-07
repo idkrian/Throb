@@ -6,7 +6,7 @@ import {
   type NormalizedMuscleStat,
 } from "@/utils/muscle-highlighter-map";
 
-const HEATMAP_COLORS = ["#f97316", "#ef4444", "#dc2626", "#b91c1c", "#7f1d1d"];
+const HEATMAP_COLORS = ["#3b82f6", "#22d3ee", "#22c55e", "#f59e0b", "#ef4444"];
 
 type MuscleHeatmapProps = {
   period: MuscleStatsPeriod;
@@ -28,7 +28,9 @@ const MuscleHeatmap = ({ period }: MuscleHeatmapProps) => {
       {data.length === 0 ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-2">
           <p className="text-3xl opacity-60">🫥</p>
-          <p className="text-lightGrey text-sm">No workout data for this period</p>
+          <p className="text-lightGrey text-sm">
+            No workout data for this period
+          </p>
         </div>
       ) : (
         <>
@@ -49,12 +51,16 @@ const MuscleHeatmap = ({ period }: MuscleHeatmapProps) => {
           </div>
           <div className="flex items-center gap-2">
             <span className="text-xs text-lightGrey">Undertrained</span>
-            {HEATMAP_COLORS.map((color) => (
-              <div
-                key={color}
-                className="w-3 h-3 rounded-sm"
-                style={{ backgroundColor: color }}
-              />
+            {HEATMAP_COLORS.map((color, index) => (
+              <div key={color} className="flex flex-col items-center gap-1">
+                <div
+                  className="w-3 h-3 rounded-sm"
+                  style={{ backgroundColor: color }}
+                />
+                {index === 2 && (
+                  <span className="text-[10px] text-lightGrey">Optimal</span>
+                )}
+              </div>
             ))}
             <span className="text-xs text-lightGrey">Overtrained</span>
           </div>

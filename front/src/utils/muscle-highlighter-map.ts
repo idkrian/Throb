@@ -62,7 +62,7 @@ const WEEKS_PER_PERIOD: Record<MuscleStatsPeriod, number> = {
 function weeklyAvgToZone(weeklyAvg: number): number {
   if (weeklyAvg < 6) return 1;
   if (weeklyAvg < 10) return 2;
-  if (weeklyAvg < 20) return 3;
+  if (weeklyAvg < 18) return 3;
   if (weeklyAvg < 23) return 4;
   return 5;
 }
