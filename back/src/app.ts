@@ -7,16 +7,17 @@ import trainingSplitDayRouter from "./modules/training-split-day/training-split-
 import workoutRouter from "./modules/workout/workout.router.js";
 import userRouter from "./modules/user/user.router.js";
 import authRouter from "./modules/auth/auth.router.js";
+import { authenticate } from "./shared/middlewares/authenticate.js";
 
 const app = express();
 app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
-app.use("/exercise", exerciseRouter);
-app.use("/training-split", trainingSplitRouter);
-app.use("/training-split-day", trainingSplitDayRouter);
-app.use("/workout", workoutRouter);
-app.use("/user", userRouter);
+app.use("/exercise", authenticate, exerciseRouter);
+app.use("/training-split", authenticate, trainingSplitRouter);
+app.use("/training-split-day", authenticate, trainingSplitDayRouter);
+app.use("/workout", authenticate, workoutRouter);
+app.use("/user", authenticate, userRouter);
 app.use("/auth", authRouter);
 
 app.use(requestErrorHandlerMiddleware);
