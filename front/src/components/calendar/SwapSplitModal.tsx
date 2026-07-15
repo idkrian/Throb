@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { LuMoon, LuTrash2, LuX } from "react-icons/lu";
 import type { TrainingSplitDto } from "@/dtos/training-splits.dto";
 import type { TrainingSplitDayEntry } from "@/dtos/training-split-day.dto";
-import { getAllTrainingSplits } from "@/api/training-split";
+import { getAllUserTrainingSplits } from "@/api/training-split";
 
 interface SwapSplitModalProps {
   open: boolean;
@@ -30,7 +30,7 @@ const SwapSplitModal = ({
   useEffect(() => {
     if (!open) return;
     setLoading(true);
-    getAllTrainingSplits()
+    getAllUserTrainingSplits()
       .then(setSplits)
       .finally(() => setLoading(false));
   }, [open]);
@@ -50,8 +50,7 @@ const SwapSplitModal = ({
     setSaving(true);
     try {
       // assign as rest day; backend still requires a trainingSplitId, use current or first available
-      const splitId =
-        currentEntry?.trainingSplit.id ?? splits[0]?.id;
+      const splitId = currentEntry?.trainingSplit.id ?? splits[0]?.id;
       if (splitId == null) return;
       await onAssign(splitId, true);
     } finally {

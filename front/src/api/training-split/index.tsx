@@ -5,10 +5,10 @@ import type {
 } from "@/dtos/training-splits.dto";
 const BASE_URL = `${import.meta.env.VITE_API_BASE}/training-split`;
 
-export const getAllUserTrainingSplits = async (
-  userId: number,
-): Promise<TrainingSplitDto[]> => {
-  const response = await axios.get(`${BASE_URL}/user/${userId}`);
+export const getAllUserTrainingSplits = async (): Promise<
+  TrainingSplitDto[]
+> => {
+  const response = await axios.get(BASE_URL);
   return response.data.data;
 };
 

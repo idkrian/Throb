@@ -25,7 +25,7 @@ const TrainingSplits = () => {
   useEffect(() => {
     const fetchTrainingSplits = async () => {
       try {
-        const data = await getAllUserTrainingSplits(1);
+        const data = await getAllUserTrainingSplits();
         setTrainingSplits(data);
       } finally {
         setLoading(false);
