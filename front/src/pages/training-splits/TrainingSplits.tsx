@@ -5,7 +5,7 @@ import TrainingSplitCardSkeleton from "../../components/TrainingSplitCardSkeleto
 import ConfirmModal from "../../components/modals/ConfirmModal";
 import {
   deleteTrainingSplit,
-  getAllTrainingSplits,
+  getAllUserTrainingSplits,
 } from "@/api/training-split";
 import { FaPlus } from "react-icons/fa";
 import { LuClipboardList } from "react-icons/lu";
@@ -25,7 +25,7 @@ const TrainingSplits = () => {
   useEffect(() => {
     const fetchTrainingSplits = async () => {
       try {
-        const data = await getAllTrainingSplits();
+        const data = await getAllUserTrainingSplits(1);
         setTrainingSplits(data);
       } finally {
         setLoading(false);
