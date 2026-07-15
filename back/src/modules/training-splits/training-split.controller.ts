@@ -6,82 +6,108 @@ import { trainingSplitRepository } from "./training-split.repository.js";
 export const trainingSplitController = {
   async createTrainingSplit(req: Request, res: Response, next: NextFunction) {
     try {
+      const userId = Number(req.userId);
       const trainingSplit = await trainingSplitService.createTrainingSplit(
-        req.body
+        userId,
+        req.body,
       );
 
       requestSuccessHandler(
         res,
         trainingSplit,
-        "Training Split created succesfully!"
+        "Training Split created succesfully!",
       );
     } catch (error) {
       next(error);
     }
   },
 
-  async getAllTrainingSplits(req: Request, res: Response, next: NextFunction) {
+  async getAllUserTrainingSplits(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
-      const trainingSplits = await trainingSplitService.getAllTrainingSplits();
+      const userId = Number(req.userId);
+      const trainingSplits =
+        await trainingSplitService.getAllUserTrainingSplits(userId);
 
       requestSuccessHandler(
         res,
         trainingSplits,
-        "Training Splits retrieved successfully!"
+        "Training Splits retrieved successfully!",
       );
     } catch (error) {
       next(error);
     }
   },
 
-  async getTrainingSplitById(req: Request, res: Response, next: NextFunction) {
+  async getUserTrainingSplitById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
+      const userId = Number(req.userId);
       const trainingSplitId = Number(req.params.id);
-      const trainingSplit = await trainingSplitService.getTrainingSplitById(
-        trainingSplitId
+      const trainingSplit = await trainingSplitService.getUserTrainingSplitById(
+        userId,
+        trainingSplitId,
       );
 
       requestSuccessHandler(
         res,
         trainingSplit,
-        "Training Splits retrieved successfully!"
+        "Training Splits retrieved successfully!",
       );
     } catch (error) {
       next(error);
     }
   },
 
-  async updateTrainingSplit(req: Request, res: Response, next: NextFunction) {
+  async updateUserTrainingSplit(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
+      const userId = Number(req.userId);
       const trainingSplitId = Number(req.params.id);
-      const trainingSplit = await trainingSplitService.updateTrainingSplit(
+      const trainingSplit = await trainingSplitService.updateUserTrainingSplit(
+        userId,
         trainingSplitId,
         req.body,
-        res
+        res,
       );
 
       requestSuccessHandler(
         res,
         trainingSplit,
-        "Training Split Updated Succesfully!"
+        "Training Split Updated Succesfully!",
       );
     } catch (error) {
       next(error);
     }
   },
 
-  async deleteTrainingSplit(req: Request, res: Response, next: NextFunction) {
+  async deleteUserTrainingSplit(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
+      const userId = Number(req.userId);
       const trainingSplitId = Number(req.params.id);
-      const trainingSplit = await trainingSplitService.deleteTrainingSplit(
+      const trainingSplit = await trainingSplitService.deleteUserTrainingSplit(
+        userId,
         trainingSplitId,
-        res
+        res,
       );
 
       requestSuccessHandler(
         res,
         trainingSplit,
-        "Training Split Deleted Succesfully!"
+        "Training Split Deleted Succesfully!",
       );
     } catch (error) {
       next(error);

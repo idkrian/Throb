@@ -24,7 +24,7 @@ export const authenticate = (
 
     const decoded = jwt.verify(token!, env.JWT_SECRET);
 
-    (req as any).userId = (decoded as { userId: string }).userId;
+    req.userId = (decoded as { userId: string }).userId;
 
     next();
   } catch (error) {

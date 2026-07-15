@@ -11,12 +11,18 @@ trainingSplitRouter.post(
   trainingSplitController.createTrainingSplit
 );
 
-trainingSplitRouter.get("/", trainingSplitController.getAllTrainingSplits);
+trainingSplitRouter.get("/", trainingSplitController.getAllUserTrainingSplits);
 
-trainingSplitRouter.get("/:id", trainingSplitController.getTrainingSplitById);
+trainingSplitRouter.get(
+  "/:id",
+  trainingSplitController.getUserTrainingSplitById,
+);
 
-trainingSplitRouter.put("/:id", trainingSplitController.updateTrainingSplit);
+trainingSplitRouter.put("/:id", trainingSplitController.updateUserTrainingSplit);
 
-trainingSplitRouter.delete("/:id", trainingSplitController.deleteTrainingSplit);
+trainingSplitRouter.delete(
+  "/:id",
+  trainingSplitController.deleteUserTrainingSplit,
+);
 
 export default trainingSplitRouter;

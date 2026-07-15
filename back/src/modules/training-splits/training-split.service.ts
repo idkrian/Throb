@@ -7,38 +7,53 @@ import type {
 } from "./training-split.scheme.js";
 
 export const trainingSplitService = {
-  async createTrainingSplit(data: CreateTrainingSplitRequestDto) {
-    return await trainingSplitRepository.createTrainingSplit(data);
+  async createTrainingSplit(
+    userId: number,
+    data: CreateTrainingSplitRequestDto,
+  ) {
+    return await trainingSplitRepository.createTrainingSplit(userId, data);
   },
 
-  async getAllTrainingSplits() {
-    return await trainingSplitRepository.getAllTrainingSplits();
+  async getAllUserTrainingSplits(userId: number) {
+    return await trainingSplitRepository.getAllUserTrainingSplits(userId);
   },
 
-  async getTrainingSplitById(trainingSplitId: number) {
-    return await trainingSplitRepository.getTrainingSplitById(trainingSplitId);
+  async getUserTrainingSplitById(userId: number, trainingSplitId: number) {
+    return await trainingSplitRepository.getUserTrainingSplitById(
+      userId,
+      trainingSplitId,
+    );
   },
 
-  async updateTrainingSplit(
+  async updateUserTrainingSplit(
+    userId: number,
     trainingSplitId: number,
     data: UpdateTrainingSplitRequestDto,
-    res: Response
+    res: Response,
   ) {
     if (!trainingSplitId) {
       requestErrorHandler(res, "Training Split ID not informed!");
     }
 
-    return await trainingSplitRepository.updateTrainingSplit(
+    return await trainingSplitRepository.updateUserTrainingSplit(
+      userId,
       trainingSplitId,
-      data
+      data,
     );
   },
 
-  async deleteTrainingSplit(trainingSplitId: number, res: Response) {
+  async deleteUserTrainingSplit(
+    userId: number,
+    trainingSplitId: number,
+    res: Response,
+  ) {
     if (!trainingSplitId) {
       requestErrorHandler(res, "Training Split ID not informed!");
     }
 
-    return await trainingSplitRepository.deleteTrainingSplit(trainingSplitId);
+    return await trainingSplitRepository.deleteUserTrainingSplit(
+      userId,
+      trainingSplitId,
+    );
   },
 };

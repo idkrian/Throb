@@ -10,8 +10,9 @@ import type { MuscleStatsPeriod } from "./workout.scheme.js";
 export const workoutController = {
   async createWorkout(req: Request, res: Response, next: NextFunction) {
     try {
+      const userId = Number(req.userId);
       const data = req.body;
-      const workout = await workoutService.createWorkout(data);
+      const workout = await workoutService.createWorkout(userId, data);
       requestSuccessHandler(res, workout, "Workout created successfully!");
     } catch (error) {
       next(error);
@@ -20,7 +21,8 @@ export const workoutController = {
 
   async getAllWorkouts(req: Request, res: Response, next: NextFunction) {
     try {
-      const workouts = await workoutService.getAllWorkouts();
+      const userId = Number(req.userId);
+      const workouts = await workoutService.getAllWorkouts(userId);
       requestSuccessHandler(res, workouts, "Workouts retrieved successfully!");
     } catch (error) {
       next(error);
@@ -29,8 +31,9 @@ export const workoutController = {
 
   async getWorkoutById(req: Request, res: Response, next: NextFunction) {
     try {
+      const userId = Number(req.userId);
       const id = Number(req.params.id);
-      const workout = await workoutService.getWorkoutById(id);
+      const workout = await workoutService.getWorkoutById(userId, id);
 
       if (!workout) {
         return requestErrorHandler(
@@ -48,8 +51,9 @@ export const workoutController = {
 
   async getMuscleStats(req: Request, res: Response, next: NextFunction) {
     try {
+      const userId = Number(req.userId);
       const period = req.params.period as MuscleStatsPeriod;
-      const stats = await workoutService.getMuscleStats({ period });
+      const stats = await workoutService.getMuscleStats(userId, { period });
       requestSuccessHandler(res, stats, "Muscle stats retrieved successfully!");
     } catch (error) {
       next(error);
@@ -58,8 +62,9 @@ export const workoutController = {
 
   async getMuscleGroupStats(req: Request, res: Response, next: NextFunction) {
     try {
+      const userId = Number(req.userId);
       const period = req.params.period as MuscleStatsPeriod;
-      const stats = await workoutService.getMuscleGroupStats({ period });
+      const stats = await workoutService.getMuscleGroupStats(userId, { period });
       requestSuccessHandler(
         res,
         stats,
@@ -72,7 +77,8 @@ export const workoutController = {
 
   async getSummaryStats(req: Request, res: Response, next: NextFunction) {
     try {
-      const stats = await workoutService.getSummaryStats();
+      const userId = Number(req.userId);
+      const stats = await workoutService.getSummaryStats(userId);
       requestSuccessHandler(
         res,
         stats,

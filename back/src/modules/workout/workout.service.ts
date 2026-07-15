@@ -22,29 +22,33 @@ function resolveStartDate(period: GetMuscleStatsRequestDto["period"]): Date {
 }
 
 export const workoutService = {
-  async createWorkout(data: CreateWorkoutRequestDto) {
-    return await workoutRepository.createWorkout(data);
+  async createWorkout(userId: number, data: CreateWorkoutRequestDto) {
+    return await workoutRepository.createWorkout(userId, data);
   },
 
-  async getAllWorkouts() {
-    return await workoutRepository.getAllWorkouts();
+  async getAllWorkouts(userId: number) {
+    return await workoutRepository.getAllWorkouts(userId);
   },
 
-  async getWorkoutById(id: number) {
-    return await workoutRepository.getWorkoutById(id);
+  async getWorkoutById(userId: number, id: number) {
+    return await workoutRepository.getWorkoutById(userId, id);
   },
 
-  async getMuscleStats(data: GetMuscleStatsRequestDto) {
-    return await workoutRepository.getMuscleStats(resolveStartDate(data.period));
-  },
-
-  async getMuscleGroupStats(data: GetMuscleStatsRequestDto) {
-    return await workoutRepository.getMuscleGroupStats(
+  async getMuscleStats(userId: number, data: GetMuscleStatsRequestDto) {
+    return await workoutRepository.getMuscleStats(
+      userId,
       resolveStartDate(data.period),
     );
   },
 
-  async getSummaryStats() {
-    return await workoutRepository.getSummaryStats();
+  async getMuscleGroupStats(userId: number, data: GetMuscleStatsRequestDto) {
+    return await workoutRepository.getMuscleGroupStats(
+      userId,
+      resolveStartDate(data.period),
+    );
+  },
+
+  async getSummaryStats(userId: number) {
+    return await workoutRepository.getSummaryStats(userId);
   },
 };

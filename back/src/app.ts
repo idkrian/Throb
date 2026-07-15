@@ -17,7 +17,7 @@ app.use("/exercise", authenticate, exerciseRouter);
 app.use("/training-split", authenticate, trainingSplitRouter);
 app.use("/training-split-day", authenticate, trainingSplitDayRouter);
 app.use("/workout", authenticate, workoutRouter);
-app.use("/user", authenticate, userRouter);
+app.use("/user", userRouter);
 app.use("/auth", authRouter);
 
 app.use(requestErrorHandlerMiddleware);

@@ -8,31 +8,38 @@ import type {
 import type { ExerciseStatsDto } from "./exercise.model.js";
 
 export const exerciseService = {
-  async createExercise(data: CreateExerciseRequestDto) {
-    return await exerciseRepository.createExercise(data);
+  async createExercise(userId: number, data: CreateExerciseRequestDto) {
+    return await exerciseRepository.createExercise(userId, data);
   },
 
-  async getAllExercises() {
-    return await exerciseRepository.getAllExercises();
+  async getAllExercises(userId: number) {
+    return await exerciseRepository.getAllExercises(userId);
   },
 
-  async getAllExercisesByMuscleGroup() {
-    return await exerciseRepository.getAllExercisesByMuscleGroup();
+  async getAllExercisesByMuscleGroup(userId: number) {
+    return await exerciseRepository.getAllExercisesByMuscleGroup(userId);
   },
 
-  async updateExercise(exerciseId: number, data: UpdateExerciseRequestDto) {
-    return await exerciseRepository.updateExercise(exerciseId, data);
+  async updateExercise(
+    userId: number,
+    exerciseId: number,
+    data: UpdateExerciseRequestDto,
+  ) {
+    return await exerciseRepository.updateExercise(userId, exerciseId, data);
   },
 
-  async deleteExercise(exerciseId: number, res: Response) {
+  async deleteExercise(userId: number, exerciseId: number, res: Response) {
     if (!exerciseId) {
       return requestErrorHandler(res, "Exercise ID not informed!");
     }
-    return await exerciseRepository.deleteExercise(exerciseId);
+    return await exerciseRepository.deleteExercise(userId, exerciseId);
   },
 
-  async getExerciseStats(exerciseId: number): Promise<ExerciseStatsDto> {
-    const logs = await exerciseRepository.getExerciseLogs(exerciseId);
+  async getExerciseStats(
+    userId: number,
+    exerciseId: number,
+  ): Promise<ExerciseStatsDto> {
+    const logs = await exerciseRepository.getExerciseLogs(userId, exerciseId);
 
     if (logs.length === 0) {
       return { personalBest: null, lastPerformed: null, history: [] };
@@ -44,14 +51,14 @@ export const exerciseService = {
 
     const personalBest = allSets.reduce<ExerciseStatsDto["personalBest"]>(
       (best, set) => {
-        if (!best) return { weight: set.weight, reps: set.reps };
-        const currentWeight = set.weight ?? 0;
+        const currentWeight = Number(set.weight);
+        if (!best) return { weight: currentWeight, reps: set.reps };
         const bestWeight = best.weight ?? 0;
         if (
           currentWeight > bestWeight ||
           (currentWeight === bestWeight && set.reps > best.reps)
         ) {
-          return { weight: set.weight, reps: set.reps };
+          return { weight: currentWeight, reps: set.reps };
         }
         return best;
       },
@@ -63,7 +70,7 @@ export const exerciseService = {
       sets: log.workoutSets.map((s) => ({
         setNumber: s.setNumber,
         reps: s.reps,
-        weight: s.weight,
+        weight: Number(s.weight),
       })),
     }));
 

@@ -8,7 +8,8 @@ import {
 export const exerciseController = {
   async createExercise(req: Request, res: Response, next: NextFunction) {
     try {
-      const exercise = await exerciseService.createExercise(req.body);
+      const userId = Number(req.userId);
+      const exercise = await exerciseService.createExercise(userId, req.body);
       requestSuccessHandler(res, exercise, "Exercise created successfully!");
     } catch (error) {
       next(error);
@@ -17,7 +18,8 @@ export const exerciseController = {
 
   async getAllExercises(req: Request, res: Response, next: NextFunction) {
     try {
-      const exercises = await exerciseService.getAllExercises();
+      const userId = Number(req.userId);
+      const exercises = await exerciseService.getAllExercises(userId);
 
       requestSuccessHandler(
         res,
@@ -35,7 +37,9 @@ export const exerciseController = {
     next: NextFunction,
   ) {
     try {
-      const exercises = await exerciseService.getAllExercisesByMuscleGroup();
+      const userId = Number(req.userId);
+      const exercises =
+        await exerciseService.getAllExercisesByMuscleGroup(userId);
 
       requestSuccessHandler(
         res,
@@ -49,9 +53,11 @@ export const exerciseController = {
 
   async updateExercise(req: Request, res: Response, next: NextFunction) {
     try {
+      const userId = Number(req.userId);
       const exerciseId = Number(req.params.id);
 
       const exercise = await exerciseService.updateExercise(
+        userId,
         exerciseId,
         req.body,
       );
@@ -64,9 +70,14 @@ export const exerciseController = {
 
   async deleteExercise(req: Request, res: Response, next: NextFunction) {
     try {
+      const userId = Number(req.userId);
       const exerciseId = Number(req.params.id);
 
-      const exercise = await exerciseService.deleteExercise(exerciseId, res);
+      const exercise = await exerciseService.deleteExercise(
+        userId,
+        exerciseId,
+        res,
+      );
 
       requestSuccessHandler(res, exercise, "Exercise deleted!");
     } catch (error) {
@@ -76,9 +87,10 @@ export const exerciseController = {
 
   async getExerciseStats(req: Request, res: Response, next: NextFunction) {
     try {
+      const userId = Number(req.userId);
       const exerciseId = Number(req.params.id);
 
-      const stats = await exerciseService.getExerciseStats(exerciseId);
+      const stats = await exerciseService.getExerciseStats(userId, exerciseId);
 
       requestSuccessHandler(res, stats, "Exercise stats retrieved successfully!");
     } catch (error) {

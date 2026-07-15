@@ -3,7 +3,8 @@ import z from "zod";
 const workoutSetInputSchema = z.object({
   setNumber: z.number().int().positive(),
   reps: z.number().int().positive(),
-  weight: z.number().int().positive(),
+  weight: z.number().positive(),
+  rpe: z.number().min(0).max(10),
 });
 
 const workoutExerciseInputSchema = z.object({

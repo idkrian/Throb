@@ -4,6 +4,7 @@ interface WorkoutSet {
   setNumber: number;
   reps: number;
   weight: number;
+  rpe: number;
 }
 
 interface WorkoutExercisePayload {

@@ -13,9 +13,10 @@ const workoutWithDetails = {
 };
 
 export const workoutRepository = {
-  async createWorkout(data: CreateWorkoutRequestDto) {
+  async createWorkout(userId: number, data: CreateWorkoutRequestDto) {
     return await prisma.workout_sessions.create({
       data: {
+        userId,
         trainingSplitId: data.id,
         durationSeconds: data.durationSeconds,
         workoutExerciseLogs: {
@@ -26,6 +27,7 @@ export const workoutRepository = {
                 setNumber: set.setNumber,
                 reps: set.reps,
                 weight: set.weight,
+                rpe: set.rpe,
               })),
             },
           })),
@@ -34,21 +36,22 @@ export const workoutRepository = {
     });
   },
 
-  async getAllWorkouts() {
+  async getAllWorkouts(userId: number) {
     return await prisma.workout_sessions.findMany({
+      where: { userId },
       orderBy: { createdAt: "desc" },
       include: workoutWithDetails,
     });
   },
 
-  async getWorkoutById(id: number) {
+  async getWorkoutById(userId: number, id: number) {
     return await prisma.workout_sessions.findUnique({
-      where: { id },
+      where: { id, userId },
       include: workoutWithDetails,
     });
   },
 
-  async getMuscleStats(startDate: Date) {
+  async getMuscleStats(userId: number, startDate: Date) {
     const result = await prisma.$queryRaw<
       { muscle: string; totalSets: bigint }[]
     >`
@@ -57,7 +60,8 @@ export const workoutRepository = {
       JOIN workout_exercise_logs wel ON wel."workoutSessionId" = wsess.id
       JOIN exercises e ON e.id = wel."exerciseId"
       JOIN workout_sets ws ON ws."workoutExerciseLogId" = wel.id
-      WHERE wsess."createdAt" BETWEEN ${startDate} AND NOW()
+      WHERE wsess."userId" = ${userId}
+        AND wsess."createdAt" BETWEEN ${startDate} AND NOW()
       GROUP BY e."muscle"
       ORDER BY "totalSets" DESC
     `;
@@ -68,7 +72,7 @@ export const workoutRepository = {
     }));
   },
 
-  async getMuscleGroupStats(startDate: Date) {
+  async getMuscleGroupStats(userId: number, startDate: Date) {
     const result = await prisma.$queryRaw<
       { muscleGroup: string; totalSets: bigint }[]
     >`
@@ -77,7 +81,8 @@ export const workoutRepository = {
       JOIN workout_exercise_logs wel ON wel."workoutSessionId" = wsess.id
       JOIN exercises e ON e.id = wel."exerciseId"
       JOIN workout_sets ws ON ws."workoutExerciseLogId" = wel.id
-      WHERE wsess."createdAt" BETWEEN ${startDate} AND NOW()
+      WHERE wsess."userId" = ${userId}
+        AND wsess."createdAt" BETWEEN ${startDate} AND NOW()
       GROUP BY e."muscleGroup"
       ORDER BY "totalSets" DESC
     `;
@@ -88,7 +93,7 @@ export const workoutRepository = {
     }));
   },
 
-  async getSummaryStats() {
+  async getSummaryStats(userId: number) {
     const now = new Date();
     const startOfWeek = new Date(now);
     startOfWeek.setDate(now.getDate() - now.getDay());
@@ -98,15 +103,16 @@ export const workoutRepository = {
 
     const [totalWorkouts, totalDuration, workoutsThisWeek, workoutsThisMonth] =
       await Promise.all([
-        prisma.workout_sessions.count(),
+        prisma.workout_sessions.count({ where: { userId } }),
         prisma.workout_sessions.aggregate({
           _sum: { durationSeconds: true },
+          where: { userId },
         }),
         prisma.workout_sessions.count({
-          where: { createdAt: { gte: startOfWeek } },
+          where: { userId, createdAt: { gte: startOfWeek } },
         }),
         prisma.workout_sessions.count({
-          where: { createdAt: { gte: startOfMonth } },
+          where: { userId, createdAt: { gte: startOfMonth } },
         }),
       ]);
 

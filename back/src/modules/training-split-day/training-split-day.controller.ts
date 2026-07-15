@@ -9,8 +9,9 @@ export const trainingSplitDayController = {
     next: NextFunction,
   ) {
     try {
+      const userId = Number(req.userId);
       const trainingSplitDay =
-        await trainingSplitDaysService.createTrainingSplitDay(req.body);
+        await trainingSplitDaysService.createTrainingSplitDay(userId, req.body);
 
       requestSuccessHandler(
         res,
@@ -28,8 +29,9 @@ export const trainingSplitDayController = {
     next: NextFunction,
   ) {
     try {
+      const userId = Number(req.userId);
       const trainingSplitDays =
-        await trainingSplitDaysService.getAllTrainingSplitDays();
+        await trainingSplitDaysService.getAllTrainingSplitDays(userId);
 
       requestSuccessHandler(
         res,
@@ -47,9 +49,14 @@ export const trainingSplitDayController = {
     next: NextFunction,
   ) {
     try {
+      const userId = Number(req.userId);
       const id = Number(req.params.id);
       const trainingSplitDay =
-        await trainingSplitDaysService.updateTrainingSplitDay(id, req.body);
+        await trainingSplitDaysService.updateTrainingSplitDay(
+          userId,
+          id,
+          req.body,
+        );
       requestSuccessHandler(
         res,
         trainingSplitDay,
@@ -66,8 +73,9 @@ export const trainingSplitDayController = {
     next: NextFunction,
   ) {
     try {
+      const userId = Number(req.userId);
       const id = Number(req.params.id);
-      await trainingSplitDaysService.deleteTrainingSplitDay(id);
+      await trainingSplitDaysService.deleteTrainingSplitDay(userId, id);
       requestSuccessHandler(
         res,
         null,

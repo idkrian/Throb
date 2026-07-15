@@ -5,22 +5,33 @@ import type {
 } from "./training-split-day.scheme.js";
 
 export const trainingSplitDaysService = {
-  async createTrainingSplitDay(data: CreateTrainingSplitDayRequestDto) {
-    return await trainingSplitDaysRepository.createTrainingSplitDay(data);
+  async createTrainingSplitDay(
+    userId: number,
+    data: CreateTrainingSplitDayRequestDto,
+  ) {
+    return await trainingSplitDaysRepository.createTrainingSplitDay(
+      userId,
+      data,
+    );
   },
 
-  async getAllTrainingSplitDays() {
-    return await trainingSplitDaysRepository.getAllTrainingSplitDays();
+  async getAllTrainingSplitDays(userId: number) {
+    return await trainingSplitDaysRepository.getAllTrainingSplitDays(userId);
   },
 
   async updateTrainingSplitDay(
+    userId: number,
     id: number,
     data: UpdateTrainingSplitDayRequestDto,
   ) {
-    return await trainingSplitDaysRepository.updateTrainingSplitDay(id, data);
+    return await trainingSplitDaysRepository.updateTrainingSplitDay(
+      userId,
+      id,
+      data,
+    );
   },
 
-  async deleteTrainingSplitDay(id: number) {
-    return await trainingSplitDaysRepository.deleteTrainingSplitDay(id);
+  async deleteTrainingSplitDay(userId: number, id: number) {
+    return await trainingSplitDaysRepository.deleteTrainingSplitDay(userId, id);
   },
 };

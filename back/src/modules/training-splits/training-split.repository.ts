@@ -1,4 +1,3 @@
-import { id } from "zod/locales";
 import { PrismaClient } from "../../../database/prisma/generated/prisma/index.js";
 import type {
   CreateTrainingSplitRequestDto,
@@ -8,10 +7,14 @@ import type {
 const prisma = new PrismaClient();
 
 export const trainingSplitRepository = {
-  async createTrainingSplit(data: CreateTrainingSplitRequestDto) {
+  async createTrainingSplit(
+    userId: number,
+    data: CreateTrainingSplitRequestDto,
+  ) {
     return await prisma.training_splits.create({
       data: {
         title: data.title,
+        userId,
         exercises: {
           create: data.exercises.map((ex) => ({
             exerciseId: ex.exerciseId,
@@ -25,25 +28,27 @@ export const trainingSplitRepository = {
     });
   },
 
-  async getAllTrainingSplits() {
+  async getAllUserTrainingSplits(userId: number) {
     return await prisma.training_splits.findMany({
+      where: { userId },
       include: { exercises: { include: { exercise: true } } },
     });
   },
 
-  async getTrainingSplitById(trainingSplitId: number) {
+  async getUserTrainingSplitById(userId: number, trainingSplitId: number) {
     return await prisma.training_splits.findUnique({
-      where: { id: trainingSplitId },
+      where: { id: trainingSplitId, userId },
       include: { exercises: { include: { exercise: true } } },
     });
   },
 
-  async updateTrainingSplit(
+  async updateUserTrainingSplit(
+    userId: number,
     trainingSplitId: number,
-    data: UpdateTrainingSplitRequestDto
+    data: UpdateTrainingSplitRequestDto,
   ) {
     return await prisma.training_splits.update({
-      where: { id: trainingSplitId },
+      where: { id: trainingSplitId, userId },
       data: {
         ...(data.title && { title: data.title }),
         ...(data.exercises && {
@@ -68,9 +73,9 @@ export const trainingSplitRepository = {
     });
   },
 
-  async deleteTrainingSplit(trainingSplitId: number) {
+  async deleteUserTrainingSplit(userId: number, trainingSplitId: number) {
     return await prisma.training_splits.delete({
-      where: { id: trainingSplitId },
+      where: { id: trainingSplitId, userId },
     });
   },
 };

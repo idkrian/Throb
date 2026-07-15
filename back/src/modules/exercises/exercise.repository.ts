@@ -6,22 +6,25 @@ import type {
 const prisma = new PrismaClient();
 
 export const exerciseRepository = {
-  async createExercise(data: CreateExerciseRequestDto) {
+  async createExercise(userId: number, data: CreateExerciseRequestDto) {
     return await prisma.exercises.create({
       data: {
         title: data.title,
         muscleGroup: data.muscleGroup,
         muscle: data.muscle,
         description: data.description ?? null,
+        userId,
       },
     });
   },
 
-  async getAllExercises() {
-    return await prisma.exercises.findMany();
+  async getAllExercises(userId: number) {
+    return await prisma.exercises.findMany({
+      where: { OR: [{ userId: null }, { userId }] },
+    });
   },
 
-  async getAllExercisesByMuscleGroup() {
+  async getAllExercisesByMuscleGroup(userId: number) {
     return await prisma.$queryRaw`
       SELECT
         "muscleGroup",
@@ -31,21 +34,31 @@ export const exerciseRepository = {
           'muscle', muscle
         )) AS items
       FROM "exercises"
+      WHERE "userId" IS NULL OR "userId" = ${userId}
       GROUP BY "muscleGroup"
     `;
   },
 
-  async updateExercise(exerciseId: number, data: UpdateExerciseRequestDto) {
-    return await prisma.exercises.update({ where: { id: exerciseId }, data });
+  async updateExercise(
+    userId: number,
+    exerciseId: number,
+    data: UpdateExerciseRequestDto,
+  ) {
+    return await prisma.exercises.update({
+      where: { id: exerciseId, userId },
+      data,
+    });
   },
 
-  async deleteExercise(exerciseId: number) {
-    return await prisma.exercises.delete({ where: { id: exerciseId } });
+  async deleteExercise(userId: number, exerciseId: number) {
+    return await prisma.exercises.delete({
+      where: { id: exerciseId, userId },
+    });
   },
 
-  async getExerciseLogs(exerciseId: number) {
+  async getExerciseLogs(userId: number, exerciseId: number) {
     return await prisma.workout_exercise_logs.findMany({
-      where: { exerciseId },
+      where: { exerciseId, workoutSession: { userId } },
       include: {
         workoutSession: { select: { createdAt: true } },
         workoutSets: {
