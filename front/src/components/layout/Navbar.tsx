@@ -6,6 +6,7 @@ import {
   LuCalendar,
   LuPlay,
   LuLogOut,
+  LuUser,
 } from "react-icons/lu";
 import { Link, NavLink } from "react-router";
 import { getTrainingSplitDays } from "@/api/training-split-day";
@@ -24,6 +25,7 @@ const navItems = [
     end: false,
   },
   { to: "/calendar", label: "Calendar", Icon: LuCalendar, end: false },
+  { to: "/profile", label: "Profile", Icon: LuUser, end: false },
 ];
 
 const DAY_LETTERS = ["S", "M", "T", "W", "T", "F", "S"];

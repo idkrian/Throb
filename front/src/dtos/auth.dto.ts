@@ -1,9 +1,17 @@
+export type UnitPreference = "KG" | "LB";
+
 export interface AuthUser {
   id: number;
   name: string;
   email: string;
   createdAt: string;
   updatedAt: string;
+  unitPreference: UnitPreference;
+}
+
+export interface UpdateMeDto {
+  name?: string;
+  unitPreference?: UnitPreference;
 }
 
 export interface LoginRequestDto {

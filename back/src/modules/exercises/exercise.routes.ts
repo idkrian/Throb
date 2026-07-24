@@ -18,6 +18,9 @@ exerciseRouter.get(
   exerciseController.getAllExercisesByMuscleGroup,
 );
 
+// Batched last-performance/PR lookup for the live workout: /exercise/performance?ids=1,2,3
+exerciseRouter.get("/performance", exerciseController.getExercisePerformances);
+
 exerciseRouter.get("/:id/stats", exerciseController.getExerciseStats);
 
 exerciseRouter.put(

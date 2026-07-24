@@ -31,7 +31,8 @@ export const exerciseRepository = {
         json_agg(json_build_object(
           'id', id,
           'title', title,
-          'muscle', muscle
+          'muscle', muscle,
+          'userId', "userId"
         )) AS items
       FROM "exercises"
       WHERE "userId" IS NULL OR "userId" = ${userId}
@@ -62,7 +63,21 @@ export const exerciseRepository = {
       include: {
         workoutSession: { select: { createdAt: true } },
         workoutSets: {
-          select: { setNumber: true, reps: true, weight: true },
+          select: { setNumber: true, reps: true, weight: true, rpe: true },
+          orderBy: { setNumber: "asc" },
+        },
+      },
+      orderBy: { workoutSession: { createdAt: "desc" } },
+    });
+  },
+
+  async getLogsForExercises(userId: number, exerciseIds: number[]) {
+    return await prisma.workout_exercise_logs.findMany({
+      where: { exerciseId: { in: exerciseIds }, workoutSession: { userId } },
+      include: {
+        workoutSession: { select: { createdAt: true } },
+        workoutSets: {
+          select: { setNumber: true, reps: true, weight: true, rpe: true },
           orderBy: { setNumber: "asc" },
         },
       },

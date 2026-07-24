@@ -21,7 +21,8 @@
       "Bash(dir database *)",
       "Read(//c/c/Users/Rian/Documents/projects/fit/back/**)",
       "Read(//c/c/Users/Rian/Documents/projects/fit/front/**)",
-      "Bash(find src *)"
+      "Bash(find src *)",
+      "Bash(npx prettier *)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Rian\\Documents\\projects\\fit"

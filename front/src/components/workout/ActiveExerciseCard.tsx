@@ -6,11 +6,15 @@ import {
 } from "react-icons/lu";
 import type { TrainingSplitExerciseDto } from "@/dtos/training-split-exercise.dto";
 import type { ExerciseProgress, LoggedSet } from "@/dtos/workout.dto";
+import type { ExercisePerformanceDto } from "@/dtos/exercise.dto";
+import { useAuth } from "@/contexts/AuthContext";
+import { formatWeight, unitLabel } from "@/utils/units";
 import SetRow from "./SetRow";
 
 type Props = {
   exercise: TrainingSplitExerciseDto;
   progress: ExerciseProgress;
+  performance?: ExercisePerformanceDto | undefined;
   activeIndex: number;
   totalExercises: number;
   addSet: () => void;
@@ -24,6 +28,7 @@ type Props = {
 const ActiveExerciseCard = ({
   exercise,
   progress,
+  performance,
   activeIndex,
   totalExercises,
   onPrev,
@@ -33,7 +38,13 @@ const ActiveExerciseCard = ({
   onUpdateNotes,
   addSet,
 }: Props) => {
+  const { unit } = useAuth();
   const completedSets = progress.sets.filter((s) => s.completed).length;
+  const lastSets = performance?.lastPerformed?.sets ?? [];
+  const topLastSet = lastSets.reduce<(typeof lastSets)[number] | null>(
+    (best, set) => (!best || set.weight > best.weight ? set : best),
+    null,
+  );
 
   return (
     <div className="col-span-2 relative bg-linear-to-br from-mediumGrey to-darkGrey rounded-2xl p-5 shadow-xl shadow-indigo/10 border border-indigo/10 flex flex-col min-h-0 gap-4 overflow-hidden">
@@ -67,6 +78,27 @@ const ActiveExerciseCard = ({
         </button>
       </div>
 
+      {(topLastSet || performance?.bestWeight != null) && (
+        <div className="flex items-center justify-center gap-4 shrink-0 text-[11px]">
+          {topLastSet && (
+            <span className="text-lightGrey/70">
+              Last time:{" "}
+              <strong className="text-white">
+                {formatWeight(topLastSet.weight, unit)} × {topLastSet.reps}
+              </strong>
+            </span>
+          )}
+          {performance?.bestWeight != null && (
+            <span className="text-lightGrey/70">
+              PR:{" "}
+              <strong className="text-amber-400">
+                {formatWeight(performance.bestWeight, unit)}
+              </strong>
+            </span>
+          )}
+        </div>
+      )}
+
       <div className="flex gap-1.5 justify-center shrink-0">
         {progress.sets.map((s, i) => (
           <div
@@ -83,7 +115,7 @@ const ActiveExerciseCard = ({
       <div className="flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto pr-1">
         <div className="grid grid-cols-[28px_1fr_70px_1.2fr_56px] gap-2 px-2 text-[10px] uppercase tracking-wider text-lightGrey/50 shrink-0">
           <span>Set</span>
-          <span>Weight (kg)</span>
+          <span>Weight ({unitLabel(unit)})</span>
           <span className="text-center">Reps</span>
           <span>RPE</span>
           <span></span>

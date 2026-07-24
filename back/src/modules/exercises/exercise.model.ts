@@ -15,16 +15,35 @@ export interface Exercise {
 export interface ExerciseSetDto {
   setNumber: number;
   reps: number;
-  weight: number | null;
+  weight: number;
+  rpe: number | null;
 }
 
 export interface ExerciseHistoryEntryDto {
   date: string;
+  maxWeight: number;
+  totalVolume: number;
+  estimatedOneRepMax: number;
   sets: ExerciseSetDto[];
 }
 
+export interface ExercisePersonalBestDto {
+  weight: number;
+  reps: number;
+  estimatedOneRepMax: number;
+  date: string;
+}
+
 export interface ExerciseStatsDto {
-  personalBest: { weight: number | null; reps: number } | null;
+  personalBest: ExercisePersonalBestDto | null;
+  bestWeight: number | null;
   lastPerformed: string | null;
   history: ExerciseHistoryEntryDto[];
+}
+
+export interface ExercisePerformanceDto {
+  exerciseId: number;
+  lastPerformed: { date: string; sets: ExerciseSetDto[] } | null;
+  personalBest: ExercisePersonalBestDto | null;
+  bestWeight: number | null;
 }

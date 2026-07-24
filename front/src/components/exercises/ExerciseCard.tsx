@@ -27,6 +27,11 @@ const ExerciseCard = ({ exercise, onClick }: Props) => (
       <span className="text-xs px-2 py-1 rounded-md bg-darkIndigo/40 text-lightIndigo border border-indigo/30">
         {MuscleLabel[exercise.muscle]}
       </span>
+      {exercise.userId !== null && (
+        <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-darkGrey text-lightGrey/60">
+          Custom
+        </span>
+      )}
     </div>
   </button>
 );

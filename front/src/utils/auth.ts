@@ -49,6 +49,10 @@ export const persistSession = (token: string, user: AuthUser) => {
   localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
 };
 
+export const persistUser = (user: AuthUser) => {
+  localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+};
+
 export const clearSession = () => {
   localStorage.removeItem(TOKEN_STORAGE_KEY);
   localStorage.removeItem(USER_STORAGE_KEY);

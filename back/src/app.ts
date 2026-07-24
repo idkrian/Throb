@@ -7,6 +7,7 @@ import trainingSplitDayRouter from "./modules/training-split-day/training-split-
 import workoutRouter from "./modules/workout/workout.router.js";
 import userRouter from "./modules/user/user.router.js";
 import authRouter from "./modules/auth/auth.router.js";
+import bodyWeightRouter from "./modules/body-weight/body-weight.router.js";
 import { authenticate } from "./shared/middlewares/authenticate.js";
 
 const app = express();
@@ -17,6 +18,7 @@ app.use("/exercise", authenticate, exerciseRouter);
 app.use("/training-split", authenticate, trainingSplitRouter);
 app.use("/training-split-day", authenticate, trainingSplitDayRouter);
 app.use("/workout", authenticate, workoutRouter);
+app.use("/body-weight", authenticate, bodyWeightRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
 

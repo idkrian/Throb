@@ -5,7 +5,10 @@ import { MuscleGroupLabel, MuscleLabel } from "@/dtos/muscle.dto";
 import type { ExerciseDto } from "@/dtos/exercise.dto";
 import type { ExerciseStatsDto } from "@/dtos/exercise.dto";
 import MuscleIcon from "@/components/exercises/MuscleIcon";
+import ExerciseProgressChart from "@/components/charts/ExerciseProgressChart";
 import { getExerciseStats } from "@/api/exercise";
+import { useAuth } from "@/contexts/AuthContext";
+import { formatWeight } from "@/utils/units";
 
 type Props = {
   exercise: ExerciseDto | null;
@@ -16,8 +19,11 @@ type Props = {
 
 const ExerciseDrawer = ({ exercise, onClose, onEdit, onDelete }: Props) => {
   const open = !!exercise;
+  const { unit } = useAuth();
   const [stats, setStats] = useState<ExerciseStatsDto | null>(null);
   const [loading, setLoading] = useState(false);
+  // Global catalog entries (userId === null) belong to the app, not the user.
+  const isCustom = exercise?.userId !== null;
 
   useEffect(() => {
     if (!exercise) return;
@@ -59,7 +65,18 @@ const ExerciseDrawer = ({ exercise, onClose, onEdit, onDelete }: Props) => {
                   <MuscleIcon group={exercise.muscleGroup} />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold">{exercise.title}</h2>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-xl font-bold">{exercise.title}</h2>
+                    <span
+                      className={`text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                        isCustom
+                          ? "bg-darkIndigo/40 text-lightIndigo"
+                          : "bg-mediumGrey text-lightGrey/60"
+                      }`}
+                    >
+                      {isCustom ? "Custom" : "Catalog"}
+                    </span>
+                  </div>
                   <p className="text-sm text-lightGrey/60">
                     {MuscleGroupLabel[exercise.muscleGroup]}
                   </p>
@@ -76,14 +93,33 @@ const ExerciseDrawer = ({ exercise, onClose, onEdit, onDelete }: Props) => {
                 {loading ? (
                   <Placeholder />
                 ) : stats?.personalBest ? (
-                  <div className="flex items-center gap-2">
-                    {stats.personalBest.weight !== null && (
-                      <Stat value={`${stats.personalBest.weight} kg`} />
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Stat
+                        value={`${formatWeight(stats.personalBest.weight, unit)} × ${stats.personalBest.reps}`}
+                      />
+                      <Stat
+                        value={`${formatWeight(stats.personalBest.estimatedOneRepMax, unit)} est. 1RM`}
+                      />
+                    </div>
+                    {stats.bestWeight !== null && (
+                      <p className="text-xs text-lightGrey/50">
+                        Heaviest ever: {formatWeight(stats.bestWeight, unit)}
+                      </p>
                     )}
-                    <Stat value={`${stats.personalBest.reps} reps`} />
                   </div>
                 ) : (
                   <Empty text="No data yet — log a workout to see your PRs." />
+                )}
+              </Section>
+
+              <Section label="Progression">
+                {loading ? (
+                  <Placeholder />
+                ) : stats && stats.history.length > 0 ? (
+                  <ExerciseProgressChart history={stats.history} />
+                ) : (
+                  <Empty text="Volume and weight trends will appear here." />
                 )}
               </Section>
 
@@ -108,15 +144,21 @@ const ExerciseDrawer = ({ exercise, onClose, onEdit, onDelete }: Props) => {
                   <Placeholder />
                 ) : stats && stats.history.length > 0 ? (
                   <div className="flex flex-col gap-4">
-                    {stats.history.map((entry, i) => (
+                    {/* Chart reads oldest-first; the log reads newest-first. */}
+                    {[...stats.history].reverse().map((entry, i) => (
                       <div key={i} className="flex flex-col gap-1.5">
-                        <p className="text-xs text-lightGrey/50">
-                          {new Date(entry.date).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })}
-                        </p>
+                        <div className="flex items-baseline justify-between">
+                          <p className="text-xs text-lightGrey/50">
+                            {new Date(entry.date).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })}
+                          </p>
+                          <p className="text-[10px] text-lightGrey/40">
+                            Vol {formatWeight(entry.totalVolume, unit)}
+                          </p>
+                        </div>
                         <div className="flex flex-col gap-1">
                           {entry.sets.map((set) => (
                             <p
@@ -125,11 +167,15 @@ const ExerciseDrawer = ({ exercise, onClose, onEdit, onDelete }: Props) => {
                             >
                               Set {set.setNumber}:{" "}
                               <span className="font-medium">
-                                {set.reps} reps
-                                {set.weight !== null
-                                  ? ` × ${set.weight} kg`
-                                  : ""}
+                                {set.reps} reps ×{" "}
+                                {formatWeight(set.weight, unit)}
                               </span>
+                              {set.rpe !== null && (
+                                <span className="text-lightGrey/40">
+                                  {" "}
+                                  @ RPE {set.rpe}
+                                </span>
+                              )}
                             </p>
                           ))}
                         </div>
@@ -143,20 +189,29 @@ const ExerciseDrawer = ({ exercise, onClose, onEdit, onDelete }: Props) => {
             </div>
 
             <div className="flex gap-2 p-5 border-t border-mediumGrey">
-              <button
-                onClick={() => onEdit?.(exercise)}
-                className="flex-1 flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold bg-mediumGrey hover:bg-mediumGrey/70 transition-colors cursor-pointer"
-              >
-                <FiEdit2 size={14} />
-                Edit
-              </button>
-              <button
-                onClick={() => onDelete?.(exercise)}
-                className="flex-1 flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold bg-red-500/15 text-red-400 hover:bg-red-500/25 transition-colors cursor-pointer"
-              >
-                <FiTrash2 size={14} />
-                Delete
-              </button>
+              {isCustom ? (
+                <>
+                  <button
+                    onClick={() => onEdit?.(exercise)}
+                    className="flex-1 flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold bg-mediumGrey hover:bg-mediumGrey/70 transition-colors cursor-pointer"
+                  >
+                    <FiEdit2 size={14} />
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => onDelete?.(exercise)}
+                    className="flex-1 flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold bg-red-500/15 text-red-400 hover:bg-red-500/25 transition-colors cursor-pointer"
+                  >
+                    <FiTrash2 size={14} />
+                    Delete
+                  </button>
+                </>
+              ) : (
+                <p className="flex-1 text-center text-xs text-lightGrey/50 py-2.5">
+                  Catalog exercises can't be edited. Create your own to
+                  customize it.
+                </p>
+              )}
             </div>
           </>
         )}

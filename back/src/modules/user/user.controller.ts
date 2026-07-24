@@ -21,6 +21,26 @@ export const userController = {
     }
   },
 
+  async getMe(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = Number(req.userId);
+      const user = await userService.getMe(userId);
+      requestSuccessHandler(res, user, "User retrieved successfully!");
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async updateMe(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = Number(req.userId);
+      const user = await userService.updateMe(userId, req.body);
+      requestSuccessHandler(res, user, "User updated successfully!");
+    } catch (error) {
+      next(error);
+    }
+  },
+
   async getUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = Number(req.params.id);

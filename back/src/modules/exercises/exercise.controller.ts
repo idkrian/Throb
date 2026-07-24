@@ -4,6 +4,7 @@ import {
   requestErrorHandler,
   requestSuccessHandler,
 } from "../../shared/utils/requestHandlers.js";
+import { HttpStatus } from "../../shared/constants/http-status.js";
 
 export const exerciseController = {
   async createExercise(req: Request, res: Response, next: NextFunction) {
@@ -93,6 +94,41 @@ export const exerciseController = {
       const stats = await exerciseService.getExerciseStats(userId, exerciseId);
 
       requestSuccessHandler(res, stats, "Exercise stats retrieved successfully!");
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async getExercisePerformances(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const userId = Number(req.userId);
+      const exerciseIds = String(req.query.ids ?? "")
+        .split(",")
+        .map((id) => Number(id.trim()))
+        .filter((id) => Number.isInteger(id) && id > 0);
+
+      if (exerciseIds.length === 0) {
+        return requestErrorHandler(
+          res,
+          "Query param 'ids' must contain at least one exercise id",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const performances = await exerciseService.getExercisePerformances(
+        userId,
+        exerciseIds,
+      );
+
+      requestSuccessHandler(
+        res,
+        performances,
+        "Exercise performances retrieved successfully!",
+      );
     } catch (error) {
       next(error);
     }

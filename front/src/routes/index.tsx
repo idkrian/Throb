@@ -7,6 +7,7 @@ import Exercises from "../pages/exercises/Exercises";
 import Workout from "@/pages/workout/Workout";
 import TrainingSplitCreate from "@/pages/training-splits/TrainingSplitCreate";
 import Login from "@/pages/login/Login";
+import Profile from "@/pages/profile/Profile";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import AppLayout from "@/components/layout/AppLayout";
 
@@ -29,6 +30,7 @@ export default function AppRoutes() {
             element={<TrainingSplitCreate />}
           />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/workout/:splitId" element={<Workout />} />
         </Route>
       </Route>

@@ -2,11 +2,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { LuRotateCw } from "react-icons/lu";
 import { getTrainingSplitById } from "@/api/training-split";
+import { getExercisePerformances } from "@/api/exercise";
 import { createWorkout } from "@/api/workout";
 import type { TrainingSplitDto } from "@/dtos/training-splits.dto";
+import type { ExercisePerformanceDto } from "@/dtos/exercise.dto";
 import Button from "@/components/ui/Button";
 import type { ExerciseProgress, LoggedSet } from "@/dtos/workout.dto";
 import { DEFAULT_REST } from "@/utils";
+import { useAuth } from "@/contexts/AuthContext";
+import { formatWeight } from "@/utils/units";
 import PRToast from "@/components/workout/PRToast";
 import WorkoutHeader from "@/components/workout/WorkoutHeader";
 import ActiveExerciseCard from "@/components/workout/ActiveExerciseCard";
@@ -17,11 +21,16 @@ import WorkoutSummaryModal from "@/components/modals/WorkoutSummaryModal";
 const Workout = () => {
   const { splitId } = useParams();
   const navigate = useNavigate();
+  const { unit } = useAuth();
 
   const [split, setSplit] = useState<TrainingSplitDto | null>(null);
   const [progress, setProgress] = useState<Record<number, ExerciseProgress>>(
     {},
   );
+  /** Last performance + all-time PR per exercise, keyed by the real exercise id. */
+  const [performances, setPerformances] = useState<
+    Record<number, ExercisePerformanceDto>
+  >({});
   const [activeIndex, setActiveIndex] = useState(0);
 
   const [workoutSeconds, setWorkoutSeconds] = useState(0);
@@ -41,23 +50,47 @@ const Workout = () => {
     if (splitId) getTrainingSplitById(splitId).then(setSplit);
   }, [splitId]);
 
+  // Loads history first so each set can start pre-filled with what was done last
+  // time, which is the baseline the user is trying to beat.
   useEffect(() => {
     if (!split) return;
-    const initialProgress: Record<number, ExerciseProgress> = {};
-    split.exercises
-      .sort((a, b) => a.order - b.order)
-      .forEach((ex) => {
-        initialProgress[ex.id] = {
-          sets: Array.from({ length: ex.sets }, () => ({
-            weight: 0,
-            reps: 0,
-            rpe: 7,
-            completed: false,
-          })),
-          notes: "",
-        };
+    let cancelled = false;
+
+    const ordered = [...split.exercises].sort((a, b) => a.order - b.order);
+
+    getExercisePerformances(ordered.map((ex) => ex.exerciseId))
+      .catch(() => [] as ExercisePerformanceDto[])
+      .then((list) => {
+        if (cancelled) return;
+
+        const byExercise: Record<number, ExercisePerformanceDto> = {};
+        list.forEach((item) => {
+          byExercise[item.exerciseId] = item;
+        });
+        setPerformances(byExercise);
+
+        const initialProgress: Record<number, ExerciseProgress> = {};
+        ordered.forEach((ex) => {
+          const lastSets = byExercise[ex.exerciseId]?.lastPerformed?.sets;
+          initialProgress[ex.id] = {
+            sets: Array.from({ length: ex.sets }, (_, i) => {
+              const previous = lastSets?.[i];
+              return {
+                weight: previous?.weight ?? 0,
+                reps: previous?.reps ?? 0,
+                rpe: previous?.rpe ?? 7,
+                completed: false,
+              };
+            }),
+            notes: "",
+          };
+        });
+        setProgress(initialProgress);
       });
-    setProgress(initialProgress);
+
+    return () => {
+      cancelled = true;
+    };
   }, [split]);
 
   useEffect(() => {
@@ -152,29 +185,46 @@ const Workout = () => {
     prTimeout.current = window.setTimeout(() => setRecentPR(null), 2500);
   };
 
-  const logSet = (exerciseId: number, setIdx: number) => {
-    const target = progress[exerciseId]?.sets[setIdx];
+  const logSet = (splitExerciseId: number, setIdx: number) => {
+    const target = progress[splitExerciseId]?.sets[setIdx];
     if (!target || target.completed) return;
     if (target.weight <= 0 || target.reps <= 0) return;
 
-    updateSet(exerciseId, setIdx, { completed: true });
+    updateSet(splitExerciseId, setIdx, { completed: true });
     setPulseVolume(true);
     setTimeout(() => setPulseVolume(false), 600);
 
-    const previousBest = Math.max(
-      0,
-      ...progress[exerciseId].sets
-        .filter((_, i) => i !== setIdx)
-        .map((s) => s.weight),
+    // The record comes from the server (all-time across every session), so beating
+    // it here is a real PR — not just the heaviest set of today.
+    const splitExercise = orderedExercises.find(
+      (ex) => ex.id === splitExerciseId,
     );
-    if (target.weight > previousBest && previousBest > 0) {
-      triggerPR(`New top weight on ${activeExercise?.exercise.title}`);
+    const exerciseId = splitExercise?.exerciseId;
+    const bestWeight =
+      exerciseId !== undefined ? performances[exerciseId]?.bestWeight : null;
+
+    if (bestWeight != null && target.weight > bestWeight) {
+      triggerPR(
+        `New PR on ${splitExercise?.exercise.title}: ${formatWeight(
+          target.weight,
+          unit,
+        )}`,
+      );
+      // Raise the bar locally so the next set compares against the new record.
+      setPerformances((prev) =>
+        exerciseId === undefined || !prev[exerciseId]
+          ? prev
+          : {
+              ...prev,
+              [exerciseId]: { ...prev[exerciseId], bestWeight: target.weight },
+            },
+      );
     }
 
     setRestRemaining(restTotal);
     setRestRunning(true);
 
-    const allDone = progress[exerciseId].sets.every((s, i) =>
+    const allDone = progress[splitExerciseId].sets.every((s, i) =>
       i === setIdx ? true : s.completed,
     );
     if (allDone && activeIndex < orderedExercises.length - 1) {
@@ -244,6 +294,7 @@ const Workout = () => {
         <ActiveExerciseCard
           exercise={activeExercise}
           progress={progress[activeExercise.id]}
+          performance={performances[activeExercise.exerciseId]}
           activeIndex={activeIndex}
           totalExercises={orderedExercises.length}
           addSet={addSet}

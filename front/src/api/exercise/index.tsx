@@ -3,6 +3,7 @@ import type { MuscleGroupItemsDto } from "@/dtos/muscle.dto";
 import type {
   CreateExerciseDto,
   ExerciseDto,
+  ExercisePerformanceDto,
   ExerciseStatsDto,
 } from "@/dtos/exercise.dto";
 const BASE_URL = `${import.meta.env.VITE_API_BASE}/exercise`;
@@ -40,5 +41,16 @@ export const getExerciseStats = async (
   exerciseId: number,
 ): Promise<ExerciseStatsDto> => {
   const response = await axios.get(`${BASE_URL}/${exerciseId}/stats`);
+  return response.data.data;
+};
+
+/** Batched: fetches last performance + all-time PR for every exercise in one request. */
+export const getExercisePerformances = async (
+  exerciseIds: number[],
+): Promise<ExercisePerformanceDto[]> => {
+  if (exerciseIds.length === 0) return [];
+  const response = await axios.get(`${BASE_URL}/performance`, {
+    params: { ids: exerciseIds.join(",") },
+  });
   return response.data.data;
 };
