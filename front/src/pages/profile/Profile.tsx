@@ -30,11 +30,13 @@ const Profile = () => {
 
     setSaving(true);
     try {
-      // The input is in the user's unit; storage is always canonical (kg).
       const created = await createBodyWeight({
         weight: toCanonicalWeight(typed, unit),
       });
-      setEntries((prev) => [...prev, created]);
+      setEntries((prev) => {
+        const rest = prev.filter((e) => e.id !== created.id);
+        return [...rest, created];
+      });
       setWeightInput("");
     } catch (error) {
       console.error(error);
@@ -132,7 +134,7 @@ const Profile = () => {
           </div>
           <Button
             fullWidth
-            label={saving ? "Saving..." : "Log weight"}
+            label={saving ? "Saving..." : "Log Weight"}
             onClick={logWeight}
           />
 

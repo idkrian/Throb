@@ -19,11 +19,11 @@ export const bodyWeightService = {
     userId: number,
     data: CreateBodyWeightRequestDto,
   ): Promise<BodyWeightDto> {
-    const created = await bodyWeightRepository.createBodyWeight(
+    const saved = await bodyWeightRepository.upsertTodayBodyWeight(
       userId,
       data.weight,
     );
-    return formatBodyWeightResponse(created);
+    return formatBodyWeightResponse(saved);
   },
 
   async getBodyWeights(userId: number): Promise<BodyWeightDto[]> {
