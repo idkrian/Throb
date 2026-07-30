@@ -8,7 +8,7 @@ import {
 } from "react-icons/lu";
 import type { TrainingSplitDayEntry } from "@/dtos/training-split-day.dto";
 import type { WorkoutSessionDto } from "@/dtos/workout-session.dto";
-import { DEFAULT_ACCENT, muscleGroupAccent, summarizeSplit } from "@/utils";
+import { DEFAULT_ACCENT, formatDate, muscleGroupAccent, summarizeSplit } from "@/utils";
 import {
   formatVolume,
   sessionTotalSets,
@@ -198,7 +198,7 @@ const DayCard = ({
         )}
 
         <span className="sr-only">
-          {date.toLocaleDateString("pt-BR", { dateStyle: "full" })}
+          {formatDate(date, { dateStyle: "full" })}
         </span>
       </div>
     </div>

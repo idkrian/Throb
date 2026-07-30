@@ -8,6 +8,7 @@ import {
 import type { ExerciseHistoryEntryDto } from "@/dtos/exercise.dto";
 import { useAuth } from "@/contexts/AuthContext";
 import { toDisplayWeight, unitLabel } from "@/utils/units";
+import { formatDate } from "@/utils/date";
 
 const chartConfig = {
   estimatedOneRepMax: {
@@ -29,10 +30,7 @@ const ExerciseProgressChart = ({ history }: Props) => {
 
   // History arrives oldest-first from the API, which is the order charts want.
   const data = history.map((entry) => ({
-    date: new Date(entry.date).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    }),
+    date: formatDate(entry.date, { month: "short", day: "numeric" }, "en-US"),
     estimatedOneRepMax: toDisplayWeight(entry.estimatedOneRepMax, unit),
     maxWeight: toDisplayWeight(entry.maxWeight, unit),
   }));

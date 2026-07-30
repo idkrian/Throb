@@ -9,6 +9,7 @@ import ExerciseProgressChart from "@/components/charts/ExerciseProgressChart";
 import { getExerciseStats } from "@/api/exercise";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatWeight } from "@/utils/units";
+import { formatDate } from "@/utils/date";
 
 type Props = {
   exercise: ExerciseDto | null;
@@ -128,11 +129,11 @@ const ExerciseDrawer = ({ exercise, onClose, onEdit, onDelete }: Props) => {
                   <Placeholder />
                 ) : stats?.lastPerformed ? (
                   <p className="text-sm text-lightGrey">
-                    {new Date(stats.lastPerformed).toLocaleDateString("en-US", {
+                    {formatDate(stats.lastPerformed, {
                       year: "numeric",
                       month: "long",
                       day: "numeric",
-                    })}
+                    }, "en-US")}
                   </p>
                 ) : (
                   <Empty text="Not performed yet." />
@@ -149,11 +150,11 @@ const ExerciseDrawer = ({ exercise, onClose, onEdit, onDelete }: Props) => {
                       <div key={i} className="flex flex-col gap-1.5">
                         <div className="flex items-baseline justify-between">
                           <p className="text-xs text-lightGrey/50">
-                            {new Date(entry.date).toLocaleDateString("en-US", {
+                            {formatDate(entry.date, {
                               month: "short",
                               day: "numeric",
                               year: "numeric",
-                            })}
+                            }, "en-US")}
                           </p>
                           <p className="text-[10px] text-lightGrey/40">
                             Vol {formatWeight(entry.totalVolume, unit)}

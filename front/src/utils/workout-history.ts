@@ -1,5 +1,5 @@
 import type { WorkoutSessionDto } from "@/dtos/workout-session.dto";
-import { isSameDay } from "./index";
+import { dayKey, isSameDay } from "./date";
 
 export const sessionVolume = (session: WorkoutSessionDto): number =>
   session.workoutExerciseLogs.reduce(
@@ -22,7 +22,7 @@ export const findSessionOnDate = (
   sessions: WorkoutSessionDto[],
   date: Date,
 ): WorkoutSessionDto | undefined =>
-  sessions.find((s) => isSameDay(new Date(s.createdAt), date));
+  sessions.find((s) => isSameDay(s.createdAt, date));
 
 export const sessionsInRange = (
   sessions: WorkoutSessionDto[],
@@ -41,21 +41,14 @@ export const formatVolume = (volume: number): string => {
 
 export const computeStreak = (sessions: WorkoutSessionDto[]): number => {
   if (sessions.length === 0) return 0;
-  const dates = new Set(
-    sessions.map((s) => {
-      const d = new Date(s.createdAt);
-      d.setHours(0, 0, 0, 0);
-      return d.getTime();
-    }),
-  );
+  const days = new Set(sessions.map((s) => dayKey(s.createdAt)));
   const cursor = new Date();
-  cursor.setHours(0, 0, 0, 0);
   // If today has no session, start counting from yesterday so an in-progress day doesn't reset the streak.
-  if (!dates.has(cursor.getTime())) {
+  if (!days.has(dayKey(cursor))) {
     cursor.setDate(cursor.getDate() - 1);
   }
   let streak = 0;
-  while (dates.has(cursor.getTime())) {
+  while (days.has(dayKey(cursor))) {
     streak += 1;
     cursor.setDate(cursor.getDate() - 1);
   }

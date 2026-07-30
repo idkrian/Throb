@@ -15,6 +15,7 @@ import {
 import type { BodyWeightDto } from "@/dtos/body-weight.dto";
 import { useAuth } from "@/contexts/AuthContext";
 import { toDisplayWeight, unitLabel } from "@/utils/units";
+import { formatDate } from "@/utils/date";
 
 const chartConfig = {
   weight: {
@@ -32,10 +33,7 @@ const BodyWeightChart = ({ entries }: Props) => {
 
   // Stored in kg; charted in whatever unit the user reads in.
   const data = entries.map((entry) => ({
-    date: new Date(entry.createdAt).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    }),
+    date: formatDate(entry.createdAt, { month: "short", day: "numeric" }, "en-US"),
     weight: toDisplayWeight(entry.weight, unit),
   }));
 

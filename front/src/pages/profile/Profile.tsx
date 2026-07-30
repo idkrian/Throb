@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import type { BodyWeightDto } from "@/dtos/body-weight.dto";
 import type { UnitPreference } from "@/dtos/auth.dto";
 import { formatWeight, toCanonicalWeight, unitLabel } from "@/utils/units";
+import { formatDate } from "@/utils/date";
 
 const UNITS: UnitPreference[] = ["KG", "LB"];
 
@@ -148,10 +149,10 @@ const Profile = () => {
                   className="flex items-center justify-between text-xs px-2 py-1.5 rounded-md bg-darkGrey/40"
                 >
                   <span className="text-lightGrey/60">
-                    {new Date(entry.createdAt).toLocaleDateString("en-US", {
+                    {formatDate(entry.createdAt, {
                       month: "short",
                       day: "numeric",
-                    })}
+                    }, "en-US")}
                   </span>
                   <span className="font-semibold text-white">
                     {formatWeight(entry.weight, unit)}

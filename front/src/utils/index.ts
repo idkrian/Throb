@@ -1,6 +1,10 @@
 import type { MuscleGroupItemsDto, MuscleGroupType } from "../dtos/muscle.dto";
 import type { TrainingSplitDto } from "../dtos/training-splits.dto";
 
+import { formatDate } from "./date";
+// Re-exported so existing `@/utils` imports keep working; defined in ./date.
+export { APP_TZ, dayKey, formatDate, isSameDay, todayKey } from "./date";
+
 export const getWeekDays = (weekOffset: number = 0) => {
   const days = [];
   const today = new Date();
@@ -16,7 +20,7 @@ export const getWeekDays = (weekOffset: number = 0) => {
     date.setDate(monday.getDate() + i);
     days.push({
       date: date,
-      dayName: date.toLocaleDateString("pt-BR", { weekday: "long" }),
+      dayName: formatDate(date, { weekday: "long" }),
       day: `${date.getDate()}/${date.getMonth() + 1}`,
       dayNumber: date.getDay(),
     });
@@ -24,11 +28,6 @@ export const getWeekDays = (weekOffset: number = 0) => {
 
   return days;
 };
-
-export const isSameDay = (a: Date, b: Date) =>
-  a.getFullYear() === b.getFullYear() &&
-  a.getMonth() === b.getMonth() &&
-  a.getDate() === b.getDate();
 
 export const startOfDay = (d: Date) => {
   const copy = new Date(d);
@@ -42,11 +41,11 @@ export const formatWeekRangeLabel = (days: { date: Date }[]) => {
   const last = days[days.length - 1].date;
   const sameMonth = first.getMonth() === last.getMonth();
   const fmt = (d: Date) =>
-    d.toLocaleDateString("pt-BR", {
+    formatDate(d, {
       day: "2-digit",
       month: sameMonth ? undefined : "short",
     });
-  const monthLabel = first.toLocaleDateString("pt-BR", { month: "long" });
+  const monthLabel = formatDate(first, { month: "long" });
   return sameMonth
     ? `${fmt(first)} – ${fmt(last)} ${monthLabel}`
     : `${fmt(first)} – ${fmt(last)}`;

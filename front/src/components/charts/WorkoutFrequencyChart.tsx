@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/chart";
 import { getAllWorkouts } from "@/api/workout";
 import type { WorkoutSessionDto } from "@/dtos/workout-session.dto";
+import { dayKey, formatDate } from "@/utils/date";
 
 const chartConfig = {
   workouts: {
@@ -28,7 +29,8 @@ function getWeekStart(dateStr: string): string {
   const day = d.getDay();
   const diff = d.getDate() - day + (day === 0 ? -6 : 1);
   d.setDate(diff);
-  return d.toISOString().slice(0, 10);
+  // dayKey (not toISOString) so the week bucket uses the same calendar day as the rest of the app.
+  return dayKey(d);
 }
 
 function buildWeeklyData(workouts: WorkoutSessionDto[]) {
@@ -41,10 +43,10 @@ function buildWeeklyData(workouts: WorkoutSessionDto[]) {
     .sort(([a], [b]) => a.localeCompare(b))
     .slice(-12)
     .map(([week, workouts]) => ({
-      week: new Date(week + "T12:00:00").toLocaleDateString("en-US", {
+      week: formatDate(week + "T12:00:00", {
         month: "short",
         day: "numeric",
-      }),
+      }, "en-US"),
       workouts,
     }));
 }

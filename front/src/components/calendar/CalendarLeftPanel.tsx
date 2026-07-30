@@ -1,7 +1,7 @@
 import { LuFlame, LuPlay, LuMoon, LuDumbbell, LuLayers, LuTrophy } from "react-icons/lu";
 import type { TrainingSplitDayEntry } from "@/dtos/training-split-day.dto";
 import type { WorkoutSessionDto } from "@/dtos/workout-session.dto";
-import { DEFAULT_ACCENT, muscleGroupAccent, summarizeSplit } from "@/utils";
+import { DEFAULT_ACCENT, formatDate, muscleGroupAccent, summarizeSplit } from "@/utils";
 import { formatVolume, sessionVolume } from "@/utils/workout-history";
 
 interface CalendarLeftPanelProps {
@@ -38,16 +38,13 @@ const CalendarLeftPanel = ({
     >
       <div className="flex flex-col items-center">
         <p className="text-white font-bold text-8xl leading-none">
-          {today.getDate()}
+          {formatDate(today, { day: "numeric" })}
         </p>
         <p className="text-white/90 font-semibold text-3xl capitalize mt-1">
-          {today.toLocaleDateString("pt-BR", { weekday: "long" })}
+          {formatDate(today, { weekday: "long" })}
         </p>
         <p className="text-white/60 text-sm capitalize">
-          {today.toLocaleDateString("pt-BR", {
-            month: "long",
-            year: "numeric",
-          })}
+          {formatDate(today, { month: "long", year: "numeric" })}
         </p>
       </div>
 

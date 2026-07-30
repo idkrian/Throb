@@ -3,6 +3,7 @@ import { LuMoon, LuTrash2, LuX } from "react-icons/lu";
 import type { TrainingSplitDto } from "@/dtos/training-splits.dto";
 import type { TrainingSplitDayEntry } from "@/dtos/training-split-day.dto";
 import { getAllUserTrainingSplits } from "@/api/training-split";
+import { formatDate } from "@/utils/date";
 
 interface SwapSplitModalProps {
   open: boolean;
@@ -80,7 +81,7 @@ const SwapSplitModal = ({
           <div>
             <h2 className="text-xl font-bold capitalize">{dayName}</h2>
             <p className="text-xs text-lightGrey/60">
-              {date.toLocaleDateString("pt-BR", { dateStyle: "long" })}
+              {formatDate(date, { dateStyle: "long" })}
             </p>
           </div>
           <button

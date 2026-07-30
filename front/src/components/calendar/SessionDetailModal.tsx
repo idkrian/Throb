@@ -1,6 +1,7 @@
 import { LuClock, LuDumbbell, LuLayers, LuX } from "react-icons/lu";
 import type { WorkoutSessionDto } from "@/dtos/workout-session.dto";
 import { formatTime } from "@/utils";
+import { formatDate } from "@/utils/date";
 import {
   formatVolume,
   sessionTotalSets,
@@ -22,7 +23,6 @@ const SessionDetailModal = ({
 
   const volume = sessionVolume(session);
   const totalSets = sessionTotalSets(session);
-  const date = new Date(session.createdAt);
 
   return (
     <div
@@ -39,7 +39,7 @@ const SessionDetailModal = ({
               {session.trainingSplit?.title ?? "Workout"}
             </h2>
             <p className="text-xs text-lightGrey/60 capitalize">
-              {date.toLocaleDateString("pt-BR", { dateStyle: "full" })}
+              {formatDate(session.createdAt, { dateStyle: "full" })}
             </p>
           </div>
           <button

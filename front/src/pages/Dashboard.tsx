@@ -13,6 +13,7 @@ import WorkoutFrequencyChart from "@/components/charts/WorkoutFrequencyChart";
 import type { MuscleStatsPeriod } from "@/api/workout";
 import { LuPencil } from "react-icons/lu";
 import SwapSplitModal from "@/components/calendar/SwapSplitModal";
+import { formatDate } from "@/utils/date";
 
 const Dashboard = () => {
   const [trainingSplitByDay, setTrainingSplitByDay] =
@@ -37,7 +38,7 @@ const Dashboard = () => {
   const openTodaySwap = () =>
     openSwap({
       date: new Date(),
-      dayName: new Date().toLocaleDateString("pt-BR", { weekday: "long" }),
+      dayName: formatDate(new Date(), { weekday: "long" }),
       dayNumber: todayNumber,
       entry: todayEntry,
     });
