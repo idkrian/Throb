@@ -8,7 +8,12 @@ import {
 } from "react-icons/lu";
 import type { TrainingSplitDayEntry } from "@/dtos/training-split-day.dto";
 import type { WorkoutSessionDto } from "@/dtos/workout-session.dto";
-import { DEFAULT_ACCENT, formatDate, muscleGroupAccent, summarizeSplit } from "@/utils";
+import {
+  DEFAULT_ACCENT,
+  formatDate,
+  muscleGroupAccent,
+  summarizeSplit,
+} from "@/utils";
 import {
   formatVolume,
   sessionTotalSets,
@@ -78,8 +83,8 @@ const DayCard = ({
   onClick,
   onEdit,
 }: DayCardProps) => {
-  const split = entry?.trainingSplit;
-  const summary = split ? summarizeSplit(split) : null;
+  const split = entry?.trainingSplit ?? session?.trainingSplit;
+  const summary = split?.exercises ? summarizeSplit(split) : null;
   const accent =
     summary?.primaryGroup != null
       ? muscleGroupAccent[summary.primaryGroup]
@@ -123,28 +128,34 @@ const DayCard = ({
           </div>
         )}
 
-        {split && status !== "rest" && status !== "empty" && (
+        {(split || session) && status !== "rest" && status !== "empty" && (
           <>
-            <div
-              className={`px-2 py-1.5 rounded-md bg-linear-to-br ${accent.gradient}`}
-            >
-              <p className="text-white font-bold text-sm truncate">
-                {split.title}
-              </p>
-            </div>
+            {split && (
+              <div
+                className={`px-2 py-1.5 rounded-md bg-linear-to-br ${accent.gradient}`}
+              >
+                <p className="text-white font-bold text-sm truncate">
+                  {split.title}
+                </p>
+              </div>
+            )}
 
-            {summary && (
+            {(summary || session) && (
               <div className="grid grid-cols-2 gap-1.5 text-white">
                 <div className="flex flex-col items-center rounded-md bg-darkGrey/60 py-1">
                   <span className="text-xs font-bold">
-                    {summary.exerciseCount}
+                    {summary
+                      ? summary.exerciseCount
+                      : session!.workoutExerciseLogs.length}
                   </span>
                   <span className="text-[9px] text-lightGrey/60 uppercase">
                     ex
                   </span>
                 </div>
                 <div className="flex flex-col items-center rounded-md bg-darkGrey/60 py-1">
-                  <span className="text-xs font-bold">{summary.totalSets}</span>
+                  <span className="text-xs font-bold">
+                    {summary ? summary.totalSets : sessionTotalSets(session!)}
+                  </span>
                   <span className="text-[9px] text-lightGrey/60 uppercase">
                     sets
                   </span>
