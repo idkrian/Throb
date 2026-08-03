@@ -82,7 +82,7 @@ const ActiveExerciseCard = ({
         <div className="flex items-center justify-center gap-4 shrink-0 text-[11px]">
           {topLastSet && (
             <span className="text-lightGrey/70">
-              Last time:{" "}
+              Last time max:{" "}
               <strong className="text-white">
                 {formatWeight(topLastSet.weight, unit)} × {topLastSet.reps}
               </strong>
@@ -135,7 +135,10 @@ const ActiveExerciseCard = ({
           onClick={addSet}
           className="group flex items-center justify-center gap-1.5 h-10 shrink-0 rounded-lg border border-dashed border-indigo/30 text-lightIndigo/70 text-xs font-semibold uppercase tracking-wider cursor-pointer transition-colors hover:border-indigo/60 hover:bg-indigo/10 hover:text-lightIndigo"
         >
-          <LuPlus size={16} className="transition-transform group-hover:rotate-90 duration-300" />
+          <LuPlus
+            size={16}
+            className="transition-transform group-hover:rotate-90 duration-300"
+          />
           Add set
         </button>
       </div>

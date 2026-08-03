@@ -27,7 +27,6 @@ const Workout = () => {
   const [progress, setProgress] = useState<Record<number, ExerciseProgress>>(
     {},
   );
-  /** Last performance + all-time PR per exercise, keyed by the real exercise id. */
   const [performances, setPerformances] = useState<
     Record<number, ExercisePerformanceDto>
   >({});
@@ -50,15 +49,29 @@ const Workout = () => {
     if (splitId) getTrainingSplitById(splitId).then(setSplit);
   }, [splitId]);
 
-  // Loads history first so each set can start pre-filled with what was done last
-  // time, which is the baseline the user is trying to beat.
+  useEffect(() => {
+    if (!split) return;
+
+    const initialProgress: Record<number, ExerciseProgress> = {};
+    split.exercises.forEach((ex) => {
+      initialProgress[ex.id] = {
+        sets: Array.from({ length: ex.sets }, () => ({
+          weight: 0,
+          reps: 0,
+          rpe: 7,
+          completed: false,
+        })),
+        notes: "",
+      };
+    });
+    setProgress(initialProgress);
+  }, [split]);
+
   useEffect(() => {
     if (!split) return;
     let cancelled = false;
 
-    const ordered = [...split.exercises].sort((a, b) => a.order - b.order);
-
-    getExercisePerformances(ordered.map((ex) => ex.exerciseId))
+    getExercisePerformances(split.exercises.map((ex) => ex.exerciseId))
       .catch(() => [] as ExercisePerformanceDto[])
       .then((list) => {
         if (cancelled) return;
@@ -68,24 +81,6 @@ const Workout = () => {
           byExercise[item.exerciseId] = item;
         });
         setPerformances(byExercise);
-
-        const initialProgress: Record<number, ExerciseProgress> = {};
-        ordered.forEach((ex) => {
-          const lastSets = byExercise[ex.exerciseId]?.lastPerformed?.sets;
-          initialProgress[ex.id] = {
-            sets: Array.from({ length: ex.sets }, (_, i) => {
-              const previous = lastSets?.[i];
-              return {
-                weight: previous?.weight ?? 0,
-                reps: previous?.reps ?? 0,
-                rpe: previous?.rpe ?? 7,
-                completed: false,
-              };
-            }),
-            notes: "",
-          };
-        });
-        setProgress(initialProgress);
       });
 
     return () => {
