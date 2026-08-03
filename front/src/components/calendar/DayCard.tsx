@@ -52,19 +52,19 @@ const statusBadge = (status: DayStatus) => {
   switch (status) {
     case "today":
       return (
-        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-indigo text-white uppercase tracking-wider">
+        <span className="text-center text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-indigo text-white uppercase tracking-wider">
           Today
         </span>
       );
     case "completed":
       return (
-        <span className="flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 uppercase tracking-wider">
+        <span className="text-center flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 uppercase tracking-wider">
           <LuCheck size={10} /> Done
         </span>
       );
     case "missed":
       return (
-        <span className="flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-300 uppercase tracking-wider">
+        <span className="text-center flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-300 uppercase tracking-wider">
           <LuTriangleAlert size={10} /> Missed
         </span>
       );
@@ -103,13 +103,15 @@ const DayCard = ({
       }}
       className={`group flex flex-col rounded-xl bg-mediumGrey border-2 ${statusStyles[status]} shadow-md cursor-pointer transition-all duration-200 hover:-translate-y-1 overflow-hidden`}
     >
-      <div className="flex items-center justify-between px-3 py-2 bg-darkGrey/50">
-        <div className="flex flex-col leading-tight">
+      <div className="flex flex-col items-center justify-between px-3 py-2 bg-darkGrey/50">
+        <div className="flex flex-col  w-full leading-tight">
           <span className="text-white font-semibold text-sm capitalize">
             {dayName}
           </span>
           <span className="text-white/50 text-xs tabular-nums">{dayLabel}</span>
         </div>
+      </div>
+      <div className="px-2 text-center" w-full>
         {statusBadge(status)}
       </div>
 
@@ -164,7 +166,7 @@ const DayCard = ({
             )}
 
             {status === "completed" && session && (
-              <div className="flex items-center justify-between text-[11px] text-emerald-300/80 mt-auto">
+              <div className="flex items-center w-full justify-between text-[11px] text-emerald-300/80 mt-auto">
                 <span>{formatVolume(sessionVolume(session))} kg</span>
                 <span>{sessionTotalSets(session)} sets logged</span>
               </div>
