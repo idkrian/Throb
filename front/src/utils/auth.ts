@@ -1,5 +1,7 @@
 import axios from "axios";
-import type { AuthUser, JwtPayload } from "@/dtos/auth.dto";
+import type { AuthUser, JwtPayload, LanguagePreference } from "@/dtos/auth.dto";
+
+const SUPPORTED_LOCALES: LanguagePreference[] = ["en", "pt"];
 
 export const TOKEN_STORAGE_KEY = "throb:token";
 export const USER_STORAGE_KEY = "throb:user";
@@ -14,7 +16,6 @@ export const decodeToken = (token: string): JwtPayload | null => {
   }
 };
 
-/** A token is valid when it decodes and its `exp` (seconds) is still in the future. */
 export const isTokenValid = (token: string | null): token is string => {
   if (!token) return false;
   const payload = decodeToken(token);
@@ -22,13 +23,21 @@ export const isTokenValid = (token: string | null): token is string => {
   return payload.exp * 1000 > Date.now();
 };
 
-/** Sets (or clears) the Authorization header used by every axios request. */
 export const applyAuthHeader = (token: string | null) => {
   if (token) {
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   } else {
     delete axios.defaults.headers.common.Authorization;
   }
+};
+
+export const applyLocaleHeader = (locale: LanguagePreference) => {
+  axios.defaults.headers.common["Accept-Language"] = locale;
+};
+
+export const detectBrowserLocale = (): LanguagePreference => {
+  const primary = navigator.language?.split("-")[0]?.toLowerCase();
+  return SUPPORTED_LOCALES.find((l) => l === primary) ?? "en";
 };
 
 export const getStoredToken = (): string | null =>

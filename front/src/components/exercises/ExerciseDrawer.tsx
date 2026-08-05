@@ -90,6 +90,14 @@ const ExerciseDrawer = ({ exercise, onClose, onEdit, onDelete }: Props) => {
                 </span>
               </Section>
 
+              {exercise.description && (
+                <Section label="Description">
+                  <p className="text-sm text-lightGrey leading-relaxed">
+                    {exercise.description}
+                  </p>
+                </Section>
+              )}
+
               <Section label="Personal Best">
                 {loading ? (
                   <Placeholder />

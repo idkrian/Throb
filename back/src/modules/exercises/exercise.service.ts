@@ -5,6 +5,7 @@ import type {
   CreateExerciseRequestDto,
   UpdateExerciseRequestDto,
 } from "./exercise.schema.js";
+import type { Locale } from "../../shared/constants/locales.js";
 import type {
   ExerciseHistoryEntryDto,
   ExercisePerformanceDto,
@@ -115,12 +116,22 @@ export const exerciseService = {
     return await exerciseRepository.createExercise(userId, data);
   },
 
-  async getAllExercises(userId: number) {
-    return await exerciseRepository.getAllExercises(userId);
+  async getAllExercises(userId: number, locale: Locale) {
+    const exercises = await exerciseRepository.getAllExercises(userId, locale);
+
+    // The translation (if any) wins; otherwise the canonical title/description stays.
+    return exercises.map(({ translations, ...exercise }) => {
+      const translation = translations[0];
+      return {
+        ...exercise,
+        title: translation?.title ?? exercise.title,
+        description: translation?.description ?? exercise.description,
+      };
+    });
   },
 
-  async getAllExercisesByMuscleGroup(userId: number) {
-    return await exerciseRepository.getAllExercisesByMuscleGroup(userId);
+  async getAllExercisesByMuscleGroup(userId: number, locale: Locale) {
+    return await exerciseRepository.getAllExercisesByMuscleGroup(userId, locale);
   },
 
   async updateExercise(

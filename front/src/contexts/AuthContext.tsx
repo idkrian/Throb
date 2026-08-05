@@ -14,10 +14,17 @@ import {
   register as registerRequest,
   updateMe,
 } from "@/api/auth";
-import type { AuthUser, UnitPreference, UpdateMeDto } from "@/dtos/auth.dto";
+import type {
+  AuthUser,
+  LanguagePreference,
+  UnitPreference,
+  UpdateMeDto,
+} from "@/dtos/auth.dto";
 import {
   applyAuthHeader,
+  applyLocaleHeader,
   clearSession,
+  detectBrowserLocale,
   getStoredToken,
   getStoredUser,
   isTokenValid,
@@ -27,8 +34,8 @@ import {
 
 interface AuthContextValue {
   user: AuthUser | null;
-  /** Falls back to KG until the profile loads, so weights always render. */
   unit: UnitPreference;
+  locale: LanguagePreference;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
@@ -42,14 +49,24 @@ const bootstrap = (): { token: string | null; user: AuthUser | null } => {
   const token = getStoredToken();
   if (!isTokenValid(token)) {
     clearSession();
+    applyLocaleHeader(detectBrowserLocale());
     return { token: null, user: null };
   }
   applyAuthHeader(token);
-  return { token, user: getStoredUser() };
+  const storedUser = getStoredUser();
+  applyLocaleHeader(storedUser?.languagePreference ?? detectBrowserLocale());
+  return { token, user: storedUser };
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [{ token, user }, setSession] = useState(bootstrap);
+
+  const locale: LanguagePreference =
+    user?.languagePreference ?? detectBrowserLocale();
+
+  useEffect(() => {
+    applyLocaleHeader(locale);
+  }, [locale]);
 
   const logout = useCallback(() => {
     clearSession();
@@ -81,8 +98,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setSession((prev) => ({ ...prev, user: updated }));
   }, []);
 
-  // Sessions stored before the profile fields existed lack unitPreference, so the
-  // profile is re-synced from the server whenever a valid token is present.
   useEffect(() => {
     if (!isTokenValid(token)) return;
     getMe()
@@ -90,9 +105,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         persistUser(freshUser);
         setSession((prev) => ({ ...prev, user: freshUser }));
       })
-      .catch(() => {
-        // 401s are already handled by the interceptor below.
-      });
+      .catch(() => {});
   }, [token]);
 
   useEffect(() => {
@@ -110,13 +123,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     () => ({
       user,
       unit: user?.unitPreference ?? "KG",
+      locale,
       isAuthenticated: isTokenValid(token),
       login,
       register,
       updateProfile,
       logout,
     }),
-    [user, token, login, register, updateProfile, logout],
+    [user, token, locale, login, register, updateProfile, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -5,9 +5,9 @@ export interface ExerciseDto {
   createdAt: string;
   updatedAt: string;
   title: string;
+  description?: string | null;
   muscleGroup: MuscleGroupType;
   muscle: MuscleType;
-  /** null means it belongs to the app's global catalog; a number means it's the user's own. */
   userId: number | null;
 }
 

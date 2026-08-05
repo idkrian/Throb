@@ -9,10 +9,17 @@ import userRouter from "./modules/user/user.router.js";
 import authRouter from "./modules/auth/auth.router.js";
 import bodyWeightRouter from "./modules/body-weight/body-weight.router.js";
 import { authenticate } from "./shared/middlewares/authenticate.js";
+import { localeMiddleware } from "./shared/middlewares/locale.js";
 
 const app = express();
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    allowedHeaders: ["Content-Type", "Authorization", "Accept-Language"],
+  }),
+);
 app.use(express.json());
+app.use(localeMiddleware);
 
 app.use("/exercise", authenticate, exerciseRouter);
 app.use("/training-split", authenticate, trainingSplitRouter);

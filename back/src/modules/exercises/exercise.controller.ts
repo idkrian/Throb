@@ -20,7 +20,10 @@ export const exerciseController = {
   async getAllExercises(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = Number(req.userId);
-      const exercises = await exerciseService.getAllExercises(userId);
+      const exercises = await exerciseService.getAllExercises(
+        userId,
+        req.locale,
+      );
 
       requestSuccessHandler(
         res,
@@ -39,8 +42,10 @@ export const exerciseController = {
   ) {
     try {
       const userId = Number(req.userId);
-      const exercises =
-        await exerciseService.getAllExercisesByMuscleGroup(userId);
+      const exercises = await exerciseService.getAllExercisesByMuscleGroup(
+        userId,
+        req.locale,
+      );
 
       requestSuccessHandler(
         res,

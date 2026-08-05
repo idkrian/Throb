@@ -17,6 +17,7 @@ const publicUserSelect = {
   name: true,
   email: true,
   unitPreference: true,
+  languagePreference: true,
 } as const;
 
 export const userRepository = {
@@ -68,10 +69,13 @@ export const userRepository = {
     const updateData: {
       name?: string;
       unitPreference?: UnitPreference;
+      languagePreference?: string;
     } = {};
     if (data.name !== undefined) updateData.name = data.name;
     if (data.unitPreference !== undefined)
       updateData.unitPreference = data.unitPreference;
+    if (data.languagePreference !== undefined)
+      updateData.languagePreference = data.languagePreference;
 
     return await prisma.users.update({
       where: { id: userId },

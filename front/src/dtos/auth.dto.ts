@@ -1,5 +1,7 @@
 export type UnitPreference = "KG" | "LB";
 
+export type LanguagePreference = "en" | "pt";
+
 export interface AuthUser {
   id: number;
   name: string;
@@ -7,11 +9,13 @@ export interface AuthUser {
   createdAt: string;
   updatedAt: string;
   unitPreference: UnitPreference;
+  languagePreference: LanguagePreference;
 }
 
 export interface UpdateMeDto {
   name?: string;
   unitPreference?: UnitPreference;
+  languagePreference?: LanguagePreference;
 }
 
 export interface LoginRequestDto {

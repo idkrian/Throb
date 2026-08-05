@@ -3,6 +3,7 @@ import type {
   CreateExerciseRequestDto,
   UpdateExerciseRequestDto,
 } from "./exercise.schema.js";
+import type { Locale } from "../../shared/constants/locales.js";
 const prisma = new PrismaClient();
 
 export const exerciseRepository = {
@@ -18,25 +19,34 @@ export const exerciseRepository = {
     });
   },
 
-  async getAllExercises(userId: number) {
+  async getAllExercises(userId: number, locale: Locale) {
     return await prisma.exercises.findMany({
       where: { OR: [{ userId: null }, { userId }] },
+      include: {
+        translations: {
+          where: { locale },
+          select: { title: true, description: true },
+        },
+      },
     });
   },
 
-  async getAllExercisesByMuscleGroup(userId: number) {
+  async getAllExercisesByMuscleGroup(userId: number, locale: Locale) {
     return await prisma.$queryRaw`
       SELECT
-        "muscleGroup",
+        e."muscleGroup",
         json_agg(json_build_object(
-          'id', id,
-          'title', title,
-          'muscle', muscle,
-          'userId', "userId"
+          'id', e.id,
+          'title', COALESCE(t.title, e.title),
+          'description', COALESCE(t.description, e.description),
+          'muscle', e.muscle,
+          'userId', e."userId"
         )) AS items
-      FROM "exercises"
-      WHERE "userId" IS NULL OR "userId" = ${userId}
-      GROUP BY "muscleGroup"
+      FROM "exercises" e
+      LEFT JOIN "exercise_translations" t
+        ON t."exerciseId" = e.id AND t.locale = ${locale}
+      WHERE e."userId" IS NULL OR e."userId" = ${userId}
+      GROUP BY e."muscleGroup"
     `;
   },
 

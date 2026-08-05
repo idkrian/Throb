@@ -17,6 +17,7 @@ model users {
   name            String?
   isAdmin         Boolean            @default(false)
   unitPreference  UnitPreference     @default(KG)
+  languagePreference String          @default("en")
   bodyWeights     body_weights[]
   exercises       exercises[]
   trainingSplits  training_splits[]
@@ -42,10 +43,24 @@ model exercises {
   description         String?
   trainingSplits      training_split_exercises[]
   workoutExerciseLogs workout_exercise_logs[]
+  translations        exercise_translations[]
   userId              Int?
   user                users?                     @relation(fields: [userId], references: [id])
 
   @@unique([muscleGroup, muscle, title, userId])
+}
+
+model exercise_translations {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  exerciseId  Int
+  locale      String    @db.VarChar(8)
+  title       String    @db.VarChar(255)
+  description String?
+  exercise    exercises @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@unique([exerciseId, locale])
 }
 
 model training_splits {

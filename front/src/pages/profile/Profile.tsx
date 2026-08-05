@@ -5,14 +5,18 @@ import BodyWeightChart from "@/components/charts/BodyWeightChart";
 import Button from "@/components/ui/Button";
 import { useAuth } from "@/contexts/AuthContext";
 import type { BodyWeightDto } from "@/dtos/body-weight.dto";
-import type { UnitPreference } from "@/dtos/auth.dto";
+import type { LanguagePreference, UnitPreference } from "@/dtos/auth.dto";
 import { formatWeight, toCanonicalWeight, unitLabel } from "@/utils/units";
 import { formatDate } from "@/utils/date";
 
 const UNITS: UnitPreference[] = ["KG", "LB"];
+const LANGUAGES: { value: LanguagePreference; label: string }[] = [
+  { value: "en", label: "EN" },
+  { value: "pt", label: "PT" },
+];
 
 const Profile = () => {
-  const { user, unit, updateProfile } = useAuth();
+  const { user, unit, locale, updateProfile } = useAuth();
   const [entries, setEntries] = useState<BodyWeightDto[]>([]);
   const [weightInput, setWeightInput] = useState("");
   const [saving, setSaving] = useState(false);
@@ -50,6 +54,15 @@ const Profile = () => {
     if (next === unit) return;
     try {
       await updateProfile({ unitPreference: next });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const changeLanguage = async (next: LanguagePreference) => {
+    if (next === locale) return;
+    try {
+      await updateProfile({ languagePreference: next });
     } catch (error) {
       console.error(error);
     }
@@ -95,20 +108,37 @@ const Profile = () => {
             <p className="text-sm font-semibold text-white">{user?.name}</p>
             <p className="truncate text-xs text-lightGrey/60">{user?.email}</p>
           </div>
-          <div className="flex gap-1 shrink-0">
-            {UNITS.map((option) => (
-              <button
-                key={option}
-                onClick={() => changeUnit(option)}
-                className={`px-2.5 py-1 rounded-md text-xs font-semibold uppercase transition-colors cursor-pointer ${
-                  unit === option
-                    ? "bg-indigo text-white"
-                    : "bg-darkGrey/60 text-lightGrey/60 hover:text-white"
-                }`}
-              >
-                {unitLabel(option)}
-              </button>
-            ))}
+          <div className="flex flex-col items-end gap-1.5 shrink-0">
+            <div className="flex gap-1">
+              {UNITS.map((option) => (
+                <button
+                  key={option}
+                  onClick={() => changeUnit(option)}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold uppercase transition-colors cursor-pointer ${
+                    unit === option
+                      ? "bg-indigo text-white"
+                      : "bg-darkGrey/60 text-lightGrey/60 hover:text-white"
+                  }`}
+                >
+                  {unitLabel(option)}
+                </button>
+              ))}
+            </div>
+            <div className="flex gap-1">
+              {LANGUAGES.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => changeLanguage(option.value)}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold uppercase transition-colors cursor-pointer ${
+                    locale === option.value
+                      ? "bg-indigo text-white"
+                      : "bg-darkGrey/60 text-lightGrey/60 hover:text-white"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
