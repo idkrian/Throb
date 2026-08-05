@@ -238,6 +238,7 @@ const Workout = () => {
         exercises: orderedExercises
           .map((ex) => ({
             exerciseId: ex.exerciseId,
+            notes: progress[ex.id].notes.trim() || undefined,
             sets: progress[ex.id].sets
               .filter((s) => s.completed)
               .map((s, i) => ({

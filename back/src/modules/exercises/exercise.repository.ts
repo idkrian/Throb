@@ -4,6 +4,8 @@ import type {
   UpdateExerciseRequestDto,
 } from "./exercise.schema.js";
 import type { Locale } from "../../shared/constants/locales.js";
+import { AppError } from "../../shared/middlewares/request-error-handler.js";
+import { HttpStatus } from "../../shared/constants/http-status.js";
 const prisma = new PrismaClient();
 
 export const exerciseRepository = {
@@ -62,8 +64,28 @@ export const exerciseRepository = {
   },
 
   async deleteExercise(userId: number, exerciseId: number) {
-    return await prisma.exercises.delete({
-      where: { id: exerciseId, userId },
+    return await prisma.$transaction(async (tx) => {
+      const owned = await tx.exercises.findFirst({
+        where: { id: exerciseId, userId },
+        select: { id: true },
+      });
+      if (!owned) {
+        throw new AppError("Exercise not found", HttpStatus.NOT_FOUND);
+      }
+
+      const loggedCount = await tx.workout_exercise_logs.count({
+        where: { exerciseId },
+      });
+      if (loggedCount > 0) {
+        throw new AppError(
+          "This exercise has logged workouts and can't be deleted",
+          HttpStatus.CONFLICT,
+        );
+      }
+
+      await tx.training_split_exercises.deleteMany({ where: { exerciseId } });
+
+      return await tx.exercises.delete({ where: { id: exerciseId } });
     });
   },
 

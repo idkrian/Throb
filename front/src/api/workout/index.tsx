@@ -9,6 +9,7 @@ interface WorkoutSet {
 
 interface WorkoutExercisePayload {
   exerciseId: number;
+  notes?: string;
   sets: WorkoutSet[];
 }
 

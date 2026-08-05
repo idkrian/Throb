@@ -4,6 +4,7 @@ type Props = {
   open: boolean;
   title: string;
   description?: string;
+  error?: string | null;
   confirmLabel?: string;
   cancelLabel?: string;
   loading?: boolean;
@@ -15,6 +16,7 @@ const ConfirmModal = ({
   open,
   title,
   description,
+  error,
   confirmLabel = "Delete",
   cancelLabel = "Cancel",
   loading = false,
@@ -39,6 +41,11 @@ const ConfirmModal = ({
           <h2 className="text-2xl font-bold text-center">{title}</h2>
           {description && (
             <p className="text-sm text-lightGrey/70 text-center">{description}</p>
+          )}
+          {error && (
+            <p className="w-full rounded-md bg-red-500/10 border border-red-500/30 px-3 py-2 text-sm text-red-400 text-center">
+              {error}
+            </p>
           )}
           <div className="flex w-full gap-2 mt-2">
             <button

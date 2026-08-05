@@ -9,6 +9,7 @@ const workoutSetInputSchema = z.object({
 
 const workoutExerciseInputSchema = z.object({
   exerciseId: z.number().int().positive(),
+  notes: z.string().max(1000).optional(),
   sets: z.array(workoutSetInputSchema).min(1),
 });
 

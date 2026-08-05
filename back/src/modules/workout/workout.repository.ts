@@ -22,6 +22,7 @@ export const workoutRepository = {
         workoutExerciseLogs: {
           create: data.exercises.map((exercise) => ({
             exerciseId: exercise.exerciseId,
+            notes: exercise.notes ?? null,
             workoutSets: {
               create: exercise.sets.map((set) => ({
                 setNumber: set.setNumber,

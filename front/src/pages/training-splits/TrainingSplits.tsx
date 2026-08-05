@@ -10,6 +10,7 @@ import {
 import { FaPlus } from "react-icons/fa";
 import { LuClipboardList } from "react-icons/lu";
 import { useNavigate } from "react-router";
+import { getApiErrorMessage } from "@/utils/error";
 
 const SKELETON_COUNT = 4;
 
@@ -21,6 +22,7 @@ const TrainingSplits = () => {
     null,
   );
   const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTrainingSplits = async () => {
@@ -37,6 +39,7 @@ const TrainingSplits = () => {
   const confirmDelete = async () => {
     if (!pendingDelete) return;
     setDeleting(true);
+    setDeleteError(null);
     try {
       await deleteTrainingSplit(pendingDelete.id);
       setTrainingSplits((prev) =>
@@ -44,10 +47,21 @@ const TrainingSplits = () => {
       );
       setPendingDelete(null);
     } catch (error) {
-      console.log(error);
+      setDeleteError(getApiErrorMessage(error));
     } finally {
       setDeleting(false);
     }
+  };
+
+  const openDelete = (split: TrainingSplitDto) => {
+    setDeleteError(null);
+    setPendingDelete(split);
+  };
+
+  const closeDelete = () => {
+    if (deleting) return;
+    setDeleteError(null);
+    setPendingDelete(null);
   };
 
   const isEmpty = !loading && trainingSplits.length === 0;
@@ -62,9 +76,10 @@ const TrainingSplits = () => {
             ? `"${pendingDelete.title}" will be permanently removed.`
             : undefined
         }
+        error={deleteError}
         loading={deleting}
         onConfirm={confirmDelete}
-        onCancel={() => (deleting ? null : setPendingDelete(null))}
+        onCancel={closeDelete}
       />
 
       {loading && (
@@ -106,7 +121,7 @@ const TrainingSplits = () => {
               split={split}
               width={300}
               key={split.id}
-              onDelete={setPendingDelete}
+              onDelete={openDelete}
             />
           ))}
         </div>

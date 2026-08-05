@@ -119,6 +119,7 @@ model workout_exercise_logs {
   id               Int              @id @default(autoincrement())
   workoutSessionId Int
   exerciseId       Int
+  notes            String?
   exercise         exercises        @relation(fields: [exerciseId], references: [id])
   workoutSession   workout_sessions @relation(fields: [workoutSessionId], references: [id])
   workoutSets      workout_sets[]

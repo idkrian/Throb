@@ -10,6 +10,7 @@ import {
 } from "@/dtos/muscle.dto";
 import type { ExerciseDto } from "@/dtos/exercise.dto";
 import { createExercise, updateExercise } from "@/api/exercise";
+import { getApiErrorMessage } from "@/utils/error";
 import MuscleIcon from "@/components/exercises/MuscleIcon";
 import {
   Select,
@@ -48,6 +49,7 @@ const ExerciseModal = ({
   const [feedbackStatus, setFeedbackStatus] = useState<"success" | "error">(
     "success",
   );
+  const [errorMessage, setErrorMessage] = useState("");
   const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   useEffect(() => {
@@ -89,7 +91,7 @@ const ExerciseModal = ({
       }
       setFeedbackStatus("success");
     } catch (error) {
-      console.log(error);
+      setErrorMessage(getApiErrorMessage(error));
       setFeedbackStatus("error");
     } finally {
       setSubmitting(false);
@@ -110,7 +112,8 @@ const ExerciseModal = ({
         description={
           feedbackStatus === "success"
             ? `Exercise ${isEditing ? "updated" : "created"} successfully.`
-            : `There was an error ${
+            : errorMessage ||
+              `There was an error ${
                 isEditing ? "updating" : "creating"
               } the exercise.`
         }

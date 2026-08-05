@@ -11,6 +11,7 @@ import {
   type MuscleGroupType,
 } from "@/dtos/muscle.dto";
 import type { ExerciseDto } from "@/dtos/exercise.dto";
+import { getApiErrorMessage } from "@/utils/error";
 import ExerciseModal from "@/components/modals/ExerciseModal";
 import ConfirmModal from "@/components/modals/ConfirmModal";
 import ExerciseSidebar from "@/components/exercises/ExerciseSidebar";
@@ -29,19 +30,31 @@ const Exercises = () => {
   const [editExercise, setEditExercise] = useState<ExerciseDto | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<ExerciseDto | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const fetchData = () => getMuscleGroups().then(setMuscleGroups);
+
+  const openDelete = (exercise: ExerciseDto) => {
+    setDeleteError(null);
+    setDeleteTarget(exercise);
+  };
+
+  const closeDelete = () => {
+    setDeleteError(null);
+    setDeleteTarget(null);
+  };
 
   const confirmDelete = async () => {
     if (!deleteTarget || deleting) return;
     setDeleting(true);
+    setDeleteError(null);
     try {
       await deleteExercise(deleteTarget.id);
       setDeleteTarget(null);
       setSelectedExercise(null);
       await fetchData();
     } catch (error) {
-      console.log(error);
+      setDeleteError(getApiErrorMessage(error));
     } finally {
       setDeleting(false);
     }
@@ -148,7 +161,7 @@ const Exercises = () => {
           setSelectedExercise(null);
           setEditExercise(ex);
         }}
-        onDelete={setDeleteTarget}
+        onDelete={openDelete}
       />
 
       {(createOpen || editExercise) && (
@@ -172,9 +185,10 @@ const Exercises = () => {
             ? `"${deleteTarget.title}" will be permanently removed.`
             : undefined
         }
+        error={deleteError}
         loading={deleting}
         onConfirm={confirmDelete}
-        onCancel={() => setDeleteTarget(null)}
+        onCancel={closeDelete}
       />
     </div>
   );
