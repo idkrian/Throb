@@ -5,18 +5,19 @@ import BodyWeightChart from "@/components/charts/BodyWeightChart";
 import Button from "@/components/ui/Button";
 import { useAuth } from "@/contexts/AuthContext";
 import type { BodyWeightDto } from "@/dtos/body-weight.dto";
-import type { LanguagePreference, UnitPreference } from "@/dtos/auth.dto";
+import type { UnitPreference } from "@/dtos/auth.dto";
+// import type { LanguagePreference } from "@/dtos/auth.dto";
 import { formatWeight, toCanonicalWeight, unitLabel } from "@/utils/units";
 import { formatDate } from "@/utils/date";
 
 const UNITS: UnitPreference[] = ["KG", "LB"];
-const LANGUAGES: { value: LanguagePreference; label: string }[] = [
-  { value: "en", label: "EN" },
-  { value: "pt", label: "PT" },
-];
+// const LANGUAGES: { value: LanguagePreference; label: string }[] = [
+//   { value: "en", label: "EN" },
+//   { value: "pt", label: "PT" },
+// ];
 
 const Profile = () => {
-  const { user, unit, locale, updateProfile } = useAuth();
+  const { user, unit, updateProfile } = useAuth();
   const [entries, setEntries] = useState<BodyWeightDto[]>([]);
   const [weightInput, setWeightInput] = useState("");
   const [saving, setSaving] = useState(false);
@@ -59,14 +60,14 @@ const Profile = () => {
     }
   };
 
-  const changeLanguage = async (next: LanguagePreference) => {
-    if (next === locale) return;
-    try {
-      await updateProfile({ languagePreference: next });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const changeLanguage = async (next: LanguagePreference) => {
+  //   if (next === locale) return;
+  //   try {
+  //     await updateProfile({ languagePreference: next });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col w-full h-full gap-3 overflow-hidden">
@@ -124,6 +125,7 @@ const Profile = () => {
                 </button>
               ))}
             </div>
+            {/* Language toggle: hidden until UI i18n is done. Uncomment to re-enable.
             <div className="flex gap-1">
               {LANGUAGES.map((option) => (
                 <button
@@ -139,6 +141,7 @@ const Profile = () => {
                 </button>
               ))}
             </div>
+            */}
           </div>
         </div>
       </div>
