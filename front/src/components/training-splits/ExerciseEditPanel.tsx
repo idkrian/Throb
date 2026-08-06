@@ -30,9 +30,17 @@ type Props = {
   onExerciseChange: (exerciseId: number) => void;
 };
 
-const PanelField = ({ label, children }: { label: string; children: React.ReactNode }) => (
+const PanelField = ({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) => (
   <div className="flex flex-col gap-1.5">
-    <p className="text-xs uppercase tracking-wider text-lightGrey/50 font-semibold">{label}</p>
+    <p className="text-xs uppercase tracking-wider text-lightGrey/50 font-semibold">
+      {label}
+    </p>
     {children}
   </div>
 );
@@ -47,7 +55,8 @@ const ExerciseEditPanel = ({
   onMuscleChange,
   onExerciseChange,
 }: Props) => {
-  const filterByMuscle = (muscle: MuscleType) => exercises.filter((ex) => ex.muscle === muscle);
+  const filterByMuscle = (muscle: MuscleType) =>
+    exercises.filter((ex) => ex.muscle === muscle);
 
   return (
     <>
@@ -73,8 +82,12 @@ const ExerciseEditPanel = ({
               />
             </div>
             <div className="min-w-0">
-              <p className="font-semibold text-white truncate">{exercise.exercise.title}</p>
-              <p className="text-xs text-lightGrey/60">{MuscleLabel[exercise.exercise.muscle]}</p>
+              <p className="font-semibold text-white truncate">
+                {exercise.exercise.title}
+              </p>
+              <p className="text-xs text-lightGrey/60">
+                {MuscleLabel[exercise.exercise.muscle]}
+              </p>
             </div>
           </div>
         )}
@@ -84,8 +97,9 @@ const ExerciseEditPanel = ({
             <input
               type="number"
               min={1}
-              value={exercise.sets}
+              value={exercise.sets || ""}
               onChange={(e) => onUpdate({ sets: Number(e.target.value) })}
+              onBlur={() => exercise.sets < 1 && onUpdate({ sets: 1 })}
               className="w-full bg-mediumGrey rounded-lg px-3 py-2 text-sm outline-none border border-transparent focus:border-indigo transition-colors text-white"
             />
           </PanelField>
@@ -102,7 +116,9 @@ const ExerciseEditPanel = ({
         <PanelField label="Muscle Group">
           <Select
             value={exercise.exercise?.muscleGroup ?? ""}
-            onValueChange={(value) => onMuscleGroupChange(value as MuscleGroupType)}
+            onValueChange={(value) =>
+              onMuscleGroupChange(value as MuscleGroupType)
+            }
           >
             <SelectTrigger className="w-full bg-mediumGrey border-transparent text-white data-placeholder:text-lightGrey/50 focus-visible:border-indigo focus-visible:ring-0">
               <SelectValue placeholder="Select muscle group" />
