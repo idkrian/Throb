@@ -5,7 +5,8 @@
   "license": "MIT",
   "type": "module",
   "prisma": {
-    "schema": "database/prisma/schema.prisma"
+    "schema": "database/prisma/schema.prisma",
+    "seed": "tsx database/prisma/seed.ts"
   },
   "scripts": {
     "dev": "tsx watch database/server.ts",
@@ -18,6 +19,7 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.3",
+    "tsx": "^4.20.6",
     "zod": "^4.1.12"
   },
   "devDependencies": {
@@ -26,7 +28,6 @@
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "prisma": "^6.17.1",
-    "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }
 }
