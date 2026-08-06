@@ -8,12 +8,6 @@ export const createUserSchema = z.object({
   password: z.string().min(6),
 });
 
-export const updateUserSchema = z.object({
-  name: z.string().max(255).optional(),
-  email: z.email().optional(),
-  unitPreference: z.enum(UnitPreference).optional(),
-});
-
 export const updateMeSchema = z.object({
   name: z.string().max(255).optional(),
   unitPreference: z.enum(UnitPreference).optional(),
@@ -21,7 +15,5 @@ export const updateMeSchema = z.object({
 });
 
 export type CreateUserRequestDto = z.infer<typeof createUserSchema>;
-
-export type UpdateUserRequestDto = z.infer<typeof updateUserSchema>;
 
 export type UpdateMeRequestDto = z.infer<typeof updateMeSchema>;

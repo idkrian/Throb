@@ -10,11 +10,12 @@ import authRouter from "./modules/auth/auth.router.js";
 import bodyWeightRouter from "./modules/body-weight/body-weight.router.js";
 import { authenticate } from "./shared/middlewares/authenticate.js";
 import { localeMiddleware } from "./shared/middlewares/locale.js";
+import { env } from "./shared/config/env.js";
 
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: env.FRONTEND_URL,
     allowedHeaders: ["Content-Type", "Authorization", "Accept-Language"],
   }),
 );

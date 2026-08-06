@@ -5,7 +5,6 @@ import {
 import type {
   CreateUserRequestDto,
   UpdateMeRequestDto,
-  UpdateUserRequestDto,
 } from "./user.schema.js";
 
 const prisma = new PrismaClient();
@@ -32,10 +31,6 @@ export const userRepository = {
     });
   },
 
-  async getAllUsers() {
-    return await prisma.users.findMany({ select: publicUserSelect });
-  },
-
   async getUserById(userId: number) {
     return await prisma.users.findUnique({
       where: { id: userId },
@@ -45,24 +40,6 @@ export const userRepository = {
 
   async getUserByEmail(email: string) {
     return await prisma.users.findUnique({ where: { email } });
-  },
-
-  async updateUser(userId: number, data: UpdateUserRequestDto) {
-    const updateData: {
-      name?: string;
-      email?: string;
-      unitPreference?: UnitPreference;
-    } = {};
-    if (data.name !== undefined) updateData.name = data.name;
-    if (data.email !== undefined) updateData.email = data.email;
-    if (data.unitPreference !== undefined)
-      updateData.unitPreference = data.unitPreference;
-
-    return await prisma.users.update({
-      where: { id: userId },
-      data: updateData,
-      select: publicUserSelect,
-    });
   },
 
   async updateMe(userId: number, data: UpdateMeRequestDto) {
@@ -80,13 +57,6 @@ export const userRepository = {
     return await prisma.users.update({
       where: { id: userId },
       data: updateData,
-      select: publicUserSelect,
-    });
-  },
-
-  async deleteUser(userId: number) {
-    return await prisma.users.delete({
-      where: { id: userId },
       select: publicUserSelect,
     });
   },

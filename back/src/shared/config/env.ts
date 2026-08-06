@@ -8,4 +8,5 @@ function requireEnv(name: string): string {
 
 export const env = {
   JWT_SECRET: requireEnv("JWT_SECRET"),
+  FRONTEND_URL: requireEnv("FRONTEND_URL"),
 };
