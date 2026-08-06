@@ -21,7 +21,7 @@ export const getWeekDays = (weekOffset: number = 0) => {
     days.push({
       date: date,
       dayName: formatDate(date, { weekday: "long" }),
-      day: `${date.getDate()}/${date.getMonth() + 1}`,
+      day: formatDate(date, { month: "numeric", day: "numeric" }),
       dayNumber: date.getDay(),
     });
   }
@@ -47,7 +47,7 @@ export const formatWeekRangeLabel = (days: { date: Date }[]) => {
     });
   const monthLabel = formatDate(first, { month: "long" });
   return sameMonth
-    ? `${fmt(first)} – ${fmt(last)} ${monthLabel}`
+    ? `${monthLabel} ${fmt(first)} – ${fmt(last)}`
     : `${fmt(first)} – ${fmt(last)}`;
 };
 

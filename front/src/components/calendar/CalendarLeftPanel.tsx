@@ -51,7 +51,7 @@ const CalendarLeftPanel = ({
       <div className="flex flex-col items-center gap-3 w-full">
         {!isRest && !todaySession && (
           <p className="text-white/70 font-semibold text-sm uppercase tracking-wider">
-            Treino do Dia
+            Today's Workout
           </p>
         )}
         {todaySession ? (

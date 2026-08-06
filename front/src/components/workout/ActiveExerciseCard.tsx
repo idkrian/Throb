@@ -47,7 +47,7 @@ const ActiveExerciseCard = ({
   );
 
   return (
-    <div className="col-span-2 relative bg-linear-to-br from-mediumGrey to-darkGrey rounded-2xl p-5 shadow-xl shadow-indigo/10 border border-indigo/10 flex flex-col min-h-0 gap-4 overflow-hidden">
+    <div className="col-span-2 relative bg-linear-to-br from-mediumGrey to-darkGrey rounded-2xl p-5 shadow-md shadow-indigo/10 border border-indigo/10 flex flex-col min-h-0 gap-4 overflow-hidden">
       <div className="flex items-center justify-between shrink-0">
         <button
           className="p-1.5 rounded-lg bg-darkGrey hover:bg-indigo/30 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
