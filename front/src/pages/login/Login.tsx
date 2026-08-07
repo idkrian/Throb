@@ -73,7 +73,7 @@ const Login = () => {
   };
 
   return (
-    <div className="relative flex h-screen w-screen items-center justify-center overflow-hidden bg-backgroundBlack px-6 text-lightGrey">
+    <div className="relative flex min-h-dvh w-full items-center justify-center overflow-hidden bg-backgroundBlack px-6 py-8 text-lightGrey">
       {/* subtle ambient glow */}
       <div className="absolute -top-32 left-1/3 h-96 w-96 rounded-full bg-indigo/20 blur-3xl animate-auth-blob" />
       <div

@@ -28,7 +28,8 @@
       "Bash(npx prisma *)",
       "Bash(grep -rn \"getAllUsers\\\\|getUserById\\\\|/user/\\\\${\" ../front/src)",
       "Bash(node -e ' *)",
-      "Bash(echo \"exit: $?\")"
+      "Bash(echo \"exit: $?\")",
+      "Bash(echo \"TSC_EXIT=$?\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\Rian\\Documents\\projects\\fit"

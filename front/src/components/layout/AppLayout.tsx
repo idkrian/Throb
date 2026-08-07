@@ -1,17 +1,17 @@
 import { Outlet } from "react-router";
 import Navbar from "./Navbar";
+import MobileTabBar from "./MobileTabBar";
 
 const AppLayout = () => {
   return (
-    <div className="w-screen h-screen px-24 py-8 bg-backgroundBlack">
-      <div className="flex flex-col w-full h-full shadow-xl rounded-xl p-8 bg-darkGrey overflow-hidden">
-        <div className="flex flex-col w-full h-full gap-4 min-h-0">
-          <Navbar />
-          <div className="flex-1 min-h-0 overflow-y-auto pr-2 -mr-2">
-            <Outlet />
-          </div>
-        </div>
+    <div className="min-h-dvh bg-backgroundBlack lg:h-dvh lg:px-24 lg:py-8">
+      <div className="flex min-h-dvh w-full flex-col gap-4 bg-darkGrey p-4 lg:h-full lg:min-h-0 lg:overflow-hidden lg:rounded-xl lg:p-8 lg:shadow-xl">
+        <Navbar />
+        <main className="flex-1 pb-[calc(3.5rem+1rem+env(safe-area-inset-bottom))] lg:-mr-2 lg:min-h-0 lg:overflow-y-auto lg:pb-0 lg:pr-2">
+          <Outlet />
+        </main>
       </div>
+      <MobileTabBar />
     </div>
   );
 };
