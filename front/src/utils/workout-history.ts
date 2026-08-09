@@ -34,6 +34,26 @@ export const sessionsInRange = (
     return t >= start.getTime() && t <= end.getTime();
   });
 
+export const completedWeekdays = (
+  sessions: WorkoutSessionDto[],
+  reference: Date = new Date(),
+): Set<number> => {
+  const start = new Date(reference);
+  start.setHours(0, 0, 0, 0);
+  start.setDate(start.getDate() - start.getDay());
+
+  const sessionDays = new Set(sessions.map((s) => dayKey(s.createdAt)));
+  const days = new Set<number>();
+
+  for (let i = 0; i < 7; i += 1) {
+    const day = new Date(start);
+    day.setDate(start.getDate() + i);
+    if (sessionDays.has(dayKey(day))) days.add(i);
+  }
+
+  return days;
+};
+
 export const formatVolume = (volume: number): string => {
   if (volume >= 1000) return `${(volume / 1000).toFixed(1)}k`;
   return `${volume}`;

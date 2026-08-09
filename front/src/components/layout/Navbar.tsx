@@ -1,21 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
-import { LuPlay, LuLogOut } from "react-icons/lu";
-import { Link, NavLink, useMatch } from "react-router";
+import { LuPlay, LuLogOut, LuCheck, LuX } from "react-icons/lu";
+import { Link, NavLink, useLocation, useMatch } from "react-router";
 import { getTrainingSplitDays } from "@/api/training-split-day";
 import { getAllWorkouts } from "@/api/workout";
 import type { TrainingSplitDayMap } from "@/dtos/training-split-day.dto";
 import { useAuth } from "@/contexts/AuthContext";
+import { completedWeekdays } from "@/utils/workout-history";
 import Logo from "@/assets/icons/pulse-gradient.svg";
 import { navItems } from "./nav-items";
 
 const DAY_LETTERS = ["S", "M", "T", "W", "T", "F", "S"];
-
-const startOfWeek = (d: Date) => {
-  const out = new Date(d);
-  out.setHours(0, 0, 0, 0);
-  out.setDate(out.getDate() - out.getDay());
-  return out;
-};
 
 type WeekCell = {
   letter: string;
@@ -23,31 +17,61 @@ type WeekCell = {
   isTraining: boolean;
   isToday: boolean;
   isCompleted: boolean;
+  isMissed: boolean;
+};
+
+const DayMarker = ({
+  isCompleted,
+  isMissed,
+  isTraining,
+}: Pick<WeekCell, "isCompleted" | "isMissed" | "isTraining">) => {
+  if (isCompleted) return <LuCheck size={11} className="text-lightIndigo" />;
+  if (isMissed) return <LuX size={10} className="text-red-400/70" />;
+  if (isTraining)
+    return (
+      <span className="size-1.5 rounded-full border border-lightIndigo/60" />
+    );
+  return <span className="size-1 rounded-full bg-lightGrey/20" />;
 };
 
 const WeekStrip = ({ cells }: { cells: WeekCell[] }) => (
   <div className="flex gap-1">
-    {cells.map(({ letter, index, isTraining, isToday, isCompleted }) => {
-      let cellClass = "text-lightGrey/30";
-      if (isTraining) cellClass = "text-lightGrey/70";
-      if (isCompleted) cellClass = "text-lightIndigo";
-      if (isToday) cellClass = "text-lightIndigo border-b border-lightIndigo";
+    {cells.map(
+      ({ letter, index, isTraining, isToday, isCompleted, isMissed }) => {
+        let title = "Rest";
+        if (isTraining) title = "Scheduled";
+        if (isMissed) title = "Missed";
+        if (isCompleted) title = "Trained";
 
-      let title = "Rest";
-      if (isTraining) title = "Scheduled";
-      if (isCompleted) title = "Trained";
-      if (isToday) title = "Today";
+        let letterClass = "text-lightGrey/35";
+        if (isTraining) letterClass = "text-lightGrey/80";
+        if (isToday) letterClass = "text-lightIndigo";
 
-      return (
-        <div
-          key={index}
-          className={`flex h-7 w-7 items-center justify-center text-[11px] font-medium tracking-wider ${cellClass}`}
-          title={title}
-        >
-          {isTraining || isCompleted ? letter : "·"}
-        </div>
-      );
-    })}
+        return (
+          <div
+            key={index}
+            title={isToday ? `${title} · Today` : title}
+            className="relative flex h-9 w-7 flex-col items-center justify-center gap-1"
+          >
+            <span
+              className={`text-[11px] font-medium leading-none tracking-wider ${letterClass}`}
+            >
+              {letter}
+            </span>
+            <span className="flex h-3 items-center justify-center">
+              <DayMarker
+                isCompleted={isCompleted}
+                isMissed={isMissed}
+                isTraining={isTraining}
+              />
+            </span>
+            {isToday && (
+              <span className="absolute inset-x-1 bottom-0 h-0.5 rounded-full bg-lightIndigo" />
+            )}
+          </div>
+        );
+      },
+    )}
   </div>
 );
 
@@ -56,21 +80,27 @@ const Navbar = () => {
   const [byDay, setByDay] = useState<TrainingSplitDayMap>({});
   const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
 
+  const { pathname } = useLocation();
+
   useEffect(() => {
-    getTrainingSplitDays().then(setByDay);
-    getAllWorkouts().then((sessions) => {
-      const weekStart = startOfWeek(new Date()).getTime();
-      const weekEnd = weekStart + 7 * 24 * 60 * 60 * 1000;
-      const days = new Set<number>();
-      sessions.forEach((s) => {
-        const t = new Date(s.createdAt).getTime();
-        if (t >= weekStart && t < weekEnd) {
-          days.add(new Date(s.createdAt).getDay());
-        }
+    let cancelled = false;
+
+    const load = () => {
+      getTrainingSplitDays().then((days) => {
+        if (!cancelled) setByDay(days);
       });
-      setCompletedDays(days);
-    });
-  }, []);
+      getAllWorkouts().then((sessions) => {
+        if (!cancelled) setCompletedDays(completedWeekdays(sessions));
+      });
+    };
+
+    load();
+    window.addEventListener("focus", load);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("focus", load);
+    };
+  }, [pathname]);
 
   const today = new Date().getDay();
   const todayEntry = byDay[today];
@@ -79,13 +109,18 @@ const Navbar = () => {
 
   const weekCells = useMemo<WeekCell[]>(
     () =>
-      DAY_LETTERS.map((letter, index) => ({
-        letter,
-        index,
-        isTraining: Boolean(byDay[index] && !byDay[index].restDay),
-        isToday: index === today,
-        isCompleted: completedDays.has(index),
-      })),
+      DAY_LETTERS.map((letter, index) => {
+        const isTraining = Boolean(byDay[index] && !byDay[index].restDay);
+        const isCompleted = completedDays.has(index);
+        return {
+          letter,
+          index,
+          isTraining,
+          isCompleted,
+          isToday: index === today,
+          isMissed: isTraining && !isCompleted && index < today,
+        };
+      }),
     [byDay, completedDays, today],
   );
 
