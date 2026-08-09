@@ -26,42 +26,50 @@ const WorkoutSummaryModal = ({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-8">
-      <div className="bg-linear-to-br from-mediumGrey to-darkGrey rounded-2xl p-8 max-w-lg w-full shadow-2xl border border-indigo/30">
-        <div className="flex flex-col items-center gap-2 mb-6">
-          <div className="p-3 rounded-full bg-indigo/20">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm lg:p-8">
+      <div className="my-auto w-full max-w-lg rounded-2xl border border-indigo/30 bg-linear-to-br from-mediumGrey to-darkGrey p-5 shadow-2xl lg:p-8">
+        <div className="mb-6 flex flex-col items-center gap-2">
+          <div className="rounded-full bg-indigo/20 p-3">
             <LuTrophy size={36} className="text-lightIndigo" />
           </div>
-          <h2 className="text-3xl font-bold">Workout Complete</h2>
-          <p className="text-lightGrey/60">{title}</p>
+          <h2 className="text-center text-2xl font-bold lg:text-3xl">
+            Workout Complete
+          </h2>
+          <p className="text-center text-lightGrey/60">{title}</p>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-darkGrey rounded-xl p-4 text-center">
-            <p className="text-xs uppercase text-lightGrey/50">Time</p>
-            <p className="text-2xl font-bold tabular-nums mt-1">
+        <div className="mb-6 grid grid-cols-3 gap-2 lg:gap-3">
+          <div className="rounded-xl bg-darkGrey p-2 text-center lg:p-4">
+            <p className="text-[10px] uppercase text-lightGrey/50 lg:text-xs">
+              Time
+            </p>
+            <p className="mt-1 text-lg font-bold tabular-nums lg:text-2xl">
               {formatTime(workoutSeconds)}
             </p>
           </div>
-          <div className="bg-darkGrey rounded-xl p-4 text-center">
-            <p className="text-xs uppercase text-lightGrey/50">Volume</p>
-            <p className="text-2xl font-bold tabular-nums mt-1">
+          <div className="rounded-xl bg-darkGrey p-2 text-center lg:p-4">
+            <p className="text-[10px] uppercase text-lightGrey/50 lg:text-xs">
+              Volume
+            </p>
+            <p className="mt-1 text-lg font-bold tabular-nums lg:text-2xl">
               {totalVolume.toLocaleString()}
-              <span className="text-sm text-lightGrey/50"> kg</span>
+              <span className="text-xs text-lightGrey/50 lg:text-sm"> kg</span>
             </p>
           </div>
-          <div className="bg-darkGrey rounded-xl p-4 text-center">
-            <p className="text-xs uppercase text-lightGrey/50">Sets</p>
-            <p className="text-2xl font-bold tabular-nums mt-1">
+          <div className="rounded-xl bg-darkGrey p-2 text-center lg:p-4">
+            <p className="text-[10px] uppercase text-lightGrey/50 lg:text-xs">
+              Sets
+            </p>
+            <p className="mt-1 text-lg font-bold tabular-nums lg:text-2xl">
               {totalCompletedSets}
             </p>
           </div>
         </div>
 
-        <div className="flex gap-3 justify-end">
+        <div className="flex flex-col-reverse gap-2 lg:flex-row lg:justify-end lg:gap-3 [&>button]:w-full lg:[&>button]:w-auto">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-md text-lightGrey hover:bg-darkGrey transition-colors cursor-pointer"
+            className="cursor-pointer rounded-md px-4 py-2.5 text-lightGrey transition-colors hover:bg-darkGrey"
           >
             Keep going
           </button>

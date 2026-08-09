@@ -47,7 +47,7 @@ const ActiveExerciseCard = ({
   );
 
   return (
-    <div className="col-span-2 relative bg-linear-to-br from-mediumGrey to-darkGrey rounded-2xl p-5 shadow-md shadow-indigo/10 border border-indigo/10 flex flex-col min-h-0 gap-4 overflow-hidden">
+    <div className="relative flex flex-col gap-4 rounded-2xl border border-indigo/10 bg-linear-to-br from-mediumGrey to-darkGrey p-3 shadow-md shadow-indigo/10 lg:col-span-2 lg:min-h-0 lg:overflow-hidden lg:p-5">
       <div className="flex items-center justify-between shrink-0">
         <button
           className="p-1.5 rounded-lg bg-darkGrey hover:bg-indigo/30 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
@@ -112,8 +112,8 @@ const ActiveExerciseCard = ({
         ))}
       </div>
 
-      <div className="flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto pr-1">
-        <div className="grid grid-cols-[28px_1fr_70px_1.2fr_56px] gap-2 px-2 text-[10px] uppercase tracking-wider text-lightGrey/50 shrink-0">
+      <div className="flex flex-col gap-2 pr-1 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
+        <div className="hidden shrink-0 grid-cols-[28px_1fr_70px_1.2fr_56px] gap-2 px-2 text-[10px] uppercase tracking-wider text-lightGrey/50 lg:grid">
           <span>Set</span>
           <span>Weight ({unitLabel(unit)})</span>
           <span className="text-center">Reps</span>

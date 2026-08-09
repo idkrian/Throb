@@ -265,8 +265,26 @@ const Workout = () => {
     );
   }
 
+  const restTimer = (
+    <RestTimer
+      remaining={restRemaining}
+      total={restTotal}
+      running={restRunning}
+      onSelectPreset={(s) => {
+        setRestTotal(s);
+        setRestRemaining(s);
+        setRestRunning(true);
+      }}
+      onToggle={() => setRestRunning((r) => !r)}
+      onReset={() => {
+        setRestRunning(false);
+        setRestRemaining(0);
+      }}
+    />
+  );
+
   return (
-    <div className="flex flex-col w-full h-full min-h-0 gap-4 text-white relative">
+    <div className="relative flex w-full flex-col gap-4 text-white lg:h-full lg:min-h-0">
       <PRToast message={recentPR} />
 
       <WorkoutHeader
@@ -285,8 +303,9 @@ const Workout = () => {
         totalVolume={totalVolume}
         pulseVolume={pulseVolume}
       />
+      <div className="lg:hidden">{restTimer}</div>
 
-      <div className="grid grid-cols-3 gap-4 flex-1 min-h-0">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:flex-1 lg:min-h-0">
         <ActiveExerciseCard
           exercise={activeExercise}
           progress={progress[activeExercise.id]}
@@ -310,22 +329,8 @@ const Workout = () => {
           }
         />
 
-        <div className="flex flex-col gap-4 min-h-0">
-          <RestTimer
-            remaining={restRemaining}
-            total={restTotal}
-            running={restRunning}
-            onSelectPreset={(s) => {
-              setRestTotal(s);
-              setRestRemaining(s);
-              setRestRunning(true);
-            }}
-            onToggle={() => setRestRunning((r) => !r)}
-            onReset={() => {
-              setRestRunning(false);
-              setRestRemaining(0);
-            }}
-          />
+        <div className="flex flex-col gap-4 lg:min-h-0">
+          <div className="hidden lg:block">{restTimer}</div>
           <UpNextList
             exercises={orderedExercises}
             progress={progress}
@@ -335,7 +340,7 @@ const Workout = () => {
         </div>
       </div>
 
-      <div className="flex justify-end shrink-0">
+      <div className="flex shrink-0 justify-end [&>button]:w-full lg:[&>button]:w-auto">
         <Button label="Finish Workout" onClick={() => setShowSummary(true)} />
       </div>
 

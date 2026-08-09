@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { LuPlay, LuLogOut } from "react-icons/lu";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useMatch } from "react-router";
 import { getTrainingSplitDays } from "@/api/training-split-day";
 import { getAllWorkouts } from "@/api/workout";
 import type { TrainingSplitDayMap } from "@/dtos/training-split-day.dto";
@@ -90,6 +90,7 @@ const Navbar = () => {
   );
 
   const logoutTitle = user ? `Sair (${user.name})` : "Sair";
+  const isWorkoutInProgress = Boolean(useMatch("/workout/:splitId"));
 
   return (
     <>
@@ -112,7 +113,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        {todaySplit ? (
+        {isWorkoutInProgress ? null : todaySplit ? (
           <Link
             to={`/workout/${todaySplit.id}`}
             className="flex items-center justify-between gap-3 rounded-lg border border-indigo/40 bg-indigo/15 px-3 py-2.5"
@@ -180,7 +181,7 @@ const Navbar = () => {
           <div className="flex shrink-0 flex-col items-end gap-1.5">
             <WeekStrip cells={weekCells} />
 
-            {todaySplit ? (
+            {isWorkoutInProgress ? null : todaySplit ? (
               <Link
                 to={`/workout/${todaySplit.id}`}
                 className="group flex items-center gap-2 text-xs"
