@@ -10,8 +10,8 @@ datasource db {
 
 model users {
   id              Int                @id @default(autoincrement())
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
+  createdAt       DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime           @updatedAt @db.Timestamptz(3)
   email           String             @unique
   password        String
   name            String?
@@ -26,8 +26,8 @@ model users {
 
 model body_weights {
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
   weight    Decimal  @db.Decimal(6, 2)
   userId    Int
   user      users    @relation(fields: [userId], references: [id])
@@ -35,8 +35,8 @@ model body_weights {
 
 model exercises {
   id                  Int                        @id @default(autoincrement())
-  createdAt           DateTime                   @default(now())
-  updatedAt           DateTime                   @updatedAt
+  createdAt           DateTime                   @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime                   @updatedAt @db.Timestamptz(3)
   title               String                     @db.VarChar(255)
   muscleGroup         MuscleGroup
   muscle              Muscle
@@ -52,8 +52,8 @@ model exercises {
 
 model exercise_translations {
   id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime  @updatedAt @db.Timestamptz(3)
   exerciseId  Int
   locale      String    @db.VarChar(8)
   title       String    @db.VarChar(255)
@@ -65,8 +65,8 @@ model exercise_translations {
 
 model training_splits {
   id              Int                        @id @default(autoincrement())
-  createdAt       DateTime                   @default(now())
-  updatedAt       DateTime                   @updatedAt
+  createdAt       DateTime                   @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime                   @updatedAt @db.Timestamptz(3)
   title           String                     @db.VarChar(255)
   days            training_split_days[]
   exercises       training_split_exercises[]
@@ -77,8 +77,8 @@ model training_splits {
 
 model training_split_exercises {
   id              Int             @id @default(autoincrement())
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  createdAt       DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime        @updatedAt @db.Timestamptz(3)
   trainingSplitId Int
   exerciseId      Int
   order           Int?
@@ -92,8 +92,8 @@ model training_split_exercises {
 
 model training_split_days {
   id              Int             @id @default(autoincrement())
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  createdAt       DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime        @updatedAt @db.Timestamptz(3)
   trainingSplitId Int
   dayOfWeek       Int
   restDay         Boolean         @default(false)
@@ -104,8 +104,8 @@ model training_split_days {
 
 model workout_sessions {
   id                  Int                     @id @default(autoincrement())
-  createdAt           DateTime                @default(now())
-  updatedAt           DateTime                @updatedAt
+  createdAt           DateTime                @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime                @updatedAt @db.Timestamptz(3)
   notes               String?
   workoutExerciseLogs workout_exercise_logs[]
   durationSeconds     Int
