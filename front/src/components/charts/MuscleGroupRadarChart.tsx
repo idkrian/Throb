@@ -58,15 +58,15 @@ const MuscleGroupRadarChart = ({ period }: MuscleGroupRadarChartProps) => {
   }));
 
   return (
-    <Card className="bg-mediumGrey border-none flex flex-col">
+    <Card className="bg-mediumGrey border-none flex min-w-0 flex-col">
       <CardHeader className="pb-0">
         <CardTitle className="text-white">Muscle Balance</CardTitle>
         <CardDescription>Sets per muscle group</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-2 -px-6">
+      <CardContent className="min-w-0 flex-1 pb-2 -px-6">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-full max-h-[220px] w-full"
+          className="mx-auto aspect-square max-h-[220px] w-full lg:h-full"
         >
           <RadarChart
             data={chartData}

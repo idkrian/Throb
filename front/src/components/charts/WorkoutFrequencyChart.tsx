@@ -72,13 +72,13 @@ const WorkoutFrequencyChart = () => {
   }
 
   return (
-    <Card className="bg-mediumGrey border-none flex flex-1 flex-col min-h-0">
+    <Card className="bg-mediumGrey border-none flex min-w-0 flex-col lg:flex-1 lg:min-h-0">
       <CardHeader className="pb-0">
         <CardTitle className="text-white">Workout Frequency</CardTitle>
         <CardDescription>Workouts per week (last 12 weeks)</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 min-h-0 pb-2">
-        <ChartContainer config={chartConfig} className="h-full w-full">
+      <CardContent className="min-w-0 pb-2 lg:flex-1 lg:min-h-0">
+        <ChartContainer config={chartConfig} className="h-56 w-full lg:h-full">
           <AreaChart data={data}>
             <defs>
               <linearGradient id="workoutsGrad" x1="0" y1="0" x2="0" y2="1">

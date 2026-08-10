@@ -13,12 +13,12 @@ type PeriodSelectorProps = {
 };
 
 const PeriodSelector = ({ period, onChange }: PeriodSelectorProps) => (
-  <div className="flex items-center gap-1 rounded-lg bg-darkGrey p-1">
+  <div className="flex w-full items-center gap-1 rounded-lg bg-darkGrey p-1 lg:w-auto">
     {PERIODS.map(({ key, label }) => (
       <button
         key={key}
         onClick={() => onChange(key)}
-        className={`cursor-pointer rounded-md px-3 py-1.5 text-xs font-semibold transition-colors duration-200 ${
+        className={`flex-1 cursor-pointer rounded-md px-3 py-1.5 text-xs font-semibold transition-colors duration-200 lg:flex-none ${
           period === key
             ? "bg-indigo text-white"
             : "text-lightGrey hover:bg-mediumGrey"

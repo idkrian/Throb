@@ -44,20 +44,20 @@ const Dashboard = () => {
     });
 
   return (
-    <div className="flex flex-col w-full h-full gap-3 overflow-hidden">
+    <div className="flex w-full flex-col gap-3 lg:h-full lg:overflow-hidden">
       <WorkoutStatsCards />
       <div className="flex items-center justify-end">
         <PeriodSelector period={period} onChange={setPeriod} />
       </div>
-      <div className="grid flex-1 min-h-0 grid-cols-[300px_1fr_minmax(280px,320px)] gap-3">
-        <div className="flex flex-col gap-3 min-h-0">
+      <div className="grid min-w-0 gap-3 lg:min-h-0 lg:flex-1 lg:grid-cols-[300px_1fr_minmax(280px,320px)]">
+        <div className="order-2 flex min-w-0 flex-col gap-3 lg:order-0 lg:min-h-0">
           <MuscleGroupRadarChart period={period} />
           <WorkoutFrequencyChart />
         </div>
-        <div className="flex flex-col rounded-lg bg-mediumGrey p-3 min-h-0">
+        <div className="order-1 flex min-w-0 flex-col rounded-lg bg-mediumGrey p-3 lg:order-0 lg:min-h-0">
           <MuscleHeatmap period={period} />
         </div>
-        <div className="flex flex-col gap-3 rounded-lg bg-mediumGrey p-3 min-h-0 overflow-y-auto">
+        <div className="order-3 flex min-w-0 flex-col gap-3 rounded-lg bg-mediumGrey p-3 lg:order-0 lg:min-h-0 lg:overflow-y-auto">
           {todaySplit ? (
             <>
               <p className="text-center text-lg font-semibold text-white">

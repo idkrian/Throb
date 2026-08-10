@@ -8,6 +8,15 @@ import {
 
 const HEATMAP_COLORS = ["#3b82f6", "#22d3ee", "#22c55e", "#f59e0b", "#ef4444"];
 
+const MODEL_BOX = {
+  flex: "1 1 0",
+  minWidth: 0,
+  height: "100%",
+  maxHeight: 450,
+} as const;
+
+const MODEL_SVG = { width: "100%", height: "100%" } as const;
+
 type MuscleHeatmapProps = {
   period: MuscleStatsPeriod;
 };
@@ -17,16 +26,19 @@ const MuscleHeatmap = ({ period }: MuscleHeatmapProps) => {
 
   useEffect(() => {
     getWorkoutMuscleStats(period).then((stats) => {
+      console.log(stats, period);
+      console.log(buildHighlighterData(stats, period));
+
       setData(buildHighlighterData(stats, period));
     });
   }, [period]);
 
   return (
-    <div className="flex flex-col items-center gap-3 h-full">
+    <div className="flex flex-col items-center gap-3 lg:h-full">
       <p className="text-white text-base font-semibold">Muscle Activity</p>
 
       {data.length === 0 ? (
-        <div className="flex flex-1 flex-col items-center justify-center gap-2">
+        <div className="flex min-h-40 flex-1 flex-col items-center justify-center gap-2 lg:min-h-0">
           <p className="text-3xl opacity-60">🫥</p>
           <p className="text-lightGrey text-sm">
             No workout data for this period
@@ -34,19 +46,21 @@ const MuscleHeatmap = ({ period }: MuscleHeatmapProps) => {
         </div>
       ) : (
         <>
-          <div className="flex gap-3 flex-1 min-h-0 items-center">
+          <div className="flex aspect-10/9 w-full min-w-0 items-center justify-center gap-3 lg:aspect-auto lg:w-auto lg:min-h-0 lg:flex-1">
             <Model
               data={data}
               highlightedColors={HEATMAP_COLORS}
               bodyColor="#374151"
-              style={{ height: "100%", maxHeight: 450 }}
+              style={MODEL_BOX}
+              svgStyle={MODEL_SVG}
             />
             <Model
               data={data}
               type="posterior"
               highlightedColors={HEATMAP_COLORS}
               bodyColor="#374151"
-              style={{ height: "100%", maxHeight: 450 }}
+              style={MODEL_BOX}
+              svgStyle={MODEL_SVG}
             />
           </div>
           <div className="flex items-center gap-2">

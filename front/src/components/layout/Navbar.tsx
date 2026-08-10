@@ -35,7 +35,7 @@ const DayMarker = ({
 };
 
 const WeekStrip = ({ cells }: { cells: WeekCell[] }) => (
-  <div className="flex gap-1">
+  <div className="flex min-w-0 flex-1 justify-center gap-1 lg:flex-none lg:justify-start">
     {cells.map(
       ({ letter, index, isTraining, isToday, isCompleted, isMissed }) => {
         let title = "Rest";
@@ -51,7 +51,7 @@ const WeekStrip = ({ cells }: { cells: WeekCell[] }) => (
           <div
             key={index}
             title={isToday ? `${title} · Today` : title}
-            className="relative flex h-9 w-7 flex-col items-center justify-center gap-1"
+            className="relative flex h-9 min-w-0 max-w-7 flex-1 flex-col items-center justify-center gap-1"
           >
             <span
               className={`text-[11px] font-medium leading-none tracking-wider ${letterClass}`}

@@ -29,10 +29,26 @@
       "Bash(grep -rn \"getAllUsers\\\\|getUserById\\\\|/user/\\\\${\" ../front/src)",
       "Bash(node -e ' *)",
       "Bash(echo \"exit: $?\")",
-      "Bash(echo \"TSC_EXIT=$?\")"
+      "Bash(echo \"TSC_EXIT=$?\")",
+      "Bash(node _diag.mjs)",
+      "Bash(npx tsx *)",
+      "Bash(cd \"c:/Users/Rian/Documents/projects/fit/back\" && sed -E 's#\\(://[^:]+:\\)[^@]+@#\\\\1***@#' .env)",
+      "Bash(node _audit.mjs)",
+      "Bash(python -c ' *)",
+      "Bash(node _patch.mjs)",
+      "Bash(node _snap.mjs antes)",
+      "Bash(npm run *)",
+      "Bash(echo \"build exit: $?\")",
+      "Bash(npx eslint *)",
+      "Bash(echo \"lint exit: $?\")",
+      "Bash(grep -oE '\\\\.max-w-7\\\\{[^}]*\\\\}|\\\\.lg\\\\\\\\:flex-none\\\\{[^}]*\\\\}' dist/assets/*.css)",
+      "Bash(grep -oE '.{40}lg\\\\\\\\:flex-none.{30}' dist/assets/*.css)",
+      "Bash(grep -oE '.{30}lg\\\\\\\\:justify-start.{30}' dist/assets/*.css)"
     ],
     "additionalDirectories": [
-      "c:\\Users\\Rian\\Documents\\projects\\fit"
+      "c:\\Users\\Rian\\Documents\\projects\\fit",
+      "c:\\Users\\Rian\\Documents\\projects\\fit\\back",
+      "C:\\Users\\Rian\\Documents\\projects\\fit\\back"
     ]
   }
 }

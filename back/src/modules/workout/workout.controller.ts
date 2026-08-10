@@ -64,7 +64,9 @@ export const workoutController = {
     try {
       const userId = Number(req.userId);
       const period = req.params.period as MuscleStatsPeriod;
-      const stats = await workoutService.getMuscleGroupStats(userId, { period });
+      const stats = await workoutService.getMuscleGroupStats(userId, {
+        period,
+      });
       requestSuccessHandler(
         res,
         stats,

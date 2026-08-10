@@ -18,47 +18,53 @@ const WorkoutStatsCards = () => {
 
   const items = [
     {
-      label: "Total Workouts",
+      unit: "Workouts",
+      timeframe: "All time",
       value: stats?.totalWorkouts ?? "--",
       icon: Dumbbell,
-      sub: "All Time",
     },
     {
-      label: "This Week",
+      unit: "Workouts",
+      timeframe: "This week",
       value: stats?.workoutsThisWeek ?? "--",
       icon: CalendarDays,
-      sub: "Sessions",
     },
     {
-      label: "This Month",
+      unit: "Workouts",
+      timeframe: "This month",
       value: stats?.workoutsThisMonth ?? "--",
       icon: TrendingUp,
-      sub: "Sessions",
     },
     {
-      label: "Total Hours",
+      unit: "Hours",
+      timeframe: "All time",
       value: totalHours,
       icon: Clock,
-      sub: "Time Trained",
     },
   ] as const;
 
   return (
-    <div className="grid grid-cols-4 gap-3">
-      {items.map(({ label, value, icon: Icon, sub }) => (
+    <div className="grid grid-cols-4 gap-2 lg:gap-3">
+      {items.map(({ unit, timeframe, value, icon: Icon }) => (
         <div
-          key={label}
-          className="flex items-center gap-3 rounded-lg bg-mediumGrey px-4 py-2.5"
+          key={`${unit}-${timeframe}`}
+          className="flex min-w-0 flex-col items-center gap-1.5 rounded-lg bg-mediumGrey px-1.5 py-3 text-center lg:flex-row lg:gap-3 lg:px-4 lg:py-2.5 lg:text-left"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-darkIndigo/40">
-            <Icon className="h-4 w-4 text-lightIndigo" />
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-darkIndigo/40 lg:size-9 lg:rounded-md">
+            <Icon className="size-4 text-lightIndigo" />
           </div>
-          <div className="min-w-0">
-            <p className="text-xl font-bold leading-tight text-white">
+          <div className="w-full min-w-0">
+            <p className="text-lg font-bold leading-tight text-white lg:text-xl">
               {value}
             </p>
-            <p className="truncate text-xs text-lightGrey/60">
-              {label} · {sub}
+            <p className="leading-tight lg:truncate lg:text-xs lg:text-lightGrey/60">
+              <span className="block truncate text-[11px] font-medium text-lightGrey/80 lg:inline lg:text-xs lg:font-normal lg:text-lightGrey/60">
+                {unit}
+              </span>
+              <span className="hidden lg:inline"> · </span>
+              <span className="block truncate text-[10px] text-lightGrey/45 lg:inline lg:text-xs lg:text-lightGrey/60">
+                {timeframe}
+              </span>
             </p>
           </div>
         </div>
