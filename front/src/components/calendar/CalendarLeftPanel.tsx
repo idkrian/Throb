@@ -34,18 +34,20 @@ const CalendarLeftPanel = ({
 
   return (
     <div
-      className={`flex flex-col items-center justify-between bg-linear-to-b ${accent.gradient} w-[25%] p-6 gap-6`}
+      className={`flex w-full flex-col items-center justify-between bg-linear-to-b ${accent.gradient} gap-4 p-4 xl:w-[25%] xl:gap-6 xl:p-6`}
     >
-      <div className="flex flex-col items-center">
-        <p className="text-white font-bold text-8xl leading-none">
+      <div className="flex w-full items-center justify-center gap-3 xl:w-auto xl:flex-col xl:gap-0">
+        <p className="text-white font-bold text-5xl leading-none xl:text-8xl">
           {formatDate(today, { day: "numeric" })}
         </p>
-        <p className="text-white/90 font-semibold text-3xl capitalize mt-1">
-          {formatDate(today, { weekday: "long" })}
-        </p>
-        <p className="text-white/60 text-sm capitalize">
-          {formatDate(today, { month: "long", year: "numeric" })}
-        </p>
+        <div className="flex flex-col xl:items-center">
+          <p className="text-white/90 font-semibold text-xl capitalize xl:mt-1 xl:text-3xl">
+            {formatDate(today, { weekday: "long" })}
+          </p>
+          <p className="text-white/60 text-xs capitalize xl:text-sm">
+            {formatDate(today, { month: "long", year: "numeric" })}
+          </p>
+        </div>
       </div>
 
       <div className="flex flex-col items-center gap-3 w-full">

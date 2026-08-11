@@ -70,11 +70,11 @@ const SwapSplitModal = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
       onClick={onClose}
     >
       <div
-        className="bg-mediumGrey rounded-lg w-[480px] max-h-[80vh] overflow-hidden shadow-2xl text-white flex flex-col"
+        className="bg-mediumGrey rounded-lg w-full max-w-[480px] max-h-[85dvh] overflow-hidden shadow-2xl text-white flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between px-6 py-4 border-b border-darkGrey">

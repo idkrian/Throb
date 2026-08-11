@@ -130,7 +130,7 @@ const Calendar = () => {
   };
 
   return (
-    <div className="flex w-full h-full">
+    <div className="flex w-full flex-col xl:h-full xl:flex-row">
       <CalendarLeftPanel
         todayEntry={todayEntry}
         todaySession={todaySession}
@@ -141,16 +141,14 @@ const Calendar = () => {
         onStartWorkout={startTodayWorkout}
       />
 
-      <div className="flex flex-col w-[75%] h-full p-4 gap-4 min-h-0">
+      <div className="flex w-full min-w-0 flex-col gap-3 p-3 xl:h-full xl:w-[75%] xl:min-h-0 xl:gap-4 xl:p-4">
         <WeekNavigator
           label={weekRangeLabel}
-          weekOffset={weekOffset}
           onPrev={() => setWeekOffset((o) => o - 1)}
           onNext={() => setWeekOffset((o) => o + 1)}
-          onToday={() => setWeekOffset(0)}
         />
 
-        <div className="grid grid-cols-7 gap-3 flex-1 min-h-0 overflow-y-auto">
+        <div className="grid min-w-0 grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-7 xl:gap-3 xl:flex-1 xl:min-h-0 xl:overflow-y-auto">
           {week.map((day) => {
             const entry = splitsByDay[day.dayNumber];
             const session = findSessionOnDate(sessions, day.date);

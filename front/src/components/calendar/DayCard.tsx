@@ -50,12 +50,6 @@ const statusStyles: Record<DayStatus, string> = {
 
 const statusBadge = (status: DayStatus) => {
   switch (status) {
-    case "today":
-      return (
-        <span className="text-center text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-indigo text-white uppercase tracking-wider">
-          Today
-        </span>
-      );
     case "completed":
       return (
         <span className="text-center flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 uppercase tracking-wider">
@@ -89,6 +83,7 @@ const DayCard = ({
     summary?.primaryGroup != null
       ? muscleGroupAccent[summary.primaryGroup]
       : DEFAULT_ACCENT;
+  const badge = statusBadge(status);
 
   return (
     <div
@@ -101,118 +96,126 @@ const DayCard = ({
           onClick();
         }
       }}
-      className={`group flex flex-col rounded-xl bg-mediumGrey border-2 ${statusStyles[status]} shadow-md cursor-pointer transition-all duration-200 hover:-translate-y-1 overflow-hidden`}
+      className={`group flex flex-row rounded-xl bg-mediumGrey border-2 ${statusStyles[status]} shadow-md cursor-pointer transition-all duration-200 overflow-hidden xl:flex-col xl:hover:-translate-y-1`}
     >
-      <div className="flex flex-col items-center justify-between px-3 py-2 bg-darkGrey/50">
-        <div className="flex flex-col  w-full leading-tight">
-          <span className="text-white font-semibold text-sm capitalize">
-            {dayName}
+      <div className="flex w-16 shrink-0 flex-col justify-center px-3 py-2 bg-darkGrey/50 xl:w-auto xl:items-center xl:justify-between">
+        <div className="flex w-full min-w-0 flex-col leading-tight">
+          <span className="truncate text-white font-semibold text-sm capitalize">
+            <span className="xl:hidden">
+              {formatDate(date, { weekday: "short" })}
+            </span>
+            <span className="hidden xl:inline">{dayName}</span>
           </span>
-          <span className="text-white/50 text-xs tabular-nums">{dayLabel}</span>
+          <span className="truncate text-white/50 text-xs tabular-nums">
+            {dayLabel}
+          </span>
         </div>
       </div>
-      <div className="px-2 text-center" w-full>
-        {statusBadge(status)}
-      </div>
 
-      <div className="flex flex-col p-3 gap-2 min-h-[140px]">
-        {status === "rest" && (
-          <div className="flex flex-1 flex-col items-center justify-center gap-1 text-white/50">
-            <LuMoon size={22} />
-            <span className="text-sm font-semibold">Rest Day</span>
-          </div>
+      <div className="flex min-w-0 flex-1 flex-col xl:contents">
+        {badge && (
+          <div className="flex justify-center px-2 pt-2 xl:pt-0">{badge}</div>
         )}
 
-        {status === "empty" && (
-          <div className="flex flex-1 flex-col items-center justify-center gap-1 text-white/30 group-hover:text-white/60 transition">
-            <LuPlus size={22} />
-            <span className="text-xs">Assign split</span>
-          </div>
-        )}
+        <div className="flex min-w-0 flex-1 flex-col gap-2 p-3 xl:flex-none xl:min-h-[140px]">
+          {status === "rest" && (
+            <div className="flex flex-1 flex-col items-center justify-center gap-1 text-white/50">
+              <LuMoon size={22} />
+              <span className="text-sm font-semibold">Rest Day</span>
+            </div>
+          )}
 
-        {(split || session) && status !== "rest" && status !== "empty" && (
-          <>
-            {split && (
-              <div
-                className={`px-2 py-1.5 rounded-md bg-linear-to-br ${accent.gradient}`}
-              >
-                <p className="text-white font-bold text-sm truncate">
-                  {split.title}
-                </p>
-              </div>
-            )}
+          {!split && !session && status !== "rest" && (
+            <div className="flex flex-1 flex-col items-center justify-center gap-1 py-2 text-white/30 group-hover:text-white/60 transition">
+              <LuPlus size={22} />
+              <span className="text-xs">Assign split</span>
+            </div>
+          )}
 
-            {(summary || session) && (
-              <div className="grid grid-cols-2 gap-1.5 text-white">
-                <div className="flex flex-col items-center rounded-md bg-darkGrey/60 py-1">
-                  <span className="text-xs font-bold">
-                    {summary
-                      ? summary.exerciseCount
-                      : session!.workoutExerciseLogs.length}
-                  </span>
-                  <span className="text-[9px] text-lightGrey/60 uppercase">
-                    ex
-                  </span>
-                </div>
-                <div className="flex flex-col items-center rounded-md bg-darkGrey/60 py-1">
-                  <span className="text-xs font-bold">
-                    {summary ? summary.totalSets : sessionTotalSets(session!)}
-                  </span>
-                  <span className="text-[9px] text-lightGrey/60 uppercase">
-                    sets
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {status === "completed" && session && (
-              <div className="flex items-center w-full justify-between text-[11px] text-emerald-300/80 mt-auto">
-                <span>{formatVolume(sessionVolume(session))} kg</span>
-                <span>{sessionTotalSets(session)} sets logged</span>
-              </div>
-            )}
-
-            {status === "today" && (
-              <div className="flex items-center gap-1 mt-auto">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onClick();
-                  }}
-                  className="flex flex-1 items-center justify-center gap-1 h-7 rounded-md bg-indigo hover:bg-darkIndigo text-white text-xs font-semibold transition"
+          {(split || session) && status !== "rest" && status !== "empty" && (
+            <>
+              {split && (
+                <div
+                  className={`px-2 py-1.5 rounded-md bg-linear-to-br ${accent.gradient}`}
                 >
-                  <LuPlay size={11} />
-                  Start
-                </button>
-                {onEdit && (
+                  <p className="text-white font-bold text-sm truncate">
+                    {split.title}
+                  </p>
+                </div>
+              )}
+
+              {(summary || session) && (
+                <div className="grid grid-cols-2 gap-1.5 text-white">
+                  <div className="flex flex-col items-center rounded-md bg-darkGrey/60 py-1">
+                    <span className="text-xs font-bold">
+                      {summary
+                        ? summary.exerciseCount
+                        : session!.workoutExerciseLogs.length}
+                    </span>
+                    <span className="text-[9px] text-lightGrey/60 uppercase">
+                      ex
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-center rounded-md bg-darkGrey/60 py-1">
+                    <span className="text-xs font-bold">
+                      {summary ? summary.totalSets : sessionTotalSets(session!)}
+                    </span>
+                    <span className="text-[9px] text-lightGrey/60 uppercase">
+                      sets
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {status === "completed" && session && (
+                <div className="flex items-center w-full justify-between text-[11px] text-emerald-300/80 mt-auto">
+                  <span>{formatVolume(sessionVolume(session))} kg</span>
+                  <span>{sessionTotalSets(session)} sets logged</span>
+                </div>
+              )}
+
+              {status === "today" && (
+                <div className="flex items-center gap-1 mt-auto">
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      onEdit();
+                      onClick();
                     }}
-                    title="Editar treino"
-                    aria-label="Editar treino"
-                    className="flex items-center justify-center h-7 w-7 shrink-0 rounded-md bg-darkGrey/60 hover:bg-darkGrey text-white/70 hover:text-white transition cursor-pointer"
+                    className="flex flex-1 items-center justify-center gap-1 h-7 rounded-md bg-indigo hover:bg-darkIndigo text-white text-xs font-semibold transition"
                   >
-                    <LuPencil size={12} />
+                    <LuPlay size={11} />
+                    Start
                   </button>
-                )}
-              </div>
-            )}
+                  {onEdit && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEdit();
+                      }}
+                      title="Editar treino"
+                      aria-label="Editar treino"
+                      className="flex items-center justify-center h-7 w-7 shrink-0 rounded-md bg-darkGrey/60 hover:bg-darkGrey text-white/70 hover:text-white transition cursor-pointer"
+                    >
+                      <LuPencil size={12} />
+                    </button>
+                  )}
+                </div>
+              )}
 
-            {status === "missed" && (
-              <div className="text-center text-[11px] text-red-300/80 mt-auto">
-                No workout logged
-              </div>
-            )}
-          </>
-        )}
+              {status === "missed" && (
+                <div className="text-center text-[11px] text-red-300/80 mt-auto">
+                  No workout logged
+                </div>
+              )}
+            </>
+          )}
 
-        <span className="sr-only">
-          {formatDate(date, { dateStyle: "full" })}
-        </span>
+          <span className="sr-only">
+            {formatDate(date, { dateStyle: "full" })}
+          </span>
+        </div>
       </div>
     </div>
   );
