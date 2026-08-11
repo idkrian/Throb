@@ -13,13 +13,13 @@ type Props = {
 };
 
 const ExerciseSidebar = ({ filter, counts, onChange }: Props) => (
-  <aside className="w-64 shrink-0 border-r border-darkGrey bg-darkGrey/40 flex flex-col">
-    <div className="px-5 py-5">
+  <aside className="flex shrink-0 flex-col border-b border-darkGrey bg-darkGrey/40 lg:w-64 lg:border-b-0 lg:border-r">
+    <div className="hidden px-5 py-5 lg:block">
       <p className="text-xs uppercase tracking-wider text-lightGrey/60 font-semibold">
         Filter by muscle
       </p>
     </div>
-    <nav className="flex-1 overflow-y-auto px-3 pb-4 flex flex-col gap-1">
+    <nav className="flex gap-2 overflow-x-auto px-4 py-3 lg:flex-1 lg:flex-col lg:gap-1 lg:overflow-x-visible lg:overflow-y-auto lg:px-3 lg:py-0 lg:pb-4">
       <SidebarItem
         label="All Exercises"
         count={counts.ALL ?? 0}
@@ -27,7 +27,7 @@ const ExerciseSidebar = ({ filter, counts, onChange }: Props) => (
         onClick={() => onChange("ALL")}
         icon={<LuLayoutGrid size={18} />}
       />
-      <div className="h-px bg-mediumGrey my-2" />
+      <div className="hidden h-px bg-mediumGrey my-2 lg:block" />
       {Object.values(MuscleGroup).map((mg) => (
         <SidebarItem
           key={mg}
@@ -53,18 +53,18 @@ type ItemProps = {
 const SidebarItem = ({ label, count, active, onClick, icon }: ItemProps) => (
   <button
     onClick={onClick}
-    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
+    className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer lg:w-full lg:shrink lg:gap-3 lg:rounded-lg lg:px-3 lg:py-2.5 lg:text-sm ${
       active
         ? "bg-indigo text-white"
-        : "text-lightGrey/80 hover:bg-mediumGrey hover:text-white"
+        : "bg-mediumGrey/60 text-lightGrey/80 hover:bg-mediumGrey hover:text-white lg:bg-transparent"
     }`}
   >
     <span className={`shrink-0 ${active ? "text-white" : "text-lightIndigo"}`}>
       {icon}
     </span>
-    <span className="flex-1 text-left">{label}</span>
+    <span className="lg:flex-1 lg:text-left">{label}</span>
     <span
-      className={`text-xs px-2 py-0.5 rounded-full ${
+      className={`rounded-full px-2 py-0.5 text-[10px] lg:text-xs ${
         active
           ? "bg-darkIndigo/60 text-white"
           : "bg-mediumGrey text-lightGrey/60"

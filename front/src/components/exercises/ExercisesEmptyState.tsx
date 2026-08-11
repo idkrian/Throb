@@ -12,7 +12,7 @@ type Props = {
 };
 
 const ExercisesEmptyState = ({ filter, onCreate }: Props) => (
-  <div className="h-full flex flex-col items-center justify-center text-center gap-4 py-20">
+  <div className="flex flex-col items-center justify-center text-center gap-4 py-12 lg:h-full lg:py-20">
     <div className="w-20 h-20 rounded-2xl bg-mediumGrey flex items-center justify-center">
       <LuLayoutGrid size={32} className="text-lightIndigo" />
     </div>

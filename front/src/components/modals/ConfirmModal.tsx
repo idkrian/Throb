@@ -27,11 +27,11 @@ const ConfirmModal = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
       onClick={onCancel}
     >
       <div
-        className="bg-mediumGrey rounded-lg p-6 w-96 shadow-lg text-white"
+        className="bg-mediumGrey rounded-lg p-6 w-full max-w-96 shadow-lg text-white"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col items-center gap-4">

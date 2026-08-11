@@ -10,25 +10,30 @@ type Props = {
 const ExerciseCard = ({ exercise, onClick }: Props) => (
   <button
     onClick={onClick}
-    className="group text-left bg-mediumGrey hover:bg-mediumGrey/70 border border-transparent hover:border-indigo/50 rounded-xl p-4 transition-all hover:-translate-y-0.5 cursor-pointer flex flex-col gap-3"
+    className="group text-left bg-mediumGrey hover:bg-mediumGrey/70 border border-transparent hover:border-indigo/50 rounded-xl p-3 transition-all hover:-translate-y-0.5 cursor-pointer flex flex-col gap-2 sm:gap-3 sm:p-4"
   >
-    <div className="flex items-start gap-3">
-      <div className="w-10 h-10 rounded-lg bg-darkGrey flex items-center justify-center shrink-0">
-        <MuscleIcon group={exercise.muscleGroup} />
+    <div className="flex items-center gap-2 sm:items-start sm:gap-3">
+      <div className="w-9 h-9 rounded-lg bg-darkGrey flex items-center justify-center shrink-0 sm:w-10 sm:h-10">
+        <MuscleIcon
+          group={exercise.muscleGroup}
+          className="w-7 h-7 object-contain sm:w-8 sm:h-8"
+        />
       </div>
-      <div className="flex-1 min-w-0">
-        <p className="font-semibold text-white truncate">{exercise.title}</p>
-        <p className="text-xs text-lightGrey/60">
+      <div className="min-w-0 flex-1">
+        <p className="font-semibold text-white text-sm line-clamp-2 sm:text-base sm:line-clamp-1">
+          {exercise.title}
+        </p>
+        <p className="hidden text-xs text-lightGrey/60 sm:block">
           {MuscleGroupLabel[exercise.muscleGroup]}
         </p>
       </div>
     </div>
-    <div className="flex items-center gap-2">
-      <span className="text-xs px-2 py-1 rounded-md bg-darkIndigo/40 text-lightIndigo border border-indigo/30">
+    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+      <span className="text-xs px-2 py-0.5 rounded bg-darkIndigo/40 text-lightIndigo border border-indigo/30 sm:py-1 sm:rounded-md">
         {MuscleLabel[exercise.muscle]}
       </span>
       {exercise.userId !== null && (
-        <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-darkGrey text-lightGrey/60">
+        <span className="text-[11px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-darkGrey text-lightGrey/60">
           Custom
         </span>
       )}
