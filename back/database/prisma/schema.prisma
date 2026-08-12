@@ -109,8 +109,8 @@ model workout_sessions {
   notes               String?
   workoutExerciseLogs workout_exercise_logs[]
   durationSeconds     Int
-  trainingSplitId     Int
-  trainingSplit       training_splits         @relation(fields: [trainingSplitId], references: [id])
+  trainingSplitId     Int?
+  trainingSplit       training_splits?        @relation(fields: [trainingSplitId], references: [id], onDelete: SetNull)
   userId              Int
   user                users                   @relation(fields: [userId], references: [id])
 }

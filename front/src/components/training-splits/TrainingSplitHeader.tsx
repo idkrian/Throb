@@ -29,10 +29,10 @@ const TrainingSplitHeader = ({
   onStart,
   onSave,
 }: Props) => (
-  <header className="flex items-center gap-4 px-6 py-4 border-b border-darkGrey shrink-0">
+  <header className="flex shrink-0 items-center gap-2 border-b border-darkGrey px-3 py-3 lg:gap-4 lg:px-6 lg:py-4">
     <button
       onClick={onBack}
-      className="flex items-center justify-center w-9 h-9 rounded-md bg-mediumGrey hover:bg-mediumGrey/70 cursor-pointer transition"
+      className="flex items-center justify-center w-9 h-9 shrink-0 rounded-md bg-mediumGrey hover:bg-mediumGrey/70 cursor-pointer transition"
     >
       <LuArrowLeft size={18} />
     </button>
@@ -45,14 +45,16 @@ const TrainingSplitHeader = ({
           onChange={(e) => onTitleChange(e.target.value)}
           onBlur={() => onEditingTitleToggle(false)}
           onKeyDown={(e) => e.key === "Enter" && onEditingTitleToggle(false)}
-          className="text-2xl font-bold bg-transparent border-b border-indigo outline-none text-white w-full max-w-md"
+          className="text-lg lg:text-2xl font-bold bg-transparent border-b border-indigo outline-none text-white w-full min-w-0 max-w-md"
         />
       ) : (
         <button
           onClick={() => onEditingTitleToggle(true)}
-          className="flex items-center gap-2 group cursor-pointer"
+          className="flex min-w-0 items-center gap-2 group cursor-pointer"
         >
-          <h1 className="text-2xl font-bold text-white truncate">{formData.title}</h1>
+          <h1 className="min-w-0 truncate text-lg font-bold text-white lg:text-2xl">
+            {formData.title}
+          </h1>
           <TbPencil
             size={16}
             className="text-lightGrey/40 group-hover:text-indigo transition shrink-0"

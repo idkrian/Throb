@@ -89,7 +89,11 @@ const TrainingSplitsDetails = () => {
         return ex;
       }),
     });
-    setSelectedIndex(swapIndex);
+    setSelectedIndex((current) => {
+      if (current === orderedIndex) return swapIndex;
+      if (current === swapIndex) return orderedIndex;
+      return current;
+    });
   };
 
   const deleteExercise = (orderedIndex: number) => {
@@ -168,7 +172,7 @@ const TrainingSplitsDetails = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-full min-h-0 text-white overflow-hidden">
+    <div className="flex w-full flex-col text-white lg:h-full lg:min-h-0 lg:overflow-hidden">
       <FeedbackModal
         open={openFeedback}
         status={feedbackStatus}
@@ -193,8 +197,8 @@ const TrainingSplitsDetails = () => {
         onSave={handleSave}
       />
 
-      <div className="flex flex-1 min-h-0 overflow-hidden">
-        <div className="flex flex-col flex-1 min-w-0 overflow-y-auto p-6 gap-3">
+      <div className="flex lg:flex-1 lg:min-h-0 lg:overflow-hidden">
+        <div className="flex flex-col flex-1 min-w-0 gap-3 p-3 lg:overflow-y-auto lg:p-6">
           {orderedExercises.map((ex, index) => (
             <ExerciseListItem
               key={ex.id}
@@ -220,11 +224,13 @@ const TrainingSplitsDetails = () => {
         </div>
 
         <aside
-          className={`flex flex-col bg-darkGrey border-l border-mediumGrey shrink-0 transition-[width] duration-300 overflow-hidden ${
-            selectedIndex !== null ? "w-80" : "w-0"
+          className={`fixed inset-x-0 bottom-0 z-50 flex max-h-[85dvh] shrink-0 flex-col overflow-hidden rounded-t-2xl border-t border-mediumGrey bg-darkGrey pb-[env(safe-area-inset-bottom)] transition-transform duration-300 lg:static lg:max-h-none lg:translate-y-0 lg:rounded-none lg:border-l lg:border-t-0 lg:pb-0 lg:transition-[width] ${
+            selectedIndex !== null
+              ? "translate-y-0 lg:w-80"
+              : "translate-y-full pointer-events-none lg:w-0 lg:pointer-events-auto"
           }`}
         >
-          <div className="w-80 flex flex-col h-full">
+          <div className="flex w-full min-h-0 flex-col h-full lg:w-80">
             {selectedExercise && selectedIndex !== null && (
               <ExerciseEditPanel
                 exercise={selectedExercise}

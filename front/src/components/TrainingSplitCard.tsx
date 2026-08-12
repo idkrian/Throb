@@ -57,7 +57,7 @@ const TrainingSplitCard = ({
           handleCardClick();
         }
       }}
-      className={`group flex flex-col rounded-xl bg-mediumGrey border border-transparent ${accent.ring} shadow-lg cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl overflow-hidden text-left ${fullHeight ? "h-full" : ""}`}
+      className={`group flex flex-col rounded-xl bg-mediumGrey border border-transparent ${accent.ring} shadow-lg cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl overflow-hidden text-left max-w-full ${fullHeight ? "h-full" : ""}`}
       style={
         fullWidth
           ? { width: "100%" }

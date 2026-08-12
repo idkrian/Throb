@@ -41,7 +41,7 @@ const ExerciseListItem = ({
           onSelect();
         }
       }}
-      className={`flex items-center gap-4 p-4 rounded-xl bg-mediumGrey border cursor-pointer transition-all duration-200 hover:-translate-y-0.5 group
+      className={`flex items-center gap-2 p-3 lg:gap-4 lg:p-4 rounded-xl bg-mediumGrey border cursor-pointer transition-all duration-200 hover:-translate-y-0.5 group
         ${isSelected
           ? "border-indigo/50 shadow-lg shadow-indigo/10"
           : "border-transparent hover:border-white/10"
@@ -80,18 +80,24 @@ const ExerciseListItem = ({
         {ex.sets}×{ex.reps}
       </span>
 
-      <div className="flex flex-col gap-0.5 shrink-0">
+      <div
+        className="flex flex-col gap-0.5 shrink-0"
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
         <button
           onClick={(e) => { e.stopPropagation(); onMoveUp(); }}
           disabled={isFirst}
-          className="flex items-center justify-center w-6 h-6 rounded hover:bg-darkGrey text-lightGrey/50 hover:text-white disabled:opacity-20 cursor-pointer transition"
+          aria-label="Move up"
+          className="flex items-center justify-center w-8 h-8 lg:w-6 lg:h-6 rounded hover:bg-darkGrey text-lightGrey/50 hover:text-white disabled:opacity-20 cursor-pointer transition"
         >
           <LuChevronUp size={14} />
         </button>
         <button
           onClick={(e) => { e.stopPropagation(); onMoveDown(); }}
           disabled={isLast}
-          className="flex items-center justify-center w-6 h-6 rounded hover:bg-darkGrey text-lightGrey/50 hover:text-white disabled:opacity-20 cursor-pointer transition"
+          aria-label="Move down"
+          className="flex items-center justify-center w-8 h-8 lg:w-6 lg:h-6 rounded hover:bg-darkGrey text-lightGrey/50 hover:text-white disabled:opacity-20 cursor-pointer transition"
         >
           <LuChevronDown size={14} />
         </button>
@@ -99,7 +105,9 @@ const ExerciseListItem = ({
 
       <button
         onClick={(e) => { e.stopPropagation(); onDelete(); }}
-        className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-red-500/20 text-lightGrey/40 hover:text-red-400 transition opacity-0 group-hover:opacity-100 shrink-0 cursor-pointer"
+        onKeyDown={(e) => e.stopPropagation()}
+        aria-label="Delete exercise"
+        className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-red-500/20 text-lightGrey/40 hover:text-red-400 transition shrink-0 cursor-pointer lg:opacity-0 lg:group-hover:opacity-100"
       >
         <LuTrash2 size={15} />
       </button>

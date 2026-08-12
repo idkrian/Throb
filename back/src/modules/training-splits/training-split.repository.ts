@@ -74,8 +74,15 @@ export const trainingSplitRepository = {
   },
 
   async deleteUserTrainingSplit(userId: number, trainingSplitId: number) {
-    return await prisma.training_splits.delete({
-      where: { id: trainingSplitId, userId },
+    return await prisma.$transaction(async (tx) => {
+      await tx.training_split_exercises.deleteMany({
+        where: { trainingSplitId },
+      });
+      await tx.training_split_days.deleteMany({ where: { trainingSplitId } });
+
+      return await tx.training_splits.delete({
+        where: { id: trainingSplitId, userId },
+      });
     });
   },
 };

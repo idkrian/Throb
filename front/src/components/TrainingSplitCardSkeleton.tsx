@@ -1,5 +1,5 @@
 const TrainingSplitCardSkeleton = () => (
-  <div className="w-[300px] rounded-xl bg-mediumGrey border border-transparent overflow-hidden animate-pulse">
+  <div className="w-full max-w-[300px] rounded-xl bg-mediumGrey border border-transparent overflow-hidden animate-pulse">
     <div className="h-14 bg-darkGrey" />
     <div className="p-4 flex flex-col gap-3">
       <div className="flex gap-2">

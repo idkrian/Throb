@@ -92,7 +92,11 @@ const TrainingSplitCreate = () => {
                 return row;
             }),
         );
-        setSelectedIndex(swapIndex);
+        setSelectedIndex((current) => {
+            if (current === orderedIndex) return swapIndex;
+            if (current === swapIndex) return orderedIndex;
+            return current;
+        });
     };
 
     const deleteExercise = (orderedIndex: number) => {
@@ -160,7 +164,7 @@ const TrainingSplitCreate = () => {
     };
 
     return (
-        <div className="flex flex-col w-full h-full min-h-0 text-white overflow-hidden">
+        <div className="flex w-full flex-col text-white lg:h-full lg:min-h-0 lg:overflow-hidden">
             <FeedbackModal
                 open={openFeedbackModal}
                 status={feedbackStatus}
@@ -175,10 +179,10 @@ const TrainingSplitCreate = () => {
                 }}
             />
 
-            <header className="flex items-center gap-4 px-6 py-4 border-b border-darkGrey shrink-0">
+            <header className="flex shrink-0 items-center gap-2 border-b border-darkGrey px-3 py-3 lg:gap-4 lg:px-6 lg:py-4">
                 <button
                     onClick={() => navigate("/training-splits")}
-                    className="flex items-center justify-center w-9 h-9 rounded-md bg-mediumGrey hover:bg-mediumGrey/70 cursor-pointer transition"
+                    className="flex items-center justify-center w-9 h-9 shrink-0 rounded-md bg-mediumGrey hover:bg-mediumGrey/70 cursor-pointer transition"
                 >
                     <LuArrowLeft size={18} />
                 </button>
@@ -191,14 +195,16 @@ const TrainingSplitCreate = () => {
                             onChange={(e) => setTitle(e.target.value)}
                             onBlur={() => setEditingTitle(false)}
                             onKeyDown={(e) => e.key === "Enter" && setEditingTitle(false)}
-                            className="text-2xl font-bold bg-transparent border-b border-indigo outline-none text-white w-full max-w-md"
+                            className="text-lg lg:text-2xl font-bold bg-transparent border-b border-indigo outline-none text-white w-full min-w-0 max-w-md"
                         />
                     ) : (
                         <button
                             onClick={() => setEditingTitle(true)}
                             className="flex items-center gap-2 group cursor-pointer min-w-0"
                         >
-                            <h1 className="text-2xl font-bold text-white truncate">{title}</h1>
+                            <h1 className="min-w-0 truncate text-lg font-bold text-white lg:text-2xl">
+                                {title}
+                            </h1>
                             <TbPencil
                                 size={16}
                                 className="text-lightGrey/40 group-hover:text-indigo transition shrink-0"
@@ -226,8 +232,8 @@ const TrainingSplitCreate = () => {
                 </button>
             </header>
 
-            <div className="flex flex-1 min-h-0 overflow-hidden">
-                <div className="flex flex-col flex-1 min-w-0 overflow-y-auto p-6 gap-3">
+            <div className="flex lg:flex-1 lg:min-h-0 lg:overflow-hidden">
+                <div className="flex flex-col flex-1 min-w-0 gap-3 p-3 lg:overflow-y-auto lg:p-6">
                     {rows.length === 0 ? (
                         <div className="flex flex-1 flex-col items-center justify-center text-center gap-5 px-6">
                             <div className="w-20 h-20 rounded-2xl bg-mediumGrey flex items-center justify-center">
@@ -281,11 +287,13 @@ const TrainingSplitCreate = () => {
                 </div>
 
                 <aside
-                    className={`flex flex-col bg-darkGrey border-l border-mediumGrey shrink-0 transition-[width] duration-300 overflow-hidden ${
-                        selectedIndex !== null ? "w-80" : "w-0"
+                    className={`fixed inset-x-0 bottom-0 z-50 flex max-h-[85dvh] shrink-0 flex-col overflow-hidden rounded-t-2xl border-t border-mediumGrey bg-darkGrey pb-[env(safe-area-inset-bottom)] transition-transform duration-300 lg:static lg:max-h-none lg:translate-y-0 lg:rounded-none lg:border-l lg:border-t-0 lg:pb-0 lg:transition-[width] ${
+                        selectedIndex !== null
+                            ? "translate-y-0 lg:w-80"
+                            : "translate-y-full pointer-events-none lg:w-0 lg:pointer-events-auto"
                     }`}
                 >
-                    <div className="w-80 flex flex-col h-full">
+                    <div className="flex w-full min-h-0 flex-col h-full lg:w-80">
                         {selectedExercise && selectedIndex !== null && (
                             <ExerciseEditPanel
                                 exercise={selectedExercise}

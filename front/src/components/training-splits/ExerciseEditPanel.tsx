@@ -1,5 +1,5 @@
 import { IoClose } from "react-icons/io5";
-import { LuTrash2 } from "react-icons/lu";
+import { LuCheck, LuTrash2 } from "react-icons/lu";
 import type { TrainingSplitExerciseDto } from "@/dtos/training-split-exercise.dto";
 import type { ExerciseDto } from "@/dtos/exercise.dto";
 import {
@@ -57,6 +57,11 @@ const ExerciseEditPanel = ({
 }: Props) => {
   const filterByMuscle = (muscle: MuscleType) =>
     exercises.filter((ex) => ex.muscle === muscle);
+
+  const countByGroup = (group: MuscleGroupType) =>
+    exercises.filter((ex) => ex.muscleGroup === group).length;
+
+  const emptyHint = <span className="text-xs text-lightGrey/40">empty</span>;
 
   return (
     <>
@@ -124,11 +129,15 @@ const ExerciseEditPanel = ({
               <SelectValue placeholder="Select muscle group" />
             </SelectTrigger>
             <SelectContent position="popper">
-              {(Object.values(MuscleGroup) as MuscleGroupType[]).map((mg) => (
-                <SelectItem key={mg} value={mg}>
-                  {MuscleGroupLabel[mg]}
-                </SelectItem>
-              ))}
+              {(Object.values(MuscleGroup) as MuscleGroupType[]).map((mg) => {
+                const isEmpty = countByGroup(mg) === 0;
+                return (
+                  <SelectItem key={mg} value={mg} disabled={isEmpty}>
+                    {MuscleGroupLabel[mg]}
+                    {isEmpty && emptyHint}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
         </PanelField>
@@ -145,11 +154,15 @@ const ExerciseEditPanel = ({
               {exercise.exercise?.muscleGroup &&
                 MusclesByGroup[
                   exercise.exercise.muscleGroup as keyof typeof MusclesByGroup
-                ]?.map(({ text, value }) => (
-                  <SelectItem key={value} value={value}>
-                    {text}
-                  </SelectItem>
-                ))}
+                ]?.map(({ text, value }) => {
+                  const isEmpty = filterByMuscle(value).length === 0;
+                  return (
+                    <SelectItem key={value} value={value} disabled={isEmpty}>
+                      {text}
+                      {isEmpty && emptyHint}
+                    </SelectItem>
+                  );
+                })}
             </SelectContent>
           </Select>
         </PanelField>
@@ -172,13 +185,22 @@ const ExerciseEditPanel = ({
           </Select>
         </PanelField>
 
-        <button
-          onClick={onDelete}
-          className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 transition text-sm font-medium cursor-pointer mt-auto"
-        >
-          <LuTrash2 size={14} />
-          Remove exercise
-        </button>
+        <div className="flex gap-2 mt-auto">
+          <button
+            onClick={onDelete}
+            className="flex flex-1 items-center justify-center gap-2 py-2.5 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 transition text-sm font-medium cursor-pointer"
+          >
+            <LuTrash2 size={14} />
+            Remove
+          </button>
+          <button
+            onClick={onClose}
+            className="flex flex-1 items-center justify-center gap-2 py-2.5 rounded-lg border border-indigo/40 text-lightIndigo hover:bg-indigo/10 transition text-sm font-medium cursor-pointer"
+          >
+            <LuCheck size={14} />
+            Done
+          </button>
+        </div>
       </div>
     </>
   );

@@ -282,6 +282,31 @@ const CATALOG: SeedExercise[] = [
   },
 
   {
+    muscleGroup: "BACK",
+    muscle: "RHOMBOIDS",
+    title: "Band Pull-Apart",
+    description:
+      "Hold a resistance band in front of you at chest height with straight arms. Pull the band apart by squeezing your shoulder blades together, then return slowly.",
+    pt: {
+      title: "Abertura com Elástico",
+      description:
+        "Segure um elástico à frente do corpo na altura do peito com os braços estendidos. Abra os braços juntando as escápulas e volte devagar.",
+    },
+  },
+  {
+    muscleGroup: "BACK",
+    muscle: "RHOMBOIDS",
+    title: "Wide-Grip Seated Row",
+    description:
+      "Sit at the cable row with a wide bar. Pull it to your upper abdomen leading with your elbows out to the sides and squeezing your shoulder blades, then extend forward.",
+    pt: {
+      title: "Remada Sentada Pegada Aberta",
+      description:
+        "Sente na remada baixa com a barra larga. Puxe até a parte alta do abdômen com os cotovelos abertos, juntando as escápulas, e estenda à frente.",
+    },
+  },
+
+  {
     muscleGroup: "SHOULDERS",
     muscle: "SHOULDERS_GENERAL",
     title: "Overhead Press",
@@ -548,6 +573,67 @@ const CATALOG: SeedExercise[] = [
   },
 
   {
+    muscleGroup: "ARMS",
+    muscle: "ARMS_GENERAL",
+    title: "Zottman Curl",
+    description:
+      "Curl dumbbells up with your palms facing up, rotate your wrists so your palms face down at the top, then lower slowly in that reversed grip.",
+    pt: {
+      title: "Rosca Zottman",
+      description:
+        "Flexione os halteres com as palmas para cima, gire os punhos para baixo no topo e desça devagar nessa pegada invertida.",
+    },
+  },
+  {
+    muscleGroup: "ARMS",
+    muscle: "TRICEPS_MEDIAL_HEAD",
+    title: "Reverse-Grip Triceps Pushdown",
+    description:
+      "Face a high pulley and grip the bar with your palms facing up and elbows at your sides. Push down until your arms are straight, then return under control.",
+    pt: {
+      title: "Tríceps Pulley Supinado",
+      description:
+        "De frente para a polia alta, segure a barra com as palmas para cima e os cotovelos junto ao corpo. Empurre até estender os braços e volte controlando.",
+    },
+  },
+  {
+    muscleGroup: "ARMS",
+    muscle: "FOREARMS_GENERAL",
+    title: "Farmer's Walk",
+    description:
+      "Hold a heavy dumbbell in each hand at your sides. Stand tall and walk in a straight line for the set distance without letting your grip slip.",
+    pt: {
+      title: "Caminhada do Fazendeiro",
+      description:
+        "Segure um halter pesado em cada mão ao lado do corpo. Fique ereto e caminhe em linha reta pela distância combinada sem soltar a pegada.",
+    },
+  },
+  {
+    muscleGroup: "ARMS",
+    muscle: "PRONATOR_TERES",
+    title: "Dumbbell Pronation",
+    description:
+      "Rest your forearm on a bench holding a dumbbell by one end with your palm up. Rotate your wrist until the palm faces down, then return slowly.",
+    pt: {
+      title: "Pronação com Halter",
+      description:
+        "Apoie o antebraço no banco segurando o halter por uma ponta com a palma para cima. Gire o punho até a palma ficar para baixo e volte devagar.",
+    },
+  },
+  {
+    muscleGroup: "ARMS",
+    muscle: "EXTENSORS",
+    title: "Reverse Wrist Curl",
+    description:
+      "Rest your forearms on your thighs holding a barbell with an overhand grip. Lift the backs of your hands toward you by extending your wrists, then lower.",
+    pt: {
+      title: "Rosca Inversa de Punho",
+      description:
+        "Apoie os antebraços nas coxas segurando a barra com pegada pronada. Levante o dorso das mãos estendendo os punhos e desça.",
+    },
+  },
+
+  {
     muscleGroup: "LEGS",
     muscle: "QUADRICEPS",
     title: "Barbell Back Squat",
@@ -693,6 +779,31 @@ const CATALOG: SeedExercise[] = [
   },
 
   {
+    muscleGroup: "LEGS",
+    muscle: "LEGS_GENERAL",
+    title: "Goblet Squat",
+    description:
+      "Hold a dumbbell or kettlebell against your chest with both hands. Squat down keeping your torso upright and elbows inside your knees, then stand back up.",
+    pt: {
+      title: "Agachamento Goblet",
+      description:
+        "Segure um halter ou kettlebell junto ao peito com as duas mãos. Agache mantendo o tronco ereto e os cotovelos por dentro dos joelhos, depois suba.",
+    },
+  },
+  {
+    muscleGroup: "LEGS",
+    muscle: "LEGS_GENERAL",
+    title: "Box Step-Up",
+    description:
+      "Place one foot on a box or bench at knee height. Drive through that leg to stand up on top, then lower yourself back down under control.",
+    pt: {
+      title: "Subida no Banco",
+      description:
+        "Apoie um pé em um banco na altura do joelho. Empurre com essa perna para subir e desça controlando.",
+    },
+  },
+
+  {
     muscleGroup: "GLUTES",
     muscle: "GLUTEUS_MAXIMUS",
     title: "Hip Thrust",
@@ -750,6 +861,19 @@ const CATALOG: SeedExercise[] = [
       title: "Cadeira Abdutora",
       description:
         "Sente com os apoios na parte externa dos joelhos. Afaste as pernas o máximo possível e volte controlando.",
+    },
+  },
+
+  {
+    muscleGroup: "GLUTES",
+    muscle: "GLUTEUS_MINIMUS",
+    title: "Side-Lying Hip Abduction",
+    description:
+      "Lie on your side with your legs stacked and straight. Raise the top leg as high as you can without rotating your hips, then lower it slowly.",
+    pt: {
+      title: "Abdução de Quadril Deitado",
+      description:
+        "Deite de lado com as pernas alinhadas e estendidas. Eleve a perna de cima o máximo possível sem girar o quadril e desça devagar.",
     },
   },
 

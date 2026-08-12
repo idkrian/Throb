@@ -19,8 +19,8 @@ export interface WorkoutSessionDto {
   id: number;
   createdAt: string;
   updatedAt: string;
-  trainingSplitId: number;
-  trainingSplit: TrainingSplitDto;
+  trainingSplitId: number | null;
+  trainingSplit: TrainingSplitDto | null;
   notes: string | null;
   durationSeconds: number;
   workoutExerciseLogs: WorkoutExerciseLogDto[];

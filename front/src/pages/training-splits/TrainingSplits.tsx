@@ -67,7 +67,7 @@ const TrainingSplits = () => {
   const isEmpty = !loading && trainingSplits.length === 0;
 
   return (
-    <div className="relative flex flex-col h-full w-full py-4">
+    <div className="relative flex w-full flex-col py-4 lg:h-full">
       <ConfirmModal
         open={pendingDelete !== null}
         title="Delete training split?"
@@ -130,7 +130,7 @@ const TrainingSplits = () => {
       {!isEmpty && (
         <button
           aria-label="Create training split"
-          className="fixed bottom-6 right-6 z-40 flex items-center justify-center size-14 rounded-full bg-indigo hover:bg-darkIndigo shadow-xl cursor-pointer transition duration-300 hover:-translate-y-1 hover:scale-110"
+          className="fixed bottom-[calc(3.5rem+1rem+env(safe-area-inset-bottom))] right-4 z-40 flex items-center justify-center size-14 rounded-full bg-indigo hover:bg-darkIndigo shadow-xl cursor-pointer transition duration-300 hover:-translate-y-1 hover:scale-110 lg:bottom-6 lg:right-6"
           onClick={() => navigate("/training-splits/create")}
         >
           <FaPlus color="white" size={24} />
