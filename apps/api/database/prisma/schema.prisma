@@ -1,0 +1,190 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "./generated/prisma"
+  runtime      = "nodejs"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model users {
+  id              Int                @id @default(autoincrement())
+  createdAt       DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime           @updatedAt @db.Timestamptz(3)
+  email           String             @unique
+  password        String
+  name            String?
+  isAdmin         Boolean            @default(false)
+  unitPreference  UnitPreference     @default(KG)
+  languagePreference String          @default("en")
+  bodyWeights     body_weights[]
+  exercises       exercises[]
+  trainingSplits  training_splits[]
+  workoutSessions workout_sessions[]
+}
+
+model body_weights {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  weight    Decimal  @db.Decimal(6, 2)
+  userId    Int
+  user      users    @relation(fields: [userId], references: [id])
+}
+
+model exercises {
+  id                  Int                        @id @default(autoincrement())
+  createdAt           DateTime                   @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime                   @updatedAt @db.Timestamptz(3)
+  title               String                     @db.VarChar(255)
+  muscleGroup         MuscleGroup
+  muscle              Muscle
+  description         String?
+  trainingSplits      training_split_exercises[]
+  workoutExerciseLogs workout_exercise_logs[]
+  translations        exercise_translations[]
+  userId              Int?
+  user                users?                     @relation(fields: [userId], references: [id])
+
+  @@unique([muscleGroup, muscle, title, userId])
+}
+
+model exercise_translations {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime  @updatedAt @db.Timestamptz(3)
+  exerciseId  Int
+  locale      String    @db.VarChar(8)
+  title       String    @db.VarChar(255)
+  description String?
+  exercise    exercises @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@unique([exerciseId, locale])
+}
+
+model training_splits {
+  id              Int                        @id @default(autoincrement())
+  createdAt       DateTime                   @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime                   @updatedAt @db.Timestamptz(3)
+  title           String                     @db.VarChar(255)
+  days            training_split_days[]
+  exercises       training_split_exercises[]
+  workoutSessions workout_sessions[]
+  userId          Int
+  user            users                      @relation(fields: [userId], references: [id])
+}
+
+model training_split_exercises {
+  id              Int             @id @default(autoincrement())
+  createdAt       DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime        @updatedAt @db.Timestamptz(3)
+  trainingSplitId Int
+  exerciseId      Int
+  order           Int?
+  sets            Int?
+  reps            String?
+  exercise        exercises       @relation(fields: [exerciseId], references: [id])
+  trainingSplit   training_splits @relation(fields: [trainingSplitId], references: [id])
+
+  @@unique([trainingSplitId, exerciseId])
+}
+
+model training_split_days {
+  id              Int             @id @default(autoincrement())
+  createdAt       DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime        @updatedAt @db.Timestamptz(3)
+  trainingSplitId Int
+  dayOfWeek       Int
+  restDay         Boolean         @default(false)
+  trainingSplit   training_splits @relation(fields: [trainingSplitId], references: [id])
+
+  @@unique([trainingSplitId, dayOfWeek])
+}
+
+model workout_sessions {
+  id                  Int                     @id @default(autoincrement())
+  createdAt           DateTime                @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime                @updatedAt @db.Timestamptz(3)
+  notes               String?
+  workoutExerciseLogs workout_exercise_logs[]
+  durationSeconds     Int
+  trainingSplitId     Int?
+  trainingSplit       training_splits?        @relation(fields: [trainingSplitId], references: [id], onDelete: SetNull)
+  userId              Int
+  user                users                   @relation(fields: [userId], references: [id])
+}
+
+model workout_exercise_logs {
+  id               Int              @id @default(autoincrement())
+  workoutSessionId Int
+  exerciseId       Int
+  notes            String?
+  exercise         exercises        @relation(fields: [exerciseId], references: [id])
+  workoutSession   workout_sessions @relation(fields: [workoutSessionId], references: [id])
+  workoutSets      workout_sets[]
+}
+
+model workout_sets {
+  id                   Int                   @id @default(autoincrement())
+  workoutExerciseLogId Int
+  setNumber            Int
+  reps                 Int
+  weight               Decimal               @db.Decimal(6, 2)
+  rpe                  Decimal               @db.Decimal(3, 1)
+  workoutExerciseLog   workout_exercise_logs @relation(fields: [workoutExerciseLogId], references: [id])
+}
+
+enum UnitPreference {
+  KG
+  LB
+}
+
+enum MuscleGroup {
+  CHEST
+  BACK
+  SHOULDERS
+  ARMS
+  LEGS
+  GLUTES
+  CORE
+}
+
+enum Muscle {
+  CHEST_GENERAL
+  UPPER_CHEST
+  MIDDLE_CHEST
+  LOWER_CHEST
+  BACK_GENERAL
+  LATS
+  TRAPS
+  LOWER_BACK
+  RHOMBOIDS
+  SHOULDERS_GENERAL
+  FRONT_DELTOID
+  SIDE_DELTOID
+  REAR_DELTOID
+  ARMS_GENERAL
+  BICEPS_LONG_HEAD
+  BICEPS_SHORT_HEAD
+  TRICEPS_LONG_HEAD
+  TRICEPS_LATERAL_HEAD
+  TRICEPS_MEDIAL_HEAD
+  FOREARMS_GENERAL
+  BRACHIORADIALIS
+  PRONATOR_TERES
+  FLEXORS
+  EXTENSORS
+  LEGS_GENERAL
+  QUADRICEPS
+  HAMSTRINGS
+  CALVES
+  GLUTES_GENERAL
+  GLUTEUS_MAXIMUS
+  GLUTEUS_MEDIUS
+  GLUTEUS_MINIMUS
+  CORE_GENERAL
+  ABS
+  OBLIQUES
+}
