@@ -39,7 +39,7 @@ const BodyWeightChart = ({ entries }: Props) => {
 
   if (data.length === 0) {
     return (
-      <Card className="bg-mediumGrey border-none flex-1">
+      <Card className="bg-mediumGrey border-none min-w-0 flex-1">
         <CardHeader>
           <CardTitle className="text-white">Body Weight</CardTitle>
         </CardHeader>
@@ -53,13 +53,13 @@ const BodyWeightChart = ({ entries }: Props) => {
   }
 
   return (
-    <Card className="bg-mediumGrey border-none flex flex-1 flex-col min-h-0">
+    <Card className="bg-mediumGrey border-none flex min-w-0 flex-col lg:flex-1 lg:min-h-0">
       <CardHeader className="pb-0">
         <CardTitle className="text-white">Body Weight</CardTitle>
         <CardDescription>Progress over time ({unitLabel(unit)})</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 min-h-0 pb-2">
-        <ChartContainer config={chartConfig} className="h-full w-full">
+      <CardContent className="min-w-0 pb-2 lg:flex-1 lg:min-h-0">
+        <ChartContainer config={chartConfig} className="h-56 w-full lg:h-full">
           <AreaChart data={data}>
             <defs>
               <linearGradient id="bodyWeightGrad" x1="0" y1="0" x2="0" y2="1">

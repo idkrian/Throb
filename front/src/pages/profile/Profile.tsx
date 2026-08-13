@@ -70,9 +70,9 @@ const Profile = () => {
   // };
 
   return (
-    <div className="flex flex-col w-full h-full gap-3 overflow-hidden">
-      <div className="grid grid-cols-3 gap-3 shrink-0">
-        <div className="flex items-center gap-3 rounded-lg bg-mediumGrey px-4 py-2.5">
+    <div className="flex w-full flex-col gap-3 lg:h-full lg:overflow-hidden">
+      <div className="grid shrink-0 grid-cols-2 gap-2 lg:grid-cols-3 lg:gap-3">
+        <div className="flex min-w-0 items-center gap-2 rounded-lg bg-mediumGrey px-3 py-2.5 lg:gap-3 lg:px-4">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-darkIndigo/40">
             <LuScale className="h-4 w-4 text-lightIndigo" />
           </div>
@@ -84,7 +84,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 rounded-lg bg-mediumGrey px-4 py-2.5">
+        <div className="flex min-w-0 items-center gap-2 rounded-lg bg-mediumGrey px-3 py-2.5 lg:gap-3 lg:px-4">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-darkIndigo/40">
             {delta !== null && delta < 0 ? (
               <LuTrendingDown className="h-4 w-4 text-emerald-400" />
@@ -104,9 +104,11 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-3 rounded-lg bg-mediumGrey px-4 py-2.5">
+        <div className="col-span-2 flex min-w-0 items-center justify-between gap-3 rounded-lg bg-mediumGrey px-3 py-2.5 lg:col-span-1 lg:px-4">
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-white">{user?.name}</p>
+            <p className="truncate text-sm font-semibold text-white">
+              {user?.name}
+            </p>
             <p className="truncate text-xs text-lightGrey/60">{user?.email}</p>
           </div>
           <div className="flex flex-col items-end gap-1.5 shrink-0">
@@ -146,8 +148,8 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="grid flex-1 min-h-0 grid-cols-[280px_1fr] gap-3">
-        <div className="flex flex-col gap-3 rounded-lg bg-mediumGrey p-4 min-h-0">
+      <div className="grid min-w-0 gap-3 lg:flex-1 lg:min-h-0 lg:grid-cols-[280px_1fr]">
+        <div className="flex min-w-0 flex-col gap-3 rounded-lg bg-mediumGrey p-4 lg:min-h-0">
           <p className="text-sm font-semibold text-white">Log body weight</p>
           <p className="text-xs text-lightGrey/60">
             Weigh yourself at the same time of day for a consistent trend.
@@ -172,7 +174,7 @@ const Profile = () => {
             onClick={logWeight}
           />
 
-          <div className="flex flex-col gap-1.5 mt-2 min-h-0 overflow-y-auto">
+          <div className="mt-2 flex max-h-56 flex-col gap-1.5 overflow-y-auto lg:max-h-none lg:min-h-0">
             {[...entries]
               .reverse()
               .slice(0, 10)
