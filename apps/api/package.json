@@ -1,5 +1,5 @@
 {
-  "name": "@fit/api",
+  "name": "@throb/api",
   "version": "1.0.0",
   "private": true,
   "main": "dist/database/server.js",
