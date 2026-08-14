@@ -7,8 +7,11 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch database/server.ts",
-    "build": "tsc",
-    "start": "node dist/database/server.js"
+    "build": "prisma generate && tsc",
+    "start": "prisma migrate deploy && node dist/database/server.js"
+  },
+  "engines": {
+    "node": ">=22"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
