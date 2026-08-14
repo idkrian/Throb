@@ -2,14 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(sed -i 's|from \"./types\"|from \"@/dtos/workout.dto\"|g; s|from \"./utils\"|from \"@/utils\"|g' SetRow.tsx ActiveExerciseCard.tsx WorkoutHeader.tsx RestTimer.tsx UpNextList.tsx)",
-      "Bash(sed -i 's|from \"./utils\"|from \"@/utils\"|g' \"c:/Users/Rian/Documents/projects/fit/front/src/components/modals/WorkoutSummaryModal.tsx\")",
+      "Bash(sed -i 's|from \"./utils\"|from \"@/utils\"|g' \"c:/Users/Rian/Documents/projects/throb/front/src/components/modals/WorkoutSummaryModal.tsx\")",
       "Bash(npx tsc *)",
-      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Rian\\\\Documents\\\\projects\\\\fit\\\\back\\\\src\" -Recurse -Filter \"*.ts\")",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Rian\\\\Documents\\\\projects\\\\throb\\\\back\\\\src\" -Recurse -Filter \"*.ts\")",
       "Bash(Select-Object -First 20)",
-      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Rian\\\\Documents\\\\projects\\\\fit\\\\front\\\\src\\\\dtos\\\\\" -Recurse -File | Select-Object FullName)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Rian\\\\Documents\\\\projects\\\\throb\\\\front\\\\src\\\\dtos\\\\\" -Recurse -File | Select-Object FullName)",
       "Bash(xargs grep *)",
       "Bash(npm install *)",
-      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Rian\\\\Documents\\\\projects\\\\fit\" -Force)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Rian\\\\Documents\\\\projects\\\\throb\" -Force)",
       "Bash(Select-Object Name, PSIsContainer)",
       "Bash(ls src/*.css src/**/*.css)",
       "Bash(ls tailwind.config.*)",
@@ -19,8 +19,8 @@
       "Bash(ls && echo \"---BACK---\" && ls back 2>nul || echo \"sem pasta back\" && echo \"---FRONT---\" && ls front)",
       "Bash(dir src *)",
       "Bash(dir database *)",
-      "Read(//c/c/Users/Rian/Documents/projects/fit/back/**)",
-      "Read(//c/c/Users/Rian/Documents/projects/fit/front/**)",
+      "Read(//c/c/Users/Rian/Documents/projects/throb/back/**)",
+      "Read(//c/c/Users/Rian/Documents/projects/throb/front/**)",
       "Bash(find src *)",
       "Bash(npx prettier *)",
       "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('deps:', JSON.stringify\\({...p.dependencies,...p.devDependencies}, null, 1\\)\\)\")",
@@ -32,7 +32,7 @@
       "Bash(echo \"TSC_EXIT=$?\")",
       "Bash(node _diag.mjs)",
       "Bash(npx tsx *)",
-      "Bash(cd \"c:/Users/Rian/Documents/projects/fit/back\" && sed -E 's#\\(://[^:]+:\\)[^@]+@#\\\\1***@#' .env)",
+      "Bash(cd \"c:/Users/Rian/Documents/projects/throb/back\" && sed -E 's#\\(://[^:]+:\\)[^@]+@#\\\\1***@#' .env)",
       "Bash(node _audit.mjs)",
       "Bash(python -c ' *)",
       "Bash(node _patch.mjs)",
@@ -46,9 +46,9 @@
       "Bash(grep -oE '.{30}lg\\\\\\\\:justify-start.{30}' dist/assets/*.css)"
     ],
     "additionalDirectories": [
-      "c:\\Users\\Rian\\Documents\\projects\\fit",
-      "c:\\Users\\Rian\\Documents\\projects\\fit\\back",
-      "C:\\Users\\Rian\\Documents\\projects\\fit\\back"
+      "c:\\Users\\Rian\\Documents\\projects\\throb",
+      "c:\\Users\\Rian\\Documents\\projects\\throb\\back",
+      "C:\\Users\\Rian\\Documents\\projects\\throb\\back"
     ]
   }
 }

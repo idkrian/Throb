@@ -25,8 +25,10 @@ const DayMarker = ({
   isMissed,
   isTraining,
 }: Pick<WeekCell, "isCompleted" | "isMissed" | "isTraining">) => {
-  if (isCompleted) return <LuCheck size={11} className="text-lightIndigo" />;
-  if (isMissed) return <LuX size={10} className="text-red-400/70" />;
+  if (isCompleted)
+    return <LuCheck className="text-[11px] text-lightIndigo lg:text-[12px]" />;
+  if (isMissed)
+    return <LuX className="text-[10px] text-red-400/70 lg:text-[11px]" />;
   if (isTraining)
     return (
       <span className="size-1.5 rounded-full border border-lightIndigo/60" />
@@ -35,7 +37,7 @@ const DayMarker = ({
 };
 
 const WeekStrip = ({ cells }: { cells: WeekCell[] }) => (
-  <div className="flex min-w-0 flex-1 justify-center gap-1 lg:flex-none lg:justify-start">
+  <div className="flex min-w-0 flex-1 justify-center gap-1 lg:flex-none lg:justify-start lg:gap-1.5">
     {cells.map(
       ({ letter, index, isTraining, isToday, isCompleted, isMissed }) => {
         let title = "Rest";
@@ -51,10 +53,10 @@ const WeekStrip = ({ cells }: { cells: WeekCell[] }) => (
           <div
             key={index}
             title={isToday ? `${title} · Today` : title}
-            className="relative flex h-9 min-w-0 max-w-7 flex-1 flex-col items-center justify-center gap-1"
+            className="relative flex h-9 min-w-0 max-w-7 flex-1 flex-col items-center justify-center gap-1 lg:h-9.5 lg:w-7.5 lg:max-w-none"
           >
             <span
-              className={`text-[11px] font-medium leading-none tracking-wider ${letterClass}`}
+              className={`text-[11px] font-medium leading-none tracking-wider lg:text-[11.5px] ${letterClass}`}
             >
               {letter}
             </span>

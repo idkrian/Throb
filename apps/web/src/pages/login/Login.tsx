@@ -2,7 +2,6 @@ import { useState, type FormEvent } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router";
 import axios from "axios";
 import {
-  LuDumbbell,
   LuUser,
   LuMail,
   LuLock,
@@ -13,6 +12,7 @@ import {
 } from "react-icons/lu";
 import { useAuth } from "@/contexts/AuthContext";
 import Icon from "@/assets/icons/pulse-white.svg";
+import Logo from "@/assets/icons/pulse-gradient.svg";
 
 const Login = () => {
   const { isAuthenticated, login, register } = useAuth();
@@ -104,8 +104,9 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* compact logo for mobile */}
             <div className="flex items-center gap-2.5 sm:hidden">
-              <div className="rounded-xl bg-linear-to-br from-indigo to-darkIndigo p-2">
-                <LuDumbbell size={20} className="text-white" />
+              <div className="relative flex shrink-0 items-center">
+                <div className="absolute inset-0 rounded-xl bg-indigo/40 blur-xl" />
+                <img src={Logo} alt="Throb" className="relative size-9" />
               </div>
               <span className="text-lg font-extrabold tracking-tight text-white">
                 Throb
