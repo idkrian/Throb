@@ -1,5 +1,5 @@
 {
-  "name": "throb",
+  "name": "pulso",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
@@ -9,13 +9,13 @@
   ],
   "scripts": {
     "dev": "concurrently -n api,web -c blue,magenta \"npm:dev:api\" \"npm:dev:web\"",
-    "dev:api": "npm run dev -w @throb/api",
-    "dev:web": "npm run dev -w @throb/web",
-    "build": "npm run build -w @throb/api && npm run build -w @throb/web",
-    "build:api": "npm run build -w @throb/api",
-    "build:web": "npm run build -w @throb/web",
-    "start:api": "npm run start -w @throb/api",
-    "lint": "npm run lint -w @throb/web"
+    "dev:api": "npm run dev -w @pulso/api",
+    "dev:web": "npm run dev -w @pulso/web",
+    "build": "npm run build -w @pulso/api && npm run build -w @pulso/web",
+    "build:api": "npm run build -w @pulso/api",
+    "build:web": "npm run build -w @pulso/web",
+    "start:api": "npm run start -w @pulso/api",
+    "lint": "npm run lint -w @pulso/web"
   },
   "devDependencies": {
     "concurrently": "^10.0.4"

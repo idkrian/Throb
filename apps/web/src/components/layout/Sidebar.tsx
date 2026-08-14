@@ -15,8 +15,8 @@ const Sidebar = () => {
       />
       {isOpen && (
         <div className="mt-4">
-          <h1>teste</h1>
-          {/* Adicione mais conteúdo aqui */}
+          <h1>test</h1>
+          {/* Add more content here */}
         </div>
       )}
     </div>

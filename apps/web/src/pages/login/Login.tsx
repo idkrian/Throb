@@ -56,16 +56,16 @@ const Login = () => {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;
         if (isSignup && status === 409) {
-          setError("Este e-mail já está cadastrado.");
+          setError("This email is already registered.");
         } else if (!isSignup && status === 401) {
-          setError("E-mail ou senha incorretos.");
+          setError("Incorrect email or password.");
         } else if (isSignup) {
-          setError("Não foi possível criar a conta. Tente novamente.");
+          setError("Couldn't create your account. Please try again.");
         } else {
-          setError("Não foi possível entrar. Tente novamente.");
+          setError("Couldn't sign you in. Please try again.");
         }
       } else {
-        setError("Algo deu errado. Tente novamente.");
+        setError("Something went wrong. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -86,16 +86,16 @@ const Login = () => {
         {/* Brand side */}
         <div className="relative hidden w-2/5 flex-col justify-center gap-4 overflow-hidden bg-linear-to-br from-indigo to-darkIndigo p-8 sm:flex">
           <div className="flex items-center gap-2.5">
-            <img src={Icon} alt="Throb" className="size-12" />
+            <img src={Icon} alt="Pulso" className="size-12" />
             <span className="text-xl font-extrabold tracking-tight text-white">
-              Throb
+              Pulso
             </span>
           </div>
           <h1 className="auth-shimmer-text bg-linear-to-r from-white via-lightIndigo to-white bg-clip-text text-2xl font-extrabold leading-snug text-transparent">
-            Sinta cada batida da sua evolução.
+            Feel every beat of your progress.
           </h1>
           <p className="text-sm text-white/70">
-            Seus treinos, sua evolução — tudo em um só lugar.
+            Your workouts, your progress — all in one place.
           </p>
         </div>
 
@@ -106,21 +106,21 @@ const Login = () => {
             <div className="flex items-center gap-2.5 sm:hidden">
               <div className="relative flex shrink-0 items-center">
                 <div className="absolute inset-0 rounded-xl bg-indigo/40 blur-xl" />
-                <img src={Logo} alt="Throb" className="relative size-9" />
+                <img src={Logo} alt="Pulso" className="relative size-9" />
               </div>
               <span className="text-lg font-extrabold tracking-tight text-white">
-                Throb
+                Pulso
               </span>
             </div>
 
             <div className="space-y-1.5">
               <h2 className="text-2xl font-bold text-white">
-                {isSignup ? "Crie sua conta" : "Bem-vindo de volta"}
+                {isSignup ? "Create your account" : "Welcome back"}
               </h2>
               <p className="text-sm text-lightGrey/50">
                 {isSignup
-                  ? "Preencha seus dados para começar."
-                  : "Entre com suas credenciais para continuar."}
+                  ? "Fill in your details to get started."
+                  : "Enter your credentials to continue."}
               </p>
             </div>
 
@@ -134,7 +134,7 @@ const Login = () => {
               {isSignup && (
                 <label className="block space-y-1.5">
                   <span className="text-xs font-medium uppercase tracking-wider text-lightGrey/50">
-                    Nome
+                    Name
                   </span>
                   <div className="group relative">
                     <LuUser
@@ -146,7 +146,7 @@ const Login = () => {
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Seu nome"
+                      placeholder="Your name"
                       className="w-full rounded-lg border border-mediumGrey bg-mediumGrey/40 py-2.5 pl-10 pr-3 text-sm text-white placeholder:text-lightGrey/30 outline-none transition-all focus:border-indigo focus:bg-mediumGrey focus:ring-2 focus:ring-indigo/30"
                     />
                   </div>
@@ -155,7 +155,7 @@ const Login = () => {
 
               <label className="block space-y-1.5">
                 <span className="text-xs font-medium uppercase tracking-wider text-lightGrey/50">
-                  E-mail
+                  Email
                 </span>
                 <div className="group relative">
                   <LuMail
@@ -168,7 +168,7 @@ const Login = () => {
                     autoFocus
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="voce@email.com"
+                    placeholder="you@email.com"
                     className="w-full rounded-lg border border-mediumGrey bg-mediumGrey/40 py-2.5 pl-10 pr-3 text-sm text-white placeholder:text-lightGrey/30 outline-none transition-all focus:border-indigo focus:bg-mediumGrey focus:ring-2 focus:ring-indigo/30"
                   />
                 </div>
@@ -176,7 +176,7 @@ const Login = () => {
 
               <label className="block space-y-1.5">
                 <span className="text-xs font-medium uppercase tracking-wider text-lightGrey/50">
-                  Senha
+                  Password
                 </span>
                 <div className="group relative">
                   <LuLock
@@ -216,7 +216,7 @@ const Login = () => {
                 <LuRotateCw size={20} className="animate-spin" />
               ) : (
                 <>
-                  {isSignup ? "Criar conta" : "Entrar"}
+                  {isSignup ? "Create account" : "Sign in"}
                   <LuArrowRight
                     size={18}
                     className="transition-transform group-hover:translate-x-1"
@@ -226,13 +226,13 @@ const Login = () => {
             </button>
 
             <p className="text-center text-sm text-lightGrey/50">
-              {isSignup ? "Já tem uma conta?" : "Ainda não tem conta?"}{" "}
+              {isSignup ? "Already have an account?" : "Don't have an account?"}{" "}
               <button
                 type="button"
                 onClick={toggleMode}
                 className="font-semibold text-lightIndigo transition-colors hover:text-indigo cursor-pointer"
               >
-                {isSignup ? "Entrar" : "Cadastre-se"}
+                {isSignup ? "Sign in" : "Sign up"}
               </button>
             </p>
           </form>

@@ -126,7 +126,7 @@ const Navbar = () => {
     [byDay, completedDays, today],
   );
 
-  const logoutTitle = user ? `Sair (${user.name})` : "Sair";
+  const logoutTitle = user ? `Log out (${user.name})` : "Log out";
   const isWorkoutInProgress = Boolean(useMatch("/workout/:splitId"));
 
   return (
@@ -135,7 +135,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between gap-3">
           <Link to="/" className="relative flex shrink-0 items-center">
             <div className="absolute inset-0 rounded-xl bg-indigo/40 blur-xl" />
-            <img src={Logo} alt="Throb" className="relative size-9" />
+            <img src={Logo} alt="Pulso" className="relative size-9" />
           </Link>
 
           <WeekStrip cells={weekCells} />
@@ -179,7 +179,7 @@ const Navbar = () => {
         <Link to="/" className="group flex shrink-0 items-center gap-3">
           <div className="relative">
             <div className="absolute inset-0 rounded-xl bg-indigo/40 blur-xl transition group-hover:bg-indigo/60" />
-            <img src={Logo} alt="Throb" className="size-12" />
+            <img src={Logo} alt="Pulso" className="size-12" />
           </div>
         </Link>
 

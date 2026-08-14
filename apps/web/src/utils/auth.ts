@@ -3,8 +3,8 @@ import type { AuthUser, JwtPayload, LanguagePreference } from "@/dtos/auth.dto";
 
 const SUPPORTED_LOCALES: LanguagePreference[] = ["en", "pt"];
 
-export const TOKEN_STORAGE_KEY = "throb:token";
-export const USER_STORAGE_KEY = "throb:user";
+export const TOKEN_STORAGE_KEY = "pulso:token";
+export const USER_STORAGE_KEY = "pulso:user";
 
 export const decodeToken = (token: string): JwtPayload | null => {
   try {

@@ -78,8 +78,8 @@ const Dashboard = () => {
                 <button
                   type="button"
                   onClick={openTodaySwap}
-                  title="Editar treino"
-                  aria-label="Editar treino"
+                  title="Edit workout"
+                  aria-label="Edit workout"
                   className="flex items-center justify-center h-full w-12 shrink-0 rounded-md bg-darkGrey/60 hover:bg-darkGrey text-white/70 hover:text-white transition cursor-pointer"
                 >
                   <LuPencil size={14} />
