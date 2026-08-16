@@ -3,6 +3,45 @@ export const en = {
     error: {
       generic: "Something went wrong. Please try again.",
     },
+    restDay: "Rest Day",
+    today: "Today",
+  },
+
+  nav: {
+    dashboard: "Dashboard",
+    exercises: "Exercises",
+    splits: "Splits",
+    calendar: "Calendar",
+    profile: "Profile",
+  },
+
+  navbar: {
+    start: "Start",
+    logout: "Log out",
+    logoutAs: "Log out ({name})",
+    dayToday: "{status} · Today",
+    day: {
+      rest: "Rest",
+      scheduled: "Scheduled",
+      missed: "Missed",
+      trained: "Trained",
+    },
+  },
+
+  dashboard: {
+    todaysTraining: "Today's Training",
+    startWorkout: "Start Workout",
+    editWorkout: "Edit workout",
+    restDayHint: "No training scheduled for today. Recover well!",
+  },
+
+  profile: {
+    currentWeight: "Current weight",
+    sinceLastEntry: "Since last entry",
+    logBodyWeight: "Log body weight",
+    weighHint: "Weigh yourself at the same time of day for a consistent trend.",
+    logWeight: "Log Weight",
+    saving: "Saving...",
   },
 
   login: {

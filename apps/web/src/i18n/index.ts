@@ -11,6 +11,8 @@ import type {
 } from "./types";
 
 export type { TranslationKey, TranslationParams } from "./types";
+export type { FormatDateFn } from "./date";
+export { dateLocaleFor, useFormatDate, useWeekdayInitials } from "./date";
 
 const dictionaries: Record<LanguagePreference, LocaleDictionary> = { en, pt };
 
