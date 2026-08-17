@@ -1,10 +1,4 @@
-import {
-  LuPause,
-  LuPlay,
-  LuRotateCw,
-  LuTimer,
-  LuTrophy,
-} from "react-icons/lu";
+import { LuPause, LuPlay, LuRotateCw, LuTimer, LuTrophy } from "react-icons/lu";
 import { formatTime } from "@/utils";
 
 type Props = {

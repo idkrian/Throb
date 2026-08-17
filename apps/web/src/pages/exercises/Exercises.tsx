@@ -4,12 +4,11 @@ import { LuSearch } from "react-icons/lu";
 import { deleteExercise, getMuscleGroups } from "@/api/exercise";
 import {
   MuscleGroup,
-  MuscleGroupLabel,
-  MuscleLabel,
   type ExerciseFilter,
   type MuscleGroupItemsDto,
   type MuscleGroupType,
 } from "@/dtos/muscle.dto";
+import { useMuscleGroupLabel, useMuscleLabel, useT } from "@/i18n";
 import type { ExerciseDto } from "@/dtos/exercise.dto";
 import { getApiErrorMessage } from "@/utils/error";
 import ExerciseModal from "@/components/modals/ExerciseModal";
@@ -20,6 +19,9 @@ import ExercisesEmptyState from "@/components/exercises/ExercisesEmptyState";
 import ExerciseDrawer from "@/components/exercises/ExerciseDrawer";
 
 const Exercises = () => {
+  const t = useT();
+  const muscleLabel = useMuscleLabel();
+  const muscleGroupLabel = useMuscleGroupLabel();
   const [muscleGroups, setMuscleGroups] = useState<MuscleGroupItemsDto[]>([]);
   const [filter, setExerciseFilter] = useState<ExerciseFilter>("ALL");
   const [search, setSearch] = useState("");
@@ -90,14 +92,14 @@ const Exercises = () => {
     return base.filter(
       (e) =>
         e.title.toLowerCase().includes(q) ||
-        MuscleLabel[e.muscle].toLowerCase().includes(q),
+        muscleLabel(e.muscle).toLowerCase().includes(q),
     );
-  }, [allExercises, filter, search]);
+  }, [allExercises, filter, search, muscleLabel]);
 
   const headerLabel =
     filter === "ALL"
-      ? "All Exercises"
-      : MuscleGroupLabel[filter as MuscleGroupType];
+      ? t("exercises.allExercises")
+      : muscleGroupLabel(filter as MuscleGroupType);
 
   const openCreate = () =>
     setCreateOpen(filter === "ALL" ? MuscleGroup.CHEST : filter);

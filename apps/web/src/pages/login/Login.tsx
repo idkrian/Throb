@@ -232,7 +232,9 @@ const Login = () => {
                 onClick={toggleMode}
                 className="font-semibold text-lightIndigo transition-colors hover:text-indigo cursor-pointer"
               >
-                {isSignup ? t("login.switchToLogin") : t("login.switchToSignup")}
+                {isSignup
+                  ? t("login.switchToLogin")
+                  : t("login.switchToSignup")}
               </button>
             </p>
           </form>

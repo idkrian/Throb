@@ -40,7 +40,9 @@ const ConfirmModal = ({
           </div>
           <h2 className="text-2xl font-bold text-center">{title}</h2>
           {description && (
-            <p className="text-sm text-lightGrey/70 text-center">{description}</p>
+            <p className="text-sm text-lightGrey/70 text-center">
+              {description}
+            </p>
           )}
           {error && (
             <p className="w-full rounded-md bg-red-500/10 border border-red-500/30 px-3 py-2 text-sm text-red-400 text-center">

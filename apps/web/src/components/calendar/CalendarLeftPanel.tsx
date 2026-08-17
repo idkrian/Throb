@@ -1,7 +1,19 @@
-import { LuFlame, LuPlay, LuMoon, LuDumbbell, LuLayers, LuTrophy } from "react-icons/lu";
+import {
+  LuFlame,
+  LuPlay,
+  LuMoon,
+  LuDumbbell,
+  LuLayers,
+  LuTrophy,
+} from "react-icons/lu";
 import type { TrainingSplitDayEntry } from "@/dtos/training-split-day.dto";
 import type { WorkoutSessionDto } from "@/dtos/workout-session.dto";
-import { DEFAULT_ACCENT, formatDate, muscleGroupAccent, summarizeSplit } from "@/utils";
+import {
+  DEFAULT_ACCENT,
+  formatDate,
+  muscleGroupAccent,
+  summarizeSplit,
+} from "@/utils";
 import { formatVolume, sessionVolume } from "@/utils/workout-history";
 
 interface CalendarLeftPanelProps {

@@ -2,7 +2,11 @@ import { LuArrowLeft, LuPlay, LuRotateCw } from "react-icons/lu";
 import { TbPencil } from "react-icons/tb";
 import type { TrainingSplitDto } from "@/dtos/training-splits.dto";
 
-type Summary = { exerciseCount: number; totalSets: number; estimatedMinutes: number };
+type Summary = {
+  exerciseCount: number;
+  totalSets: number;
+  estimatedMinutes: number;
+};
 
 type Props = {
   formData: TrainingSplitDto;

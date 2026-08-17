@@ -5,8 +5,16 @@ import { FaPlus } from "react-icons/fa6";
 import type { TrainingSplitDto } from "@/dtos/training-splits.dto";
 import type { TrainingSplitExerciseDto } from "@/dtos/training-split-exercise.dto";
 import type { ExerciseDto } from "@/dtos/exercise.dto";
-import { MuscleGroup, MusclesByGroup, type MuscleGroupType, type MuscleType } from "@/dtos/muscle.dto";
-import { getTrainingSplitById, updateTrainingSplit } from "@/api/training-split";
+import {
+  MuscleGroup,
+  MusclesByGroup,
+  type MuscleGroupType,
+  type MuscleType,
+} from "@/dtos/muscle.dto";
+import {
+  getTrainingSplitById,
+  updateTrainingSplit,
+} from "@/api/training-split";
 import { getAllExercises } from "@/api/exercise";
 import { summarizeSplit } from "@/utils";
 import FeedbackModal from "@/components/modals/FeedbackModal";
@@ -24,7 +32,9 @@ const TrainingSplitsDetails = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [editingTitle, setEditingTitle] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [feedbackStatus, setFeedbackStatus] = useState<"success" | "error">("success");
+  const [feedbackStatus, setFeedbackStatus] = useState<"success" | "error">(
+    "success",
+  );
   const [openFeedback, setOpenFeedback] = useState(false);
 
   useEffect(() => {
@@ -51,14 +61,18 @@ const TrainingSplitsDetails = () => {
   );
 
   const orderedExercises = useMemo(
-    () => (formData ? [...formData.exercises].sort((a, b) => a.order - b.order) : []),
+    () =>
+      formData ? [...formData.exercises].sort((a, b) => a.order - b.order) : [],
     [formData],
   );
 
   const selectedExercise =
-    selectedIndex !== null ? orderedExercises[selectedIndex] ?? null : null;
+    selectedIndex !== null ? (orderedExercises[selectedIndex] ?? null) : null;
 
-  const patchById = (targetId: number, patch: Partial<TrainingSplitExerciseDto>) => {
+  const patchById = (
+    targetId: number,
+    patch: Partial<TrainingSplitExerciseDto>,
+  ) => {
     if (!formData) return;
     setFormData({
       ...formData,
@@ -68,7 +82,10 @@ const TrainingSplitsDetails = () => {
     });
   };
 
-  const updateExercise = (orderedIndex: number, patch: Partial<TrainingSplitExerciseDto>) => {
+  const updateExercise = (
+    orderedIndex: number,
+    patch: Partial<TrainingSplitExerciseDto>,
+  ) => {
     const target = orderedExercises[orderedIndex];
     if (!target) return;
     patchById(target.id, patch);
@@ -110,7 +127,7 @@ const TrainingSplitsDetails = () => {
   const addExercise = () => {
     if (!formData) return;
     const defaultMg: MuscleGroupType = MuscleGroup.CHEST;
-    const defaultMuscle = MusclesByGroup[defaultMg][0].value;
+    const defaultMuscle = MusclesByGroup[defaultMg][0];
     const defaultExercise = filterByMuscle(defaultMuscle)[0];
     if (!defaultExercise) return;
 
@@ -130,16 +147,25 @@ const TrainingSplitsDetails = () => {
     setSelectedIndex(formData.exercises.length);
   };
 
-  const handleMuscleGroupChange = (orderedIndex: number, newMg: MuscleGroupType) => {
+  const handleMuscleGroupChange = (
+    orderedIndex: number,
+    newMg: MuscleGroupType,
+  ) => {
     const firstExercise = exercises.find((e) => e.muscleGroup === newMg);
     if (!firstExercise) return;
-    updateExercise(orderedIndex, { exercise: firstExercise, exerciseId: firstExercise.id });
+    updateExercise(orderedIndex, {
+      exercise: firstExercise,
+      exerciseId: firstExercise.id,
+    });
   };
 
   const handleMuscleChange = (orderedIndex: number, newMuscle: MuscleType) => {
     const firstExercise = filterByMuscle(newMuscle)[0];
     if (!firstExercise) return;
-    updateExercise(orderedIndex, { exercise: firstExercise, exerciseId: firstExercise.id });
+    updateExercise(orderedIndex, {
+      exercise: firstExercise,
+      exerciseId: firstExercise.id,
+    });
   };
 
   const handleExerciseChange = (orderedIndex: number, exerciseId: number) => {
@@ -207,7 +233,9 @@ const TrainingSplitsDetails = () => {
               isSelected={selectedIndex === index}
               isFirst={index === 0}
               isLast={index === orderedExercises.length - 1}
-              onSelect={() => setSelectedIndex(selectedIndex === index ? null : index)}
+              onSelect={() =>
+                setSelectedIndex(selectedIndex === index ? null : index)
+              }
               onMoveUp={() => moveExercise(index, -1)}
               onMoveDown={() => moveExercise(index, 1)}
               onDelete={() => deleteExercise(index)}
@@ -238,9 +266,15 @@ const TrainingSplitsDetails = () => {
                 onClose={() => setSelectedIndex(null)}
                 onUpdate={(patch) => updateExercise(selectedIndex, patch)}
                 onDelete={() => deleteExercise(selectedIndex)}
-                onMuscleGroupChange={(mg) => handleMuscleGroupChange(selectedIndex, mg)}
-                onMuscleChange={(muscle) => handleMuscleChange(selectedIndex, muscle)}
-                onExerciseChange={(exerciseId) => handleExerciseChange(selectedIndex, exerciseId)}
+                onMuscleGroupChange={(mg) =>
+                  handleMuscleGroupChange(selectedIndex, mg)
+                }
+                onMuscleChange={(muscle) =>
+                  handleMuscleChange(selectedIndex, muscle)
+                }
+                onExerciseChange={(exerciseId) =>
+                  handleExerciseChange(selectedIndex, exerciseId)
+                }
               />
             )}
           </div>

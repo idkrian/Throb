@@ -98,7 +98,10 @@ export interface SplitSummary {
 
 export const summarizeSplit = (split: TrainingSplitDto): SplitSummary => {
   const exerciseCount = split.exercises.length;
-  const totalSets = split.exercises.reduce((sum, ex) => sum + (ex.sets ?? 0), 0);
+  const totalSets = split.exercises.reduce(
+    (sum, ex) => sum + (ex.sets ?? 0),
+    0,
+  );
   const estimatedMinutes = totalSets > 0 ? Math.round(totalSets * 2 + 5) : 0;
 
   const groupCounts = new Map<MuscleGroupType, number>();

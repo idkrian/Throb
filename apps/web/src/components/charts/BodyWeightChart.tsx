@@ -33,7 +33,11 @@ const BodyWeightChart = ({ entries }: Props) => {
 
   // Stored in kg; charted in whatever unit the user reads in.
   const data = entries.map((entry) => ({
-    date: formatDate(entry.createdAt, { month: "short", day: "numeric" }, "en-US"),
+    date: formatDate(
+      entry.createdAt,
+      { month: "short", day: "numeric" },
+      "en-US",
+    ),
     weight: toDisplayWeight(entry.weight, unit),
   }));
 
@@ -56,7 +60,9 @@ const BodyWeightChart = ({ entries }: Props) => {
     <Card className="bg-mediumGrey border-none flex min-w-0 flex-col lg:flex-1 lg:min-h-0">
       <CardHeader className="pb-0">
         <CardTitle className="text-white">Body Weight</CardTitle>
-        <CardDescription>Progress over time ({unitLabel(unit)})</CardDescription>
+        <CardDescription>
+          Progress over time ({unitLabel(unit)})
+        </CardDescription>
       </CardHeader>
       <CardContent className="min-w-0 pb-2 lg:flex-1 lg:min-h-0">
         <ChartContainer config={chartConfig} className="h-56 w-full lg:h-full">

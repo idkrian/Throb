@@ -43,10 +43,14 @@ function buildWeeklyData(workouts: WorkoutSessionDto[]) {
     .sort(([a], [b]) => a.localeCompare(b))
     .slice(-12)
     .map(([week, workouts]) => ({
-      week: formatDate(week + "T12:00:00", {
-        month: "short",
-        day: "numeric",
-      }, "en-US"),
+      week: formatDate(
+        week + "T12:00:00",
+        {
+          month: "short",
+          day: "numeric",
+        },
+        "en-US",
+      ),
       workouts,
     }));
 }
@@ -86,7 +90,11 @@ const WorkoutFrequencyChart = () => {
                 <stop offset="95%" stopColor="#7c3aed" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid vertical={false} stroke="#e5e5f0" strokeOpacity={0.08} />
+            <CartesianGrid
+              vertical={false}
+              stroke="#e5e5f0"
+              strokeOpacity={0.08}
+            />
             <XAxis
               dataKey="week"
               tick={{ fill: "#e5e5f0", fontSize: 11 }}

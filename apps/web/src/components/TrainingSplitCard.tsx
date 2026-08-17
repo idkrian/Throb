@@ -9,8 +9,8 @@ import {
   LuDumbbell,
 } from "react-icons/lu";
 import { useNavigate } from "react-router";
-import { MuscleGroupLabel } from "../dtos/muscle.dto";
 import { DEFAULT_ACCENT, muscleGroupAccent, summarizeSplit } from "../utils";
+import { useMuscleGroupLabel } from "@/i18n";
 
 interface TrainingSplitCardProps {
   split: TrainingSplitDto;
@@ -31,6 +31,7 @@ const TrainingSplitCard = ({
 }: TrainingSplitCardProps) => {
   const MAX_EXERCISES_VISIBLE = fullHeight ? 12 : 4;
   const navigate = useNavigate();
+  const muscleGroupLabel = useMuscleGroupLabel();
   const summary = summarizeSplit(split);
   const accent = summary.primaryGroup
     ? muscleGroupAccent[summary.primaryGroup]
@@ -86,7 +87,7 @@ const TrainingSplitCard = ({
                 key={group}
                 className={`text-[11px] px-2 py-0.5 rounded-full border ${muscleGroupAccent[group].chip}`}
               >
-                {MuscleGroupLabel[group]}
+                {muscleGroupLabel(group)}
               </span>
             ))}
           </div>

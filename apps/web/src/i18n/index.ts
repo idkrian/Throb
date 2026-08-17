@@ -13,6 +13,12 @@ import type {
 export type { TranslationKey, TranslationParams } from "./types";
 export type { FormatDateFn } from "./date";
 export { dateLocaleFor, useFormatDate, useWeekdayInitials } from "./date";
+export type { MuscleOption } from "./muscles";
+export {
+  useMuscleGroupLabel,
+  useMuscleLabel,
+  useMusclesByGroup,
+} from "./muscles";
 
 const dictionaries: Record<LanguagePreference, LocaleDictionary> = { en, pt };
 

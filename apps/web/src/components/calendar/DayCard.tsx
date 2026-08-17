@@ -21,12 +21,7 @@ import {
 } from "@/utils/workout-history";
 
 export type DayStatus =
-  | "today"
-  | "completed"
-  | "missed"
-  | "upcoming"
-  | "rest"
-  | "empty";
+  "today" | "completed" | "missed" | "upcoming" | "rest" | "empty";
 
 interface DayCardProps {
   date: Date;
