@@ -11,6 +11,11 @@ const DATE_LOCALES: Record<LanguagePreference, string> = {
 export const dateLocaleFor = (locale: LanguagePreference): string =>
   DATE_LOCALES[locale];
 
+export const useDateLocale = (): string => {
+  const { locale } = useAuth();
+  return dateLocaleFor(locale);
+};
+
 export type FormatDateFn = (
   date: Date | string,
   opts: Intl.DateTimeFormatOptions,

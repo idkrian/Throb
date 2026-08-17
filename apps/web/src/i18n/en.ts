@@ -9,6 +9,7 @@ export const en = {
     delete: "Delete",
     cancel: "Cancel",
     optional: "optional",
+    close: "Close",
   },
 
   exerciseEditPanel: {
@@ -44,6 +45,52 @@ export const en = {
     creating: "Creating...",
     saveChanges: "Save Changes",
     createExercise: "Create Exercise",
+  },
+
+  calendar: {
+    weekRange: "{month} {start} – {end}",
+    weekRangeCrossMonth: "{start} – {end}",
+    prevWeek: "Previous week",
+    nextWeek: "Next week",
+
+    todaysWorkout: "Today's Workout",
+    workoutDone: "Workout Done!",
+    sessionCompleted: "{title} completed",
+    fallbackSessionTitle: "Great session",
+    restDayHint: "No training scheduled — recover well.",
+    startWorkout: "Start Workout",
+
+    thisWeek: "This Week",
+    sessions: "sessions",
+    volume: "volume",
+    streak: "streak",
+    exercisesShort: "ex",
+    sets: "sets",
+
+    done: "Done",
+    missed: "Missed",
+    assignSplit: "Assign split",
+    start: "Start",
+    editWorkout: "Edit workout",
+    noWorkoutLogged: "No workout logged",
+    setsLogged: "{count} sets logged",
+  },
+
+  swapSplitModal: {
+    pickSplit: "Pick a training split",
+    loading: "Loading splits…",
+    noSplits: "No splits available. Create one first.",
+    exerciseCount: "{count} exercises",
+    markAsRest: "Mark as rest",
+    clearDay: "Clear day",
+  },
+
+  sessionDetailModal: {
+    fallbackTitle: "Workout",
+    duration: "duration",
+    sets: "sets",
+    volume: "volume",
+    exercises: "Exercises",
   },
 
   exerciseDrawer: {

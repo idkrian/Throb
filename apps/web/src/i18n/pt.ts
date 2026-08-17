@@ -11,6 +11,7 @@ export const pt: LocaleDictionary = {
     delete: "Excluir",
     cancel: "Cancelar",
     optional: "opcional",
+    close: "Fechar",
   },
 
   exerciseEditPanel: {
@@ -46,6 +47,52 @@ export const pt: LocaleDictionary = {
     creating: "Criando...",
     saveChanges: "Salvar alterações",
     createExercise: "Criar exercício",
+  },
+
+  calendar: {
+    weekRange: "{start} – {end} de {month}",
+    weekRangeCrossMonth: "{start} – {end}",
+    prevWeek: "Semana anterior",
+    nextWeek: "Próxima semana",
+
+    todaysWorkout: "Treino de hoje",
+    workoutDone: "Treino concluído!",
+    sessionCompleted: "{title} concluído",
+    fallbackSessionTitle: "Ótima sessão",
+    restDayHint: "Nenhum treino agendado — bom descanso.",
+    startWorkout: "Iniciar treino",
+
+    thisWeek: "Esta semana",
+    sessions: "sessões",
+    volume: "volume",
+    streak: "sequência",
+    exercisesShort: "ex",
+    sets: "séries",
+
+    done: "Feito",
+    missed: "Perdido",
+    assignSplit: "Atribuir treino",
+    start: "Iniciar",
+    editWorkout: "Editar treino",
+    noWorkoutLogged: "Nenhum treino registrado",
+    setsLogged: "{count} séries registradas",
+  },
+
+  swapSplitModal: {
+    pickSplit: "Escolha um treino",
+    loading: "Carregando treinos…",
+    noSplits: "Nenhum treino disponível. Crie um primeiro.",
+    exerciseCount: "{count} exercícios",
+    markAsRest: "Marcar como descanso",
+    clearDay: "Limpar dia",
+  },
+
+  sessionDetailModal: {
+    fallbackTitle: "Treino",
+    duration: "duração",
+    sets: "séries",
+    volume: "volume",
+    exercises: "Exercícios",
   },
 
   exerciseDrawer: {
