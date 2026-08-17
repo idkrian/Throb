@@ -21,12 +21,14 @@ import { createTrainingSplit } from "@/api/training-split";
 import FeedbackModal from "@/components/modals/FeedbackModal";
 import ExerciseListItem from "@/components/training-splits/ExerciseListItem";
 import ExerciseEditPanel from "@/components/training-splits/ExerciseEditPanel";
+import { useT } from "@/i18n";
 
 const TrainingSplitCreate = () => {
   const navigate = useNavigate();
+  const t = useT();
   const rowIdRef = useRef(0);
 
-  const [title, setTitle] = useState("New Training Split");
+  const [title, setTitle] = useState(() => t("trainingSplits.defaultTitle"));
   const [editingTitle, setEditingTitle] = useState(false);
   const [rows, setRows] = useState<TrainingSplitExerciseDto[]>([]);
   const [exercises, setExercises] = useState<ExerciseDto[]>([]);
@@ -192,8 +194,8 @@ const TrainingSplitCreate = () => {
         status={feedbackStatus}
         description={
           feedbackStatus === "success"
-            ? "Training split created successfully."
-            : "There was an error creating the training split."
+            ? t("trainingSplits.createdSuccess")
+            : t("trainingSplits.createError")
         }
         onClose={() => {
           setOpenFeedbackModal(false);
@@ -237,11 +239,21 @@ const TrainingSplitCreate = () => {
 
         {summary.exerciseCount > 0 && (
           <div className="hidden md:flex items-center gap-3 text-sm text-lightGrey/60 shrink-0">
-            <span>{summary.exerciseCount} exercises</span>
+            <span>
+              {t("trainingSplits.summaryExercises", {
+                count: summary.exerciseCount,
+              })}
+            </span>
             <span>·</span>
-            <span>{summary.totalSets} sets</span>
+            <span>
+              {t("trainingSplits.summarySets", { count: summary.totalSets })}
+            </span>
             <span>·</span>
-            <span>~{summary.estimatedMinutes}min</span>
+            <span>
+              {t("trainingSplits.summaryMinutes", {
+                count: summary.estimatedMinutes,
+              })}
+            </span>
           </div>
         )}
 
@@ -253,7 +265,7 @@ const TrainingSplitCreate = () => {
           {saving ? (
             <LuRotateCw size={14} className="animate-spin" />
           ) : (
-            "Create"
+            t("trainingSplits.createAction")
           )}
         </button>
       </header>
@@ -267,11 +279,10 @@ const TrainingSplitCreate = () => {
               </div>
               <div className="flex flex-col gap-1">
                 <h2 className="text-xl font-bold text-white">
-                  Build your training split
+                  {t("trainingSplits.buildTitle")}
                 </h2>
                 <p className="text-sm text-lightGrey/50 max-w-sm">
-                  Add exercises one by one, set your reps and sets, and arrange
-                  them in the order you'll train.
+                  {t("trainingSplits.buildDescription")}
                 </p>
               </div>
               <button
@@ -279,7 +290,7 @@ const TrainingSplitCreate = () => {
                 className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-indigo hover:bg-darkIndigo text-white font-semibold cursor-pointer transition duration-300 hover:-translate-y-0.5 shadow-lg shadow-indigo/20"
               >
                 <LuPlus size={16} />
-                Add your first exercise
+                {t("trainingSplits.addFirstExercise")}
               </button>
             </div>
           ) : (
@@ -306,7 +317,9 @@ const TrainingSplitCreate = () => {
                 className="flex items-center justify-center gap-2 p-4 rounded-xl border border-dashed border-white/10 hover:border-indigo/50 text-lightGrey/50 hover:text-indigo transition-all cursor-pointer"
               >
                 <LuPlus size={14} />
-                <span className="text-sm font-medium">Add exercise</span>
+                <span className="text-sm font-medium">
+                  {t("trainingSplits.addExercise")}
+                </span>
               </button>
             </>
           )}

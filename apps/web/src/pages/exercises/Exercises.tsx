@@ -130,8 +130,10 @@ const Exercises = () => {
               className="ml-auto flex shrink-0 items-center gap-2 bg-indigo hover:bg-lightIndigo transition-colors rounded-lg px-4 py-2 text-sm font-semibold cursor-pointer lg:order-3 lg:ml-0"
             >
               <FaPlus size={12} />
-              <span className="hidden sm:inline">New Exercise</span>
-              <span className="sm:hidden">New</span>
+              <span className="hidden sm:inline">
+                {t("exercises.newExercise")}
+              </span>
+              <span className="sm:hidden">{t("exercises.newShort")}</span>
             </button>
           </div>
           <div className="relative w-full lg:order-2 lg:w-80 lg:max-w-full">
@@ -142,7 +144,7 @@ const Exercises = () => {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search exercises..."
+              placeholder={t("exercises.searchPlaceholder")}
               className="w-full bg-mediumGrey rounded-lg pl-9 pr-3 py-2 text-sm outline-none border border-transparent focus:border-indigo transition-colors"
             />
           </div>
@@ -190,7 +192,7 @@ const Exercises = () => {
 
       <ConfirmModal
         open={!!deleteTarget}
-        title="Delete exercise?"
+        title={t("exercises.deleteTitle")}
         description={
           deleteTarget
             ? `"${deleteTarget.title}" will be permanently removed.`

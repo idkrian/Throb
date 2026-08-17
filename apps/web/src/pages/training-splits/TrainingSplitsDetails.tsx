@@ -17,12 +17,14 @@ import {
 } from "@/api/training-split";
 import { getAllExercises } from "@/api/exercise";
 import { summarizeSplit } from "@/utils";
+import { useT } from "@/i18n";
 import FeedbackModal from "@/components/modals/FeedbackModal";
 import TrainingSplitHeader from "@/components/training-splits/TrainingSplitHeader";
 import ExerciseListItem from "@/components/training-splits/ExerciseListItem";
 import ExerciseEditPanel from "@/components/training-splits/ExerciseEditPanel";
 
 const TrainingSplitsDetails = () => {
+  const t = useT();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -204,8 +206,8 @@ const TrainingSplitsDetails = () => {
         status={feedbackStatus}
         description={
           feedbackStatus === "success"
-            ? "Training split updated successfully."
-            : "There was an error updating the training split."
+            ? t("trainingSplits.updatedSuccess")
+            : t("trainingSplits.updateError")
         }
         onClose={() => setOpenFeedback(false)}
       />
@@ -247,7 +249,9 @@ const TrainingSplitsDetails = () => {
             className="flex items-center justify-center gap-2 p-4 rounded-xl border border-dashed border-white/10 hover:border-indigo/50 text-lightGrey/50 hover:text-indigo transition-all cursor-pointer"
           >
             <FaPlus size={12} />
-            <span className="text-sm font-medium">Add exercise</span>
+            <span className="text-sm font-medium">
+              {t("trainingSplits.addExercise")}
+            </span>
           </button>
         </div>
 

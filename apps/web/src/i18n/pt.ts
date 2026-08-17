@@ -15,10 +15,10 @@ export const pt: LocaleDictionary = {
   },
 
   exerciseEditPanel: {
-    title: "Editar exercício",
+    title: "Editar Exercício",
     sets: "Séries",
     reps: "Reps",
-    muscleGroup: "Grupo muscular",
+    muscleGroup: "Grupo Muscular",
     selectMuscleGroup: "Selecione o grupo muscular",
     muscle: "Músculo",
     selectMuscle: "Selecione o músculo",
@@ -30,13 +30,13 @@ export const pt: LocaleDictionary = {
   },
 
   exerciseModal: {
-    editTitle: "Editar exercício",
-    newTitle: "Novo exercício",
-    muscleGroup: "Grupo muscular",
-    targetMuscle: "Músculo alvo",
+    editTitle: "Editar Exercício",
+    newTitle: "Novo Exercício",
+    muscleGroup: "Grupo Muscular",
+    targetMuscle: "Músculo Alvo",
     selectMuscle: "Selecione o músculo",
     titleLabel: "Título",
-    titlePlaceholder: "ex.: Supino inclinado com halteres",
+    titlePlaceholder: "ex.: Supino Inclinado com Halteres",
     descriptionLabel: "Descrição",
     descriptionPlaceholder: "Anotações, dicas ou detalhes de execução...",
     createdSuccess: "Exercício criado com sucesso.",
@@ -45,8 +45,95 @@ export const pt: LocaleDictionary = {
     updateError: "Ocorreu um erro ao atualizar o exercício.",
     saving: "Salvando...",
     creating: "Criando...",
-    saveChanges: "Salvar alterações",
-    createExercise: "Criar exercício",
+    saveChanges: "Salvar Alterações",
+    createExercise: "Criar Exercício",
+  },
+
+  stats: {
+    workouts: "Treinos",
+    hours: "Horas",
+    allTime: "Desde o início",
+    thisWeek: "Esta semana",
+    thisMonth: "Este mês",
+  },
+
+  periods: {
+    week: "Semana",
+    month: "Mês",
+    trimester: "3 meses",
+    semester: "6 meses",
+  },
+
+  charts: {
+    bodyWeight: "Peso Corporal",
+    bodyWeightSeries: "Peso corporal",
+    bodyWeightDescription: "Evolução ao longo do tempo ({unit})",
+    bodyWeightEmpty:
+      "Nenhum registro ainda — registre seu peso para começar a acompanhar.",
+
+    estimatedOneRepMax: "1RM est.",
+    topSet: "Melhor série",
+    progressionEmpty:
+      "Registre este exercício ao menos duas vezes para ver a progressão.",
+
+    workoutFrequency: "Frequência de Treinos",
+    workoutFrequencyDescription: "Treinos por semana (últimas 12 semanas)",
+    workoutFrequencyEmpty: "Nenhum histórico de treino ainda",
+    workoutsSeries: "Treinos",
+
+    muscleBalance: "Equilíbrio Muscular",
+    muscleBalanceDescription: "Séries por grupo muscular",
+    setsSeries: "Séries",
+
+    muscleActivity: "Atividade Muscular",
+    muscleActivityEmpty: "Sem dados de treino neste período",
+    undertrained: "Pouco treinado",
+    optimal: "Ideal",
+    overtrained: "Sobrecarregado",
+  },
+
+  feedbackModal: {
+    success: "Sucesso!",
+    error: "Erro!",
+    ok: "Ok",
+  },
+
+  trainingSplits: {
+    emptyTitle: "Nenhum treino ainda",
+    emptyDescription:
+      "Crie seu primeiro treino para planejar sua semana e começar a acompanhar suas sessões.",
+    create: "Criar treino",
+    deleteTitle: "Excluir treino?",
+    deleteDescription: '"{title}" será removido permanentemente.',
+
+    muscleGroupCount: "{count} grupo muscular",
+    muscleGroupCountPlural: "{count} grupos musculares",
+    exercises: "exercícios",
+    sets: "séries",
+    duration: "duração",
+    moreExercises: "+{count} a mais",
+    startWorkout: "Iniciar Treino",
+    editSplit: "Editar treino",
+    deleteSplit: "Excluir treino",
+
+    summaryExercises: "{count} exercícios",
+    summarySets: "{count} séries",
+    summaryMinutes: "~{count}min",
+    start: "Iniciar",
+    save: "Salvar",
+    createAction: "Criar",
+    addExercise: "Adicionar exercício",
+
+    buildTitle: "Monte seu treino",
+    buildDescription:
+      "Adicione exercícios um a um, defina séries e repetições, e organize na ordem em que vai treinar.",
+    addFirstExercise: "Adicione seu primeiro exercício",
+    defaultTitle: "Novo Treino",
+
+    createdSuccess: "Treino criado com sucesso.",
+    createError: "Ocorreu um erro ao criar o treino.",
+    updatedSuccess: "Treino atualizado com sucesso.",
+    updateError: "Ocorreu um erro ao atualizar o treino.",
   },
 
   calendar: {
@@ -55,14 +142,14 @@ export const pt: LocaleDictionary = {
     prevWeek: "Semana anterior",
     nextWeek: "Próxima semana",
 
-    todaysWorkout: "Treino de hoje",
-    workoutDone: "Treino concluído!",
+    todaysWorkout: "Treino de Hoje",
+    workoutDone: "Treino Concluído!",
     sessionCompleted: "{title} concluído",
     fallbackSessionTitle: "Ótima sessão",
     restDayHint: "Nenhum treino agendado — bom descanso.",
-    startWorkout: "Iniciar treino",
+    startWorkout: "Iniciar Treino",
 
-    thisWeek: "Esta semana",
+    thisWeek: "Esta Semana",
     sessions: "sessões",
     volume: "volume",
     streak: "sequência",
@@ -79,7 +166,7 @@ export const pt: LocaleDictionary = {
   },
 
   workout: {
-    finish: "Finalizar treino",
+    finish: "Finalizar Treino",
     newPR: "Novo recorde em {exercise}: {weight}",
 
     time: "Tempo",
@@ -104,12 +191,12 @@ export const pt: LocaleDictionary = {
     notesPlaceholder: "Anotações — como foi este exercício?",
     setsLogged: "{done} / {total} séries registradas",
 
-    restTimer: "Timer de descanso",
-    upNext: "A seguir",
+    restTimer: "Timer de Descanso",
+    upNext: "A Seguir",
   },
 
   workoutSummary: {
-    title: "Treino concluído",
+    title: "Treino Concluído",
     time: "Tempo",
     volume: "Volume",
     sets: "Séries",
@@ -135,18 +222,18 @@ export const pt: LocaleDictionary = {
   },
 
   exerciseDrawer: {
-    title: "Detalhes do exercício",
+    title: "Detalhes do Exercício",
     custom: "Personalizado",
     catalog: "Catálogo",
-    primaryMuscle: "Músculo principal",
+    primaryMuscle: "Músculo Principal",
     description: "Descrição",
-    personalBest: "Recorde pessoal",
+    personalBest: "Recorde Pessoal",
     estimatedOneRepMax: "{weight} 1RM est.",
     heaviestEver: "Maior carga já feita: {weight}",
     noPersonalBest: "Sem dados ainda — registre um treino para ver seus PRs.",
     progression: "Progressão",
     noProgression: "As tendências de volume e carga aparecerão aqui.",
-    lastPerformed: "Último treino",
+    lastPerformed: "Último Treino",
     notPerformed: "Ainda não executado.",
     history: "Histórico",
     volume: "Vol {weight}",
@@ -168,46 +255,46 @@ export const pt: LocaleDictionary = {
   },
 
   muscles: {
-    CHEST_GENERAL: "Peito (geral)",
-    UPPER_CHEST: "Peito superior",
-    MIDDLE_CHEST: "Peito médio",
-    LOWER_CHEST: "Peito inferior",
+    CHEST_GENERAL: "Peito (Geral)",
+    UPPER_CHEST: "Peito Superior",
+    MIDDLE_CHEST: "Peito Médio",
+    LOWER_CHEST: "Peito Inferior",
 
-    BACK_GENERAL: "Costas (geral)",
+    BACK_GENERAL: "Costas (Geral)",
     LATS: "Dorsais",
     TRAPS: "Trapézio",
     LOWER_BACK: "Lombar",
     RHOMBOIDS: "Romboides",
 
-    SHOULDERS_GENERAL: "Ombros (geral)",
-    FRONT_DELTOID: "Deltoide anterior",
-    SIDE_DELTOID: "Deltoide lateral",
-    REAR_DELTOID: "Deltoide posterior",
+    SHOULDERS_GENERAL: "Ombros (Geral)",
+    FRONT_DELTOID: "Deltoide Anterior",
+    SIDE_DELTOID: "Deltoide Lateral",
+    REAR_DELTOID: "Deltoide Posterior",
 
-    ARMS_GENERAL: "Braços (geral)",
-    BICEPS_LONG_HEAD: "Bíceps (cabeça longa)",
-    BICEPS_SHORT_HEAD: "Bíceps (cabeça curta)",
-    TRICEPS_LONG_HEAD: "Tríceps (cabeça longa)",
-    TRICEPS_LATERAL_HEAD: "Tríceps (cabeça lateral)",
-    TRICEPS_MEDIAL_HEAD: "Tríceps (cabeça medial)",
+    ARMS_GENERAL: "Braços (Geral)",
+    BICEPS_LONG_HEAD: "Bíceps (Cabeça Longa)",
+    BICEPS_SHORT_HEAD: "Bíceps (Cabeça Curta)",
+    TRICEPS_LONG_HEAD: "Tríceps (Cabeça Longa)",
+    TRICEPS_LATERAL_HEAD: "Tríceps (Cabeça Lateral)",
+    TRICEPS_MEDIAL_HEAD: "Tríceps (Cabeça Medial)",
 
-    FOREARMS_GENERAL: "Antebraços (geral)",
+    FOREARMS_GENERAL: "Antebraços (Geral)",
     BRACHIORADIALIS: "Braquiorradial",
-    PRONATOR_TERES: "Pronador redondo",
+    PRONATOR_TERES: "Pronador Redondo",
     FLEXORS: "Flexores",
     EXTENSORS: "Extensores",
 
-    LEGS_GENERAL: "Pernas (geral)",
+    LEGS_GENERAL: "Pernas (Geral)",
     QUADRICEPS: "Quadríceps",
     HAMSTRINGS: "Posteriores de coxa",
     CALVES: "Panturrilhas",
 
-    GLUTES_GENERAL: "Glúteos (geral)",
-    GLUTEUS_MAXIMUS: "Glúteo máximo",
-    GLUTEUS_MEDIUS: "Glúteo médio",
-    GLUTEUS_MINIMUS: "Glúteo mínimo",
+    GLUTES_GENERAL: "Glúteos (Geral)",
+    GLUTEUS_MAXIMUS: "Glúteo Máximo",
+    GLUTEUS_MEDIUS: "Glúteo Médio",
+    GLUTEUS_MINIMUS: "Glúteo Mínimo",
 
-    CORE_GENERAL: "Core (geral)",
+    CORE_GENERAL: "Core (Geral)",
     ABS: "Abdômen",
     OBLIQUES: "Oblíquos",
   },
@@ -215,12 +302,18 @@ export const pt: LocaleDictionary = {
   exercises: {
     custom: "Personalizado",
     filterByMuscle: "Filtrar por músculo",
-    allExercises: "Todos os exercícios",
+    allExercises: "Todos os Exercícios",
     emptyTitle: "Nenhum exercício ainda",
     emptyAll: "Comece sua biblioteca adicionando seu primeiro exercício.",
     emptyFiltered:
       "Nenhum exercício de {group} ainda. Adicione um para começar.",
-    newExercise: "Novo exercício",
+    newExercise: "Novo Exercício",
+    newShort: "Novo",
+    searchPlaceholder: "Buscar exercícios...",
+    deleteTitle: "Excluir exercício?",
+    moveUp: "Mover para cima",
+    moveDown: "Mover para baixo",
+    deleteExercise: "Excluir exercício",
   },
 
   nav: {
@@ -245,8 +338,8 @@ export const pt: LocaleDictionary = {
   },
 
   dashboard: {
-    todaysTraining: "Treino de hoje",
-    startWorkout: "Iniciar treino",
+    todaysTraining: "Treino de Hoje",
+    startWorkout: "Iniciar Treino",
     editWorkout: "Editar treino",
     restDayHint: "Nenhum treino agendado para hoje. Bom descanso!",
   },
@@ -257,7 +350,7 @@ export const pt: LocaleDictionary = {
     logBodyWeight: "Registrar peso",
     weighHint:
       "Pese-se sempre no mesmo horário do dia para uma tendência consistente.",
-    logWeight: "Registrar peso",
+    logWeight: "Registrar Peso",
     saving: "Salvando...",
   },
 

@@ -3,7 +3,7 @@ import type { TrainingSplitExerciseDto } from "@/dtos/training-split-exercise.dt
 import type { MuscleGroupType } from "@/dtos/muscle.dto";
 import { DEFAULT_ACCENT, muscleGroupAccent } from "@/utils";
 import MuscleIcon from "@/components/exercises/MuscleIcon";
-import { useMuscleGroupLabel, useMuscleLabel } from "@/i18n";
+import { useMuscleGroupLabel, useMuscleLabel, useT } from "@/i18n";
 
 type Props = {
   ex: TrainingSplitExerciseDto;
@@ -27,6 +27,7 @@ const ExerciseListItem = ({
   onMoveDown,
   onDelete,
 }: Props) => {
+  const t = useT();
   const muscleLabel = useMuscleLabel();
   const muscleGroupLabel = useMuscleGroupLabel();
   const exAccent = ex.exercise?.muscleGroup
@@ -99,7 +100,7 @@ const ExerciseListItem = ({
             onMoveUp();
           }}
           disabled={isFirst}
-          aria-label="Move up"
+          aria-label={t("exercises.moveUp")}
           className="flex items-center justify-center w-8 h-8 lg:w-6 lg:h-6 rounded hover:bg-darkGrey text-lightGrey/50 hover:text-white disabled:opacity-20 cursor-pointer transition"
         >
           <LuChevronUp size={14} />
@@ -110,7 +111,7 @@ const ExerciseListItem = ({
             onMoveDown();
           }}
           disabled={isLast}
-          aria-label="Move down"
+          aria-label={t("exercises.moveDown")}
           className="flex items-center justify-center w-8 h-8 lg:w-6 lg:h-6 rounded hover:bg-darkGrey text-lightGrey/50 hover:text-white disabled:opacity-20 cursor-pointer transition"
         >
           <LuChevronDown size={14} />
@@ -123,7 +124,7 @@ const ExerciseListItem = ({
           onDelete();
         }}
         onKeyDown={(e) => e.stopPropagation()}
-        aria-label="Delete exercise"
+        aria-label={t("exercises.deleteExercise")}
         className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-red-500/20 text-lightGrey/40 hover:text-red-400 transition shrink-0 cursor-pointer lg:opacity-0 lg:group-hover:opacity-100"
       >
         <LuTrash2 size={15} />

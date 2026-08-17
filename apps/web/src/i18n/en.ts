@@ -47,6 +47,92 @@ export const en = {
     createExercise: "Create Exercise",
   },
 
+  stats: {
+    workouts: "Workouts",
+    hours: "Hours",
+    allTime: "All time",
+    thisWeek: "This week",
+    thisMonth: "This month",
+  },
+
+  periods: {
+    week: "Week",
+    month: "Month",
+    trimester: "3 Months",
+    semester: "6 Months",
+  },
+
+  charts: {
+    bodyWeight: "Body Weight",
+    bodyWeightSeries: "Body weight",
+    bodyWeightDescription: "Progress over time ({unit})",
+    bodyWeightEmpty: "No entries yet — log your weight to start tracking.",
+
+    estimatedOneRepMax: "Est. 1RM",
+    topSet: "Top set",
+    progressionEmpty:
+      "Log this exercise at least twice to see a progression trend.",
+
+    workoutFrequency: "Workout Frequency",
+    workoutFrequencyDescription: "Workouts per week (last 12 weeks)",
+    workoutFrequencyEmpty: "No workout history yet",
+    workoutsSeries: "Workouts",
+
+    muscleBalance: "Muscle Balance",
+    muscleBalanceDescription: "Sets per muscle group",
+    setsSeries: "Sets",
+
+    muscleActivity: "Muscle Activity",
+    muscleActivityEmpty: "No workout data for this period",
+    undertrained: "Undertrained",
+    optimal: "Optimal",
+    overtrained: "Overtrained",
+  },
+
+  feedbackModal: {
+    success: "Success!",
+    error: "Error!",
+    ok: "Ok",
+  },
+
+  trainingSplits: {
+    emptyTitle: "No training splits yet",
+    emptyDescription:
+      "Create your first split to plan your weekly workouts and start tracking your sessions.",
+    create: "Create training split",
+    deleteTitle: "Delete training split?",
+    deleteDescription: '"{title}" will be permanently removed.',
+
+    muscleGroupCount: "{count} muscle group",
+    muscleGroupCountPlural: "{count} muscle groups",
+    exercises: "exercises",
+    sets: "sets",
+    duration: "duration",
+    moreExercises: "+{count} more",
+    startWorkout: "Start Workout",
+    editSplit: "Edit split",
+    deleteSplit: "Delete split",
+
+    summaryExercises: "{count} exercises",
+    summarySets: "{count} sets",
+    summaryMinutes: "~{count}min",
+    start: "Start",
+    save: "Save",
+    createAction: "Create",
+    addExercise: "Add exercise",
+
+    buildTitle: "Build your training split",
+    buildDescription:
+      "Add exercises one by one, set your reps and sets, and arrange them in the order you'll train.",
+    addFirstExercise: "Add your first exercise",
+    defaultTitle: "New Training Split",
+
+    createdSuccess: "Training split created successfully.",
+    createError: "There was an error creating the training split.",
+    updatedSuccess: "Training split updated successfully.",
+    updateError: "There was an error updating the training split.",
+  },
+
   calendar: {
     weekRange: "{month} {start} – {end}",
     weekRangeCrossMonth: "{start} – {end}",
@@ -218,6 +304,12 @@ export const en = {
     emptyAll: "Start building your library by adding your first exercise.",
     emptyFiltered: "No {group} exercises yet. Add one to get started.",
     newExercise: "New Exercise",
+    newShort: "New",
+    searchPlaceholder: "Search exercises...",
+    deleteTitle: "Delete exercise?",
+    moveUp: "Move up",
+    moveDown: "Move down",
+    deleteExercise: "Delete exercise",
   },
 
   nav: {
