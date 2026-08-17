@@ -18,6 +18,8 @@ export {
   useFormatDate,
   useWeekdayInitials,
 } from "./date";
+export type { FormatNumberFn } from "./number";
+export { useFormatNumber } from "./number";
 export type { MuscleOption } from "./muscles";
 export {
   useMuscleGroupLabel,

@@ -78,6 +78,45 @@ export const pt: LocaleDictionary = {
     setsLogged: "{count} séries registradas",
   },
 
+  workout: {
+    finish: "Finalizar treino",
+    newPR: "Novo recorde em {exercise}: {weight}",
+
+    time: "Tempo",
+    workoutTime: "Tempo de treino",
+    pause: "Pausar",
+    resume: "Retomar",
+    resetTime: "Zerar tempo",
+    progress: "Progresso",
+    exercisesDone: "{done} / {total} exercícios",
+    setsDone: "{done} de {total} séries feitas",
+    volume: "Volume",
+
+    exerciseCounter: "Exercício {current} de {total}",
+    target: "Meta: {sets} × {reps} reps",
+    lastTimeMax: "Máx. da última vez:",
+    personalRecord: "Recorde:",
+    colSet: "Série",
+    colWeight: "Carga ({unit})",
+    colReps: "Reps",
+    colRpe: "RPE",
+    addSet: "Adicionar série",
+    notesPlaceholder: "Anotações — como foi este exercício?",
+    setsLogged: "{done} / {total} séries registradas",
+
+    restTimer: "Timer de descanso",
+    upNext: "A seguir",
+  },
+
+  workoutSummary: {
+    title: "Treino concluído",
+    time: "Tempo",
+    volume: "Volume",
+    sets: "Séries",
+    keepGoing: "Continuar treinando",
+    save: "SALVAR",
+  },
+
   swapSplitModal: {
     pickSplit: "Escolha um treino",
     loading: "Carregando treinos…",

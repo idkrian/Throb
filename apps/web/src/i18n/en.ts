@@ -76,6 +76,45 @@ export const en = {
     setsLogged: "{count} sets logged",
   },
 
+  workout: {
+    finish: "Finish Workout",
+    newPR: "New PR on {exercise}: {weight}",
+
+    time: "Time",
+    workoutTime: "Workout time",
+    pause: "Pause",
+    resume: "Resume",
+    resetTime: "Reset time",
+    progress: "Progress",
+    exercisesDone: "{done} / {total} exercises",
+    setsDone: "{done} of {total} sets done",
+    volume: "Volume",
+
+    exerciseCounter: "Exercise {current} of {total}",
+    target: "Target: {sets} × {reps} reps",
+    lastTimeMax: "Last time max:",
+    personalRecord: "PR:",
+    colSet: "Set",
+    colWeight: "Weight ({unit})",
+    colReps: "Reps",
+    colRpe: "RPE",
+    addSet: "Add set",
+    notesPlaceholder: "Notes — how did this exercise feel?",
+    setsLogged: "{done} / {total} sets logged",
+
+    restTimer: "Rest Timer",
+    upNext: "Up Next",
+  },
+
+  workoutSummary: {
+    title: "Workout Complete",
+    time: "Time",
+    volume: "Volume",
+    sets: "Sets",
+    keepGoing: "Keep going",
+    save: "SAVE",
+  },
+
   swapSplitModal: {
     pickSplit: "Pick a training split",
     loading: "Loading splits…",
